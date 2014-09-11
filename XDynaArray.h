@@ -1,6 +1,7 @@
 #ifndef XDynaArray_h__
 #define XDynaArray_h__
 #include <vector>
+#include <algorithm>
 //--------------------------------------------------------------------------------------------------
 template<typename T>
 class CXDynaArray : public std::vector<T>
@@ -8,11 +9,11 @@ class CXDynaArray : public std::vector<T>
     public:
         bool Find( const T& rhs )
         {
-            return end() !=::find( begin(), end(), rhs );
+            return this->end() !=std::find( this->begin(), this->end(), rhs );
         }
         void Destroy()
         {
-            iterator i( begin() ), iEnd( end() );
+            iterator i( this->begin() ), iEnd( this->end() );
 
             for ( ; i != iEnd; ++i )
             {

@@ -14,7 +14,9 @@
 #include "XRapidxmlLoader.h"
 #include "XRapidxmlWriter.h"
 #include "XIDGenerator.h"
-#include "XPath.h"
+#include "XFileName.hpp"
 #include "XMath.h"
+#include "XDelegate.h"
+#include "XProp.h"
 //--------------------------------------------------------------------------------------------------
 #endif // CXBase_h__

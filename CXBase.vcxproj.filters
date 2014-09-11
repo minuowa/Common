@@ -39,7 +39,10 @@
     <ClCompile Include="XIDGenerator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="XPath.cpp">
+    <ClCompile Include="XDelegate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="XProp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,9 +51,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XArray.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="XBase.h">
@@ -110,10 +110,16 @@
     <ClInclude Include="XIDGenerator.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="XPath.h">
+    <ClInclude Include="XMultimap.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="XMultimap.h">
+    <ClInclude Include="XFileName.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XDelegate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="XProp.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

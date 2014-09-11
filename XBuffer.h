@@ -37,7 +37,7 @@ class CXBuffer
 
         Iterator  Begin();
 
-        CharString GetChar( int start, int wordNum );
+        String GetChar( int start, int wordNum );
     protected:
         char* mBuffer;
         XI32 mSize;

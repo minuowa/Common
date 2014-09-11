@@ -66,7 +66,7 @@ XI32 CXBuffer::GetBufferSize()
     return mSize;
 }
 
-CharString CXBuffer::GetChar( int start, int wordNum )
+String CXBuffer::GetChar( int start, int wordNum )
 {
     assert( start < ( int )mSize );
     char* bf = new char[mSize - start];
@@ -80,5 +80,5 @@ CharString CXBuffer::GetChar( int start, int wordNum )
     }
 
     bf[i] = '\0';
-    return CharString( bf );
+    return String( bf );
 }

@@ -23,22 +23,22 @@
 //}
 
 inline
-size_t XGetLength( const char * _Format, va_list arglist )
+size_t XGetLength ( const char * _Format, va_list arglist )
 {
-    return _vscprintf( _Format, arglist );
+    return _vscprintf ( _Format, arglist );
 }
 inline
-size_t XGetLength( const wchar_t * _Format, va_list arglist )
+size_t XGetLength ( const wchar_t * _Format, va_list arglist )
 {
-    return _vscwprintf( _Format, arglist );
+    return _vscwprintf ( _Format, arglist );
 }
 inline
-size_t XSPrintf( char* dstBuffer, size_t size, const char* format, _locale_t _Locale, va_list args )
+size_t XSPrintf ( char* dstBuffer, size_t size, const char* format, _locale_t _Locale, va_list args )
 {
-    return _vsprintf_s_l( dstBuffer, size, format, _Locale, args );
+    return _vsprintf_s_l ( dstBuffer, size, format, _Locale, args );
 }
 inline
-size_t XSPrintf( wchar_t* dstBuffer, size_t size, const wchar_t* format, _locale_t _Locale, va_list args )
+size_t XSPrintf ( wchar_t* dstBuffer, size_t size, const wchar_t* format, _locale_t _Locale, va_list args )
 {
 #ifndef WIN32
 #error "if not win32 system ,this function is maybe to recreate!"
@@ -46,56 +46,42 @@ size_t XSPrintf( wchar_t* dstBuffer, size_t size, const wchar_t* format, _locale
     //_locale_t lt = _get_current_locale();
     //return _vswprintf_s_l(dstBuffer,size,format,lt,args);
 
-    return wsprintfW( dstBuffer, format, args );
+    return wsprintfW ( dstBuffer, format, args );
 }
 template<typename T>
 class CXCharString: public std::basic_string<T>
 {
 public:
-	enum ValueType
-	{
-		XieGang='/',
-		MaoHao=':',
-		Dot='.',
-	};
-	enum Mode
-	{
-		Case = 0,         ///< Case sensitive
-		NoCase = 1,       ///< Case insensitive
-		Left = 0,         ///< Start at left end of string
-		Right = 2,        ///< Start at right end of string
-	};
-    public:
-        typedef T ThisChar;
-        typedef std::basic_string<ThisChar> Supper;
-        typedef CXCharString<ThisChar> ThisType;
-        CXCharString() {}
-        CXCharString( ThisChar* s );
-        CXCharString( const ThisChar* s );
+    enum ValueType
+    {
+        XieGang = '/',
+        MaoHao = ':',
+        Dot = '.',
+    };
+    enum Mode
+    {
+        Case = 0,         ///< Case sensitive
+        NoCase = 1,       ///< Case insensitive
+        Left = 0,         ///< Start at left end of string
+        Right = 2,        ///< Start at right end of string
+    };
+public:
+    typedef T MyChar;
+	typedef CXCharString<MyChar> MyType;
+    typedef std::basic_string<MyChar> Supper;
+    CXCharString() {}
 #include "XString.inl"
-    private:
+private:
 
 };
 
-template<typename T>
-CXCharString<T>::CXCharString( const ThisChar* s )
-{
-    clear();
-    assign( s );
-}
 
-template<typename T>
-CXCharString<T>::CXCharString( ThisChar* s )
-{
-    clear();
-    assign( s );
-}
-inline int FindString( stdString src, const char* s )
+inline int FindString ( stdString src, const char* s )
 {
     if ( !s )
         return stdString::npos;
 
-    if ( !strlen( s ) )
+    if ( !strlen ( s ) )
         return 0;
 
     XI32 pos = 0;
@@ -103,9 +89,9 @@ inline int FindString( stdString src, const char* s )
 
     while ( pos != stdString::npos )
     {
-        pos = src.find( s );
+        pos = src.find ( s );
 
-        if ( pos == stdString::npos || pos == 0 || !IS_WIDE_CHAR( *s ) )
+        if ( pos == stdString::npos || pos == 0 || !IS_WIDE_CHAR ( *s ) )
             return pos;
 
         const char* tmp = src.c_str();
@@ -113,7 +99,7 @@ inline int FindString( stdString src, const char* s )
 
         while ( tmp != '\0' )
         {
-            if ( IS_WIDE_CHAR( *tmp ) )
+            if ( IS_WIDE_CHAR ( *tmp ) )
             {
                 tmp += 2;
                 nIndex += 2;
@@ -133,7 +119,7 @@ inline int FindString( stdString src, const char* s )
                 if ( *tmp == '\0' )
                     return stdString::npos;
 
-                src = stdString( tmp );
+                src = stdString ( tmp );
                 nFinPos += nIndex;
                 break;
             }
@@ -143,21 +129,21 @@ inline int FindString( stdString src, const char* s )
     return -1;
 }
 //--------------------------------------------------------------------------------------------------
-inline XI32 FindString( stdString src, stdString sub )
+inline XI32 FindString ( stdString src, stdString sub )
 {
-    return FindString( src, sub.c_str() );
+    return FindString ( src, sub.c_str() );
 }
-inline bool SuccessFindStr( stdString subStr, stdString str )
+inline bool SuccessFindStr ( stdString subStr, stdString str )
 {
-    if ( FindString( str, subStr ) == stdString::npos )
+    if ( FindString ( str, subStr ) == stdString::npos )
         return false;
 
     return true;
 }
 
 //--------------------------------------------------------------------------------------------------
-typedef CXCharString<char> CharString;
-typedef CXCharString<wchar_t> WCharString;
+typedef CXCharString<char> String;
+typedef CXCharString<wchar_t> StringW;
 //typedef  CXDynaArray<CharString> CXStringDynaArr;
 
 

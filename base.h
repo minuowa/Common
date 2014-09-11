@@ -23,6 +23,8 @@ typedef const wchar_t CWChar;
 #define CXASSERT_RESULT_FALSE(exp) if(FAILED((exp))) {CXASSERT(0);return false;}
 #define BIT(n) (1<<n)
 
+#define CXUnuse(v) (void)v;
+
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -67,7 +69,7 @@ typedef float XF32;
 #define CXDelete delete
 
 template<typename T>
-void CXSafeDelete ( T* v )
+void CXSafeDelete ( T*& v )
 {
     if ( v )
     {
@@ -76,13 +78,42 @@ void CXSafeDelete ( T* v )
     }
 }
 template<typename T>
-void CXSafeRelease ( T* v )
+T CXMin ( const T& v1, const T& v2 )
+{
+    if ( v1 < v2 )
+        return v1;
+    return v2;
+}
+template<typename T>
+void CXSafeRelease ( T*& v )
 {
     if ( v )
     {
         v->Release();
         v = 0;
     }
+}
+template<typename T>
+void CXSafeDeleteArray ( T& v )
+{
+    typename T::iterator it = v.begin();
+    typename T::iterator end = v.end();
+    for ( ; it != end; ++it )
+    {
+        CXSafeDelete ( *it );
+    }
+    v.clear();
+}
+template<typename T>
+void CXSafeDeleteMap2 ( T& v )
+{
+    typename T::iterator it = v.begin();
+    typename T::iterator end = v.end();
+    for ( ; it != end; ++it )
+    {
+        CXSafeDelete ( it->second );
+    }
+    v.clear();
 }
 inline void CXMemoryZero ( void* p, XI32 len )
 {
