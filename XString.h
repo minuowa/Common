@@ -22,31 +22,21 @@
 //	return res;
 //}
 
-inline
-size_t XGetLength ( const char * _Format, va_list arglist )
+inline size_t XGetLength ( const char * _Format, va_list arglist )
 {
     return _vscprintf ( _Format, arglist );
 }
-inline
-size_t XGetLength ( const wchar_t * _Format, va_list arglist )
+inline size_t XGetLength ( const wchar_t * _Format, va_list arglist )
 {
     return _vscwprintf ( _Format, arglist );
 }
-inline
-size_t XSPrintf ( char* dstBuffer, size_t size, const char* format, _locale_t _Locale, va_list args )
+inline size_t XSPrintf ( char* dstBuffer, size_t size, const char* format, _locale_t _Locale, va_list args )
 {
     return _vsprintf_s_l ( dstBuffer, size, format, _Locale, args );
 }
-inline
-size_t XSPrintf ( wchar_t* dstBuffer, size_t size, const wchar_t* format, _locale_t _Locale, va_list args )
+inline size_t XSPrintf ( wchar_t* dstBuffer, size_t size, const wchar_t* format, _locale_t _Locale, va_list args )
 {
-#ifndef WIN32
-#error "if not win32 system ,this function is maybe to recreate!"
-#endif // !WIN32
-    //_locale_t lt = _get_current_locale();
-    //return _vswprintf_s_l(dstBuffer,size,format,lt,args);
-
-    return wsprintfW ( dstBuffer, format, args );
+	return _vswprintf_s_l ( dstBuffer, size, format, _Locale, args );
 }
 template<typename T>
 class CXCharString: public std::basic_string<T>

@@ -18,5 +18,8 @@
 #include "XMath.h"
 #include "XDelegate.h"
 #include "XProp.h"
+#include "XBuffer.h"
+#include "XIndex.h"
+#include "XString.h"
 //--------------------------------------------------------------------------------------------------
 #endif // CXBase_h__

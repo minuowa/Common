@@ -10,7 +10,7 @@ CXRapidxmlLoader::~CXRapidxmlLoader( void )
 {
     mFileLoader.Close();
 
-    CXSafeDelete( mBuffer );
+    dSafeDelete( mBuffer );
 }
 
 bool CXRapidxmlLoader::LoadFile( CChar* name )

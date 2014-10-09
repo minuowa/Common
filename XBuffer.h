@@ -1,44 +1,47 @@
-#pragma once
-#include "XString.h"
-
+#ifndef XBuffer_h__
+#define XBuffer_h__
+//-------------------------------------------------------------------------
+/**
+	@brief
+	@author nnboy,29/9/2014  12:08
+*/
 class CXBuffer
 {
-    public:
-        struct Iterator
-        {
-            int Pos;
-            char* src;
-            Iterator& operator++()
-            {
-                char* tmp = &src[Pos];
+public:
+    CXBuffer();
+    ~CXBuffer();
+    void reAllocate ( XUI32 count );
 
-                if ( IS_WIDE_CHAR( *tmp ) )
-                {
-                    Pos += 2;
-                }
-                else
-                {
-                    Pos++;
-                }
-
-                return *this;
-            }
-        };
-        CXBuffer( void );
-        ~CXBuffer( void );
-        bool	Create( XI32 size );
-        XI32	GetBufferSize();
-        Char*	GetBufferPoint();
-        void	CopyMem( void* p );
-        void	CopyStr( CChar* p );
-        void	Clear();
-        void	Destroy();
-        char&	operator[]( XI32 idx );
-
-        Iterator  Begin();
-
-        String GetChar( int start, int wordNum );
-    protected:
-        char* mBuffer;
-        XI32 mSize;
+	inline void setElementSize ( XUI32 size );
+	inline XUI32 length();
+    inline char* getPointer();
+	inline void copyTo(void* dst);
+	inline void copyFrom(void* src);
+protected:
+    XUI32 mElementSize;
+    XUI32 mCount;
+    char* mData;
 };
+inline XUI32 CXBuffer::length()
+{
+	return mCount * mElementSize;
+}
+inline char* CXBuffer::getPointer()
+{
+	return mData;
+}
+inline void CXBuffer::setElementSize( XUI32 size )
+{
+	mCount=size;
+}
+
+inline void CXBuffer::copyTo( void* dst )
+{
+	dMemoryCopy(dst,mData,this->length());
+}
+
+inline void CXBuffer::copyFrom(void* src)
+{
+	dMemoryCopy(mData,src,this->length());
+}
+#endif // XBuffer_h__

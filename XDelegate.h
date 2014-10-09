@@ -1,40 +1,40 @@
 #pragma once
 #include "XDynaArray.h"
+#include "base.h"
 class CXDelegate;
 class CXCallBack
 {
 public:
-	virtual ~CXCallBack()
-	{
-	}
-	virtual void onCallBack(const CXDelegate& delgate)
-	{
-	}
+    virtual ~CXCallBack()
+    {
+    }
+    virtual void onCallBack ( const CXDelegate&  )
+    {
+    }
 };
 
-class CXDelegate:public CXDynaArray<CXCallBack*>
+class CXDelegate: public CXDynaArray<CXCallBack*>
 {
 public:
-	typedef CXDynaArray<CXCallBack*> SuperType;
-	virtual ~CXDelegate(void);
+    typedef CXDynaArray<CXCallBack*> SuperType;
+    virtual ~CXDelegate ( void );
 
-	CXDelegate& operator+=(CXCallBack* callback)
-	{
-		CXASSERT(!this->Find(callback));
-		this->push_back(callback);
-		return *this;
-	}
-	void trigger()
-	{
-		SuperType::iterator iend=this->end();
-		for (SuperType::iterator i=this->begin();i!=iend;++i)
-		{
-			CXCallBack* callback=*i;
-			callback->onCallBack(*this);
-		}
-	}
+    CXDelegate& operator+= ( CXCallBack* callback )
+    {
+        CXASSERT ( !this->Find ( callback ) );
+        this->push_back ( callback );
+        return *this;
+    }
+    void trigger()
+    {
+        for ( size_t i = 0; i < this->size(); ++i )
+        {
+            CXCallBack* callback = ( *this ) [i];
+            callback->onCallBack ( *this );
+        }
+    }
 };
-inline bool operator==(const CXDelegate& lhs,const CXDelegate& rhs)
+inline bool operator== ( const CXDelegate& lhs, const CXDelegate& rhs )
 {
-	return &lhs==&rhs;
+    return &lhs == &rhs;
 }

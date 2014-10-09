@@ -55,9 +55,13 @@ void ToValue ( double& v )
 }
 MyType operator+ ( MyChar* v )
 {
-    MyType tmp = this;
-    tmp.append ( v );
-    return tmp;
+    this->append ( v );
+    return *this;
+}
+MyType& operator+ ( const MyChar* v )
+{
+    this->append ( v );
+    return *this;
 }
 int Find ( const MyChar* s )
 {

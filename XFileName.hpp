@@ -24,6 +24,7 @@ public:
     static bool GetPath ( const char* fileName, String& path );
     static bool GetFileName ( const char* str, String& fileName );
     static bool AmendAbsolutePath ( const char* str, String& path );
+	static bool IsRelative(const char* pathOrFile);
 protected:
     String	mOrignalName;
     String	mRelativePath;
@@ -39,13 +40,17 @@ inline const char* CXFileName::GetRelativePath ()
 
 inline bool CXFileName::GetRelativePath ( const char* fileName, String& path )
 {
+	if (IsRelative(fileName))
+	{
+		return GetPath(fileName,path);
+	}
     String appname = GetAppFullName();
     String fullname ( fileName );
     CXDynaArray<String>  eles0;
     CXDynaArray<String>  eles1;
     appname.Splite ( PathSpliter, eles0 );
     fullname.Splite ( PathSpliter, eles1 );
-    int cnt = CXMin ( eles0.size(), eles1.size() );
+    int cnt = dMin ( eles0.size(), eles1.size() );
     int idx = 0;
     for ( ; idx < cnt - 1; ++idx )
     {
@@ -92,7 +97,7 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, String& path )
     CXASSERT_RETURN_FALSE ( fullName.length() >= 2  );
     CXDynaArray<String> stack;
     String ele;
-    for ( int i = 0; i < fullName.length() - 2; ++i )
+    for ( String::size_type i = 0; i < fullName.length() - 2; ++i )
     {
         char ch = fullName.at ( i );
         if ( ch == PathSpliter )
@@ -214,6 +219,14 @@ inline void CXFileName::GetRelativeFileName ( String& name )
 {
     name += mRelativePath;
     name += mFileName;
+}
+
+inline bool CXFileName::IsRelative( const char* pathOrFile )
+{
+	String file(pathOrFile);
+	String dirFlag;
+	dirFlag+=Directory;
+	return file.Find(dirFlag.c_str())==String::npos;
 }
 
 

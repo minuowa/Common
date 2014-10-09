@@ -13,14 +13,14 @@ class CXDynaArray : public std::vector<T>
         }
         void Destroy()
         {
-            iterator i( this->begin() ), iEnd( this->end() );
-
-            for ( ; i != iEnd; ++i )
-            {
-                CXSafeDelete( *i );
-            }
-
-            clear();
+			size_t cnt=this->size();
+			for (size_t i=0;i<cnt;++i)
+			{
+				T& ptr=(*this)[i];
+				delete ptr;
+				ptr=0;
+			}
+            this->clear();
         }
 };
 

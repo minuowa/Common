@@ -17,10 +17,12 @@ typedef const char CChar;
 typedef wchar_t WChar;
 typedef const wchar_t CWChar;
 
-#define CXASSERT(exp)		if(!(exp)){__debugbreak();}
-#define CXASSERT_RETURN(exp) if(!(exp)){CXASSERT(0);return;}
-#define CXASSERT_RETURN_FALSE(exp) if(!(exp)){CXASSERT(0);return false;}
-#define CXASSERT_RESULT_FALSE(exp) if(FAILED((exp))) {CXASSERT(0);return false;}
+#define CXASSERT(exp)				if(!(exp)){__debugbreak();}
+#define CXASSERT_RETURN(exp)		if(!(exp)){__debugbreak();return;}
+#define CXASSERT_RETURN_FALSE(exp)	if(!(exp)){__debugbreak();return false;}
+
+#define CXASSERT_RESULT(exp)		if(FAILED(exp)){__debugbreak();return;}
+#define CXASSERT_RESULT_FALSE(exp)	if(FAILED((exp))) {__debugbreak();return false;}
 #define BIT(n) (1<<n)
 
 #define CXUnuse(v) (void)v;
@@ -69,7 +71,7 @@ typedef float XF32;
 #define CXDelete delete
 
 template<typename T>
-void CXSafeDelete ( T*& v )
+void dSafeDelete ( T*& v )
 {
     if ( v )
     {
@@ -78,14 +80,14 @@ void CXSafeDelete ( T*& v )
     }
 }
 template<typename T>
-T CXMin ( const T& v1, const T& v2 )
+T dMin ( const T& v1, const T& v2 )
 {
     if ( v1 < v2 )
         return v1;
     return v2;
 }
 template<typename T>
-void CXSafeRelease ( T*& v )
+void dSafeRelease ( T*& v )
 {
     if ( v )
     {
@@ -94,49 +96,49 @@ void CXSafeRelease ( T*& v )
     }
 }
 template<typename T>
-void CXSafeDeleteArray ( T& v )
+void dSafeDeleteArray ( T& v )
 {
     typename T::iterator it = v.begin();
     typename T::iterator end = v.end();
     for ( ; it != end; ++it )
     {
-        CXSafeDelete ( *it );
+        dSafeDelete ( *it );
     }
     v.clear();
 }
 template<typename T>
-void CXSafeDeleteMap2 ( T& v )
+void dSafeDeleteMap2 ( T& v )
 {
     typename T::iterator it = v.begin();
     typename T::iterator end = v.end();
     for ( ; it != end; ++it )
     {
-        CXSafeDelete ( it->second );
+        dSafeDelete ( it->second );
     }
     v.clear();
 }
-inline void CXMemoryZero ( void* p, XI32 len )
+inline void dMemoryZero ( void* p, XI32 len )
 {
     CXASSERT ( p );
     memset ( p, 0, len );
 }
-inline void CXMemoryCopy ( void* dst, void* src, XI32 len )
+inline void dMemoryCopy ( void* dst, void* src, XI32 len )
 {
     CXASSERT ( dst && src );
     memcpy ( dst, src, len );
 }
 template<typename T, XI32 N>
-void CXMemoryZeroArray ( T ( &arr ) [N] )
+void dMemoryZeroArray ( T ( &arr ) [N] )
 {
-    CXMemoryZero ( &arr, sizeof ( T ) *N );
+    dMemoryZero ( &arr, sizeof ( T ) *N );
 }
 template<typename T, XI32 N>
-const XI32 CXArrayCount ( T ( &arr ) [N] )
+const XI32 dArrayCount ( T ( &arr ) [N] )
 {
     return N;
 }
 
-#define CXMemberOffset(ClassName,memberName)\
+#define dMemberOffset(ClassName,memberName)\
     ((int)&((ClassName*)0)->memberName)
 
 // TODO: 在此处引用程序需要的其他头文件
@@ -152,6 +154,7 @@ typedef int S32;
 
 #define CXImpleteSingleton(ClassName) \
 	ClassName* ClassName::mInstance=0;
+
 #define FLOAT_MAX (3.40E+38)
 #define FLOAT_MIN (-FLOAT_MAX)
 

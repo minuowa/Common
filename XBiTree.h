@@ -26,7 +26,7 @@ class CXBiTree
         typedef BiTreeNode<T> ThisBiTreeNode;
         ~CXBiTree()
         {
-            CXSafeDelete( mRoot );
+            dSafeDelete( mRoot );
         }
         CXBiTree( void )
             : mRoot( 0 )

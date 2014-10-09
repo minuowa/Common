@@ -1,91 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="源文件">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="头文件">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="资源文件">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
-    </Filter>
     <Filter Include="Rapidxml">
       <UniqueIdentifier>{fe332630-7a03-4243-a825-a433015287ef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XMath.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XRapidxmlLoader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XFileLoader.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XRapidxmlWriter.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XIDGenerator.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XDelegate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="XProp.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="XBuffer.cpp" />
+    <ClCompile Include="XDelegate.cpp" />
+    <ClCompile Include="XFileLoader.cpp" />
+    <ClCompile Include="XIDGenerator.cpp" />
+    <ClCompile Include="XMath.cpp" />
+    <ClCompile Include="XProp.cpp" />
+    <ClCompile Include="XRapidxmlLoader.cpp" />
+    <ClCompile Include="XRapidxmlWriter.cpp" />
+    <ClCompile Include="XIndex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="base.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XBase.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XBiTree.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XList.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XMap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XMath.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XRapidxmlLoader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XSingleton.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XString.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XVector.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XVector3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
       <Filter>Rapidxml</Filter>
     </ClInclude>
@@ -98,38 +30,34 @@
     <ClInclude Include="Rapidxml\rapidxml_utils.hpp">
       <Filter>Rapidxml</Filter>
     </ClInclude>
-    <ClInclude Include="XFileLoader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XRapidxmlWriter.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="rapidxml_help.hpp">
       <Filter>Rapidxml</Filter>
     </ClInclude>
-    <ClInclude Include="XIDGenerator.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XMultimap.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XFileName.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XDelegate.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="XProp.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClInclude Include="base.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="XBase.h" />
+    <ClInclude Include="XBiTree.h" />
+    <ClInclude Include="XBuffer.h" />
+    <ClInclude Include="XDelegate.h" />
+    <ClInclude Include="XFileLoader.h" />
+    <ClInclude Include="XFileName.hpp" />
+    <ClInclude Include="XIDGenerator.h" />
+    <ClInclude Include="XList.h" />
+    <ClInclude Include="XMap.h" />
+    <ClInclude Include="XMath.h" />
+    <ClInclude Include="XMultimap.h" />
+    <ClInclude Include="XProp.h" />
+    <ClInclude Include="XRapidxmlLoader.h" />
+    <ClInclude Include="XRapidxmlWriter.h" />
+    <ClInclude Include="XSingleton.h" />
+    <ClInclude Include="XString.h" />
+    <ClInclude Include="XVector.h" />
+    <ClInclude Include="XVector3.h" />
+    <ClInclude Include="XIndex.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="XMap.inl">
-      <Filter>头文件</Filter>
-    </None>
-    <None Include="XString.inl">
-      <Filter>头文件</Filter>
-    </None>
     <None Include="ReadMe.txt" />
+    <None Include="XMap.inl" />
+    <None Include="XString.inl" />
   </ItemGroup>
 </Project>
