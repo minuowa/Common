@@ -24,7 +24,7 @@ class CXMap: public std::map<TK, TV>
 			std::pair<Super::iterator, bool> res = this->insert( std::make_pair( k, v ) );
 			return res.second;
 		}
-		void Destroy()
+		void destroySecond()
 		{
 			iterator i( this->begin() ), iEnd( this->end() );
 

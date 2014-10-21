@@ -96,7 +96,7 @@ void dSafeRelease ( T*& v )
     }
 }
 template<typename T>
-void dSafeDeleteArray ( T& v )
+void dSafeDeleteVector ( T& v )
 {
     typename T::iterator it = v.begin();
     typename T::iterator end = v.end();
@@ -105,6 +105,11 @@ void dSafeDeleteArray ( T& v )
         dSafeDelete ( *it );
     }
     v.clear();
+}
+template<typename T>
+void dSafeDeleteArray( T* v )
+{
+	CXDelete []v;
 }
 template<typename T>
 void dSafeDeleteMap2 ( T& v )
@@ -138,6 +143,24 @@ const XI32 dArrayCount ( T ( &arr ) [N] )
     return N;
 }
 
+template<typename T1, typename T2>
+void dCast ( T1& dst, T2* src )
+{
+	dst = * ( ( T1* ) src );
+}
+template<typename T1, typename T2>
+void dCast ( T1* dst, T2 src )
+{
+	* ( ( T2* ) dst ) = src;
+}
+//#pragma warning(push)
+//#pragma warning(disable:4996)
+//inline void dSSCanf(const char* format,...)
+//{
+//	//sscanf_s(format,);
+//}
+//#pragma warning(pop)
+
 #define dMemberOffset(ClassName,memberName)\
     ((int)&((ClassName*)0)->memberName)
 
@@ -154,6 +177,12 @@ typedef int S32;
 
 #define CXImpleteSingleton(ClassName) \
 	ClassName* ClassName::mInstance=0;
+
+#define CXDefineOnce __declspec(selectany)
+
+#define GCat(a,b)		a##b
+#define GCatF(a,b)		GCat(a,b)
+#define GCatCount(a)	GCatF(a,__COUNTER__)
 
 #define FLOAT_MAX (3.40E+38)
 #define FLOAT_MIN (-FLOAT_MAX)

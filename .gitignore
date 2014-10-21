@@ -2,3 +2,6 @@
 *.log
 *.obj
 *.tlog
+*.pch
+*.pdb
+/Debug/*.idb

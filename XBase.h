@@ -21,5 +21,6 @@
 #include "XBuffer.h"
 #include "XIndex.h"
 #include "XString.h"
+#include "XRandom.h"
 //--------------------------------------------------------------------------------------------------
 #endif // CXBase_h__

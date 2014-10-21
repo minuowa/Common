@@ -3,14 +3,18 @@
 //--------------------------------------------------------------------------------------------------
 MyType ( const MyChar* s )
 {
-    clear();
-    assign ( s );
+    if ( s == nullptr )
+        this->clear();
+    else
+        assign ( s );
 }
 
 MyType ( MyChar* s )
 {
-    clear();
-    assign ( s );
+    if ( s == nullptr )
+        this->clear();
+    else
+        assign ( s );
 }
 MyType ( const MyType& rhs )
 {
@@ -65,7 +69,7 @@ MyType& operator+ ( const MyChar* v )
 }
 int Find ( const MyChar* s )
 {
-    return FindString ( stdString ( c_str() ), s );
+    return FindString ( *this, s );
 }
 bool Exist ( const MyChar* s )
 {
@@ -85,7 +89,7 @@ bool operator == ( const MyType& rhs ) const
 }
 inline void Splite ( const MyChar ch, CXDynaArray<MyType>& out )
 {
-    String ele;
+    GString ele;
     for ( size_t i = 0; i < length(); ++i )
     {
         if ( at ( i ) == ch )

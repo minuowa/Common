@@ -14,40 +14,40 @@ public:
     CXFileName ( const char* fileName );
     const char* GetRelativePath ();
     const char* GetFileName ();
-    void GetRelativeFileName ( String& name );
+    void GetRelativeFileName ( GString& name );
 public:
-    static bool GetDirectory ( const String& path, String& dir );
-    static void ConvertToStandSpliter ( String& path );
-    static String GetAppFullName ();
-    static bool GetExt ( const char* fileName, String& ext );
-    static bool GetRelativePath ( const char* fileName, String& path );
-    static bool GetPath ( const char* fileName, String& path );
-    static bool GetFileName ( const char* str, String& fileName );
-    static bool AmendAbsolutePath ( const char* str, String& path );
+    static bool GetDirectory ( const GString& path, GString& dir );
+    static void ConvertToStandSpliter ( GString& path );
+    static GString GetAppFullName ();
+    static bool GetExt ( const char* fileName, GString& ext );
+    static bool GetRelativePath ( const char* fileName, GString& path );
+    static bool GetPath ( const char* fileName, GString& path );
+    static bool GetFileName ( const char* str, GString& fileName );
+    static bool AmendAbsolutePath ( const char* str, GString& path );
 	static bool IsRelative(const char* pathOrFile);
 protected:
-    String	mOrignalName;
-    String	mRelativePath;
-    String	mAbsoultePath;
-    String	mFileName;
-    String	mExt;
-    String	mDirectory;
+    GString	mOrignalName;
+    GString	mRelativePath;
+    GString	mAbsoultePath;
+    GString	mFileName;
+    GString	mExt;
+    GString	mDirectory;
 };
 inline const char* CXFileName::GetRelativePath ()
 {
     return mRelativePath.c_str();
 }
 
-inline bool CXFileName::GetRelativePath ( const char* fileName, String& path )
+inline bool CXFileName::GetRelativePath ( const char* fileName, GString& path )
 {
 	if (IsRelative(fileName))
 	{
 		return GetPath(fileName,path);
 	}
-    String appname = GetAppFullName();
-    String fullname ( fileName );
-    CXDynaArray<String>  eles0;
-    CXDynaArray<String>  eles1;
+    GString appname = GetAppFullName();
+    GString fullname ( fileName );
+    CXDynaArray<GString>  eles0;
+    CXDynaArray<GString>  eles1;
     appname.Splite ( PathSpliter, eles0 );
     fullname.Splite ( PathSpliter, eles1 );
     int cnt = dMin ( eles0.size(), eles1.size() );
@@ -61,7 +61,7 @@ inline bool CXFileName::GetRelativePath ( const char* fileName, String& path )
     int size1 = eles1.size();
     CXASSERT ( size0 >= 2 );
     CXASSERT ( size1 >= 2 );
-    String commonpath;
+    GString commonpath;
     //-------------------------------------------------------------------------
     // directroy not equal
     if ( idx == 0 )
@@ -89,15 +89,15 @@ inline bool CXFileName::GetRelativePath ( const char* fileName, String& path )
 // Parameter: const char * str
 // Parameter: String & path
 //************************************
-inline bool CXFileName::AmendAbsolutePath ( const char* str, String& path )
+inline bool CXFileName::AmendAbsolutePath ( const char* str, GString& path )
 {
-    String dir;
+    GString dir;
     CXASSERT_RETURN_FALSE ( GetDirectory ( str, dir ) );
-    String fullName = str;
+    GString fullName = str;
     CXASSERT_RETURN_FALSE ( fullName.length() >= 2  );
-    CXDynaArray<String> stack;
-    String ele;
-    for ( String::size_type i = 0; i < fullName.length() - 2; ++i )
+    CXDynaArray<GString> stack;
+    GString ele;
+    for ( GString::size_type i = 0; i < fullName.length() - 2; ++i )
     {
         char ch = fullName.at ( i );
         if ( ch == PathSpliter )
@@ -118,7 +118,7 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, String& path )
     ele.append ( 1, fullName[fullName.length() - 2] );
     ele.append ( 1, fullName[fullName.length() - 1] );
     stack.push_back ( ele );
-    for ( CXDynaArray<String>::iterator walk = stack.begin(); walk != stack.end(); ++walk )
+    for ( CXDynaArray<GString>::iterator walk = stack.begin(); walk != stack.end(); ++walk )
     {
         path.append ( *walk );
         path.appendChar ( PathSpliter );
@@ -135,42 +135,42 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, String& path )
 // Qualifier:
 // Parameter: String & path
 //************************************
-inline void CXFileName::ConvertToStandSpliter ( String& path )
+inline void CXFileName::ConvertToStandSpliter ( GString& path )
 {
-    for ( String::size_type i = 0; i < path.length(); ++i )
+    for ( GString::size_type i = 0; i < path.length(); ++i )
     {
         char& ch = path[i];
         if ( ch == PathSpliterEx )
             ch = PathSpliter;
     }
 }
-inline String CXFileName::GetAppFullName()
+inline GString CXFileName::GetAppFullName()
 {
     char* modulename = 0;
     _get_pgmptr ( &modulename );
-    String rawname;
+    GString rawname;
     AmendAbsolutePath ( modulename, rawname );
     return rawname;
 }
 
-inline bool CXFileName::GetPath ( const char* fileName, String& path )
+inline bool CXFileName::GetPath ( const char* fileName, GString& path )
 {
-    String name ( fileName );
+    GString name ( fileName );
     path.clear();
-    String::size_type pos = name.find_last_of ( PathSpliter );
-    if ( pos == String::npos )
+    GString::size_type pos = name.find_last_of ( PathSpliter );
+    if ( pos == GString::npos )
         return false;
     path = name.substr ( 0, pos );
     return true;
 }
 
 
-inline bool CXFileName::GetExt ( const char* fileName, String& ext )
+inline bool CXFileName::GetExt ( const char* fileName, GString& ext )
 {
-    String name = fileName;
+    GString name = fileName;
     ext.clear();
-    String::size_type pos = name.find_last_of ( Dot );
-    if ( pos == String::npos )
+    GString::size_type pos = name.find_last_of ( Dot );
+    if ( pos == GString::npos )
         return false;
     ext = name.substr ( pos + 1 );
     return true;
@@ -178,12 +178,12 @@ inline bool CXFileName::GetExt ( const char* fileName, String& ext )
 
 
 
-inline bool CXFileName::GetFileName ( const char* str, String& fileName )
+inline bool CXFileName::GetFileName ( const char* str, GString& fileName )
 {
-    String name = str;
+    GString name = str;
     fileName.clear();
-    String::size_type pos = name.find_last_of ( PathSpliter );
-    if ( pos == String::npos )
+    GString::size_type pos = name.find_last_of ( PathSpliter );
+    if ( pos == GString::npos )
         return false;
     fileName = name.substr ( pos + 1 );
     return true;
@@ -206,16 +206,16 @@ inline CXFileName::CXFileName ( const char* fileName )
     GetRelativePath ( mOrignalName, mRelativePath );
 }
 
-inline bool CXFileName::GetDirectory ( const String& path, String& dir )
+inline bool CXFileName::GetDirectory ( const GString& path, GString& dir )
 {
-    String::size_type pos = path.find ( Directory );
-    if ( pos == String::npos )
+    GString::size_type pos = path.find ( Directory );
+    if ( pos == GString::npos )
         return false;
     dir = path.substr ( 0, pos + 1 );
     return true;
 }
 
-inline void CXFileName::GetRelativeFileName ( String& name )
+inline void CXFileName::GetRelativeFileName ( GString& name )
 {
     name += mRelativePath;
     name += mFileName;
@@ -223,10 +223,10 @@ inline void CXFileName::GetRelativeFileName ( String& name )
 
 inline bool CXFileName::IsRelative( const char* pathOrFile )
 {
-	String file(pathOrFile);
-	String dirFlag;
+	GString file(pathOrFile);
+	GString dirFlag;
 	dirFlag+=Directory;
-	return file.Find(dirFlag.c_str())==String::npos;
+	return file.Find(dirFlag.c_str())==GString::npos;
 }
 
 

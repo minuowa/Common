@@ -16,6 +16,8 @@
     <ClCompile Include="XRapidxmlLoader.cpp" />
     <ClCompile Include="XRapidxmlWriter.cpp" />
     <ClCompile Include="XIndex.cpp" />
+    <ClCompile Include="XRandom.cpp" />
+    <ClCompile Include="XEnum.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
@@ -51,9 +53,10 @@
     <ClInclude Include="XRapidxmlWriter.h" />
     <ClInclude Include="XSingleton.h" />
     <ClInclude Include="XString.h" />
-    <ClInclude Include="XVector.h" />
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="XIndex.h" />
+    <ClInclude Include="XRandom.h" />
+    <ClInclude Include="XEnum.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

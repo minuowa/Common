@@ -36,7 +36,7 @@ inline size_t XSPrintf ( char* dstBuffer, size_t size, const char* format, _loca
 }
 inline size_t XSPrintf ( wchar_t* dstBuffer, size_t size, const wchar_t* format, _locale_t _Locale, va_list args )
 {
-	return _vswprintf_s_l ( dstBuffer, size, format, _Locale, args );
+    return _vswprintf_s_l ( dstBuffer, size, format, _Locale, args );
 }
 template<typename T>
 class CXCharString: public std::basic_string<T>
@@ -57,7 +57,7 @@ public:
     };
 public:
     typedef T MyChar;
-	typedef CXCharString<MyChar> MyType;
+    typedef CXCharString<MyChar> MyType;
     typedef std::basic_string<MyChar> Supper;
     CXCharString() {}
 #include "XString.inl"
@@ -119,21 +119,19 @@ inline int FindString ( stdString src, const char* s )
     return -1;
 }
 //--------------------------------------------------------------------------------------------------
-inline XI32 FindString ( stdString src, stdString sub )
+inline XI32 FindString ( const stdString& src, const stdString& sub )
 {
     return FindString ( src, sub.c_str() );
 }
-inline bool SuccessFindStr ( stdString subStr, stdString str )
+inline bool SuccessFindStr ( const stdString& subStr, const stdString& str )
 {
-    if ( FindString ( str, subStr ) == stdString::npos )
-        return false;
-
-    return true;
+    return FindString ( str, subStr ) != stdString::npos ;
 }
 
 //--------------------------------------------------------------------------------------------------
-typedef CXCharString<char> String;
+typedef CXCharString<char> GString;
 typedef CXCharString<wchar_t> StringW;
+typedef CXDynaArray<GString> GStringArr;
 //typedef  CXDynaArray<CharString> CXStringDynaArr;
 
 

@@ -1,13 +1,13 @@
 #include "base.h"
-//#include "XMath.h"
-//
-//CXMath::CXMath(void)
-//{
-//}
-//
-//CXMath::~CXMath(void)
-//{
-//}
+#include "XMath.h"
+
+CXMath::CXMath(void)
+{
+}
+
+CXMath::~CXMath(void)
+{
+}
 //
 //void MatrixToQuaternion( const D3DXMATRIX& m, D3DXQUATERNION& q )
 //{
