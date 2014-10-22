@@ -34,7 +34,7 @@ public:
     inline float randF ( float minv, float maxv )
     {
         assert ( minv < maxv );
-        return ( maxv - minv ) * randF();
+        return ( maxv - minv ) * randF() + minv;
     }
 private:
     static void init()

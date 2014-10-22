@@ -2,21 +2,51 @@
 #include "XDynaArray.h"
 struct CXEnumStruct
 {
-	const char* mName;
-	const int mValue;
-	CXEnumStruct ( int var, const char* name )
-		: mName ( name ), mValue ( var )
-	{
-	}
+    const char* mName;
+    const int mValue;
+    CXEnumStruct ( int var, const char* name )
+        : mName ( name ), mValue ( var )
+    {
+    }
 };
 
+typedef CXDynaArray<CXEnumStruct*> CXEnumStructList;
 template<typename T>
-struct CXEnumStructHelper 
+class CXEnumStructHelper
 {
-	static CXDynaArray<CXEnumStruct> mStructList;
-	static void regist();
+protected:
+    static CXEnumStructList* mStructList;
+    static void regist();
+public:
+    static CXEnumStructList& getStructList();
+
+    ~CXEnumStructHelper();
+    CXEnumStructHelper();
 };
 
 template<typename T>
-CXDynaArray<CXEnumStruct> CXEnumStructHelper<T>::mStructList;
+CXEnumStructHelper<T>::CXEnumStructHelper()
+{
+    if ( getStructList().empty() )
+        regist();
+}
+
+template<typename T>
+CXEnumStructHelper<T>::~CXEnumStructHelper()
+{
+    dSafeDeleteVector ( *mStructList );
+    dSafeDelete ( mStructList );
+}
+
+template<typename T>
+CXEnumStructList& CXEnumStructHelper<T>::getStructList()
+{
+    if ( mStructList == nullptr )
+    {
+        mStructList = new CXEnumStructList;
+    }
+    return *mStructList;
+}
+template<typename T>
+CXDefineOnce CXEnumStructList* CXEnumStructHelper<T>::mStructList = nullptr;
 

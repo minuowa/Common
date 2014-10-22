@@ -98,18 +98,21 @@ void dSafeRelease ( T*& v )
 template<typename T>
 void dSafeDeleteVector ( T& v )
 {
-    typename T::iterator it = v.begin();
-    typename T::iterator end = v.end();
-    for ( ; it != end; ++it )
+    if ( v.size() > 0 )
     {
-        dSafeDelete ( *it );
+        typename T::iterator it = v.begin();
+        typename T::iterator end = v.end();
+        for ( ; it != end; ++it )
+        {
+            dSafeDelete ( *it );
+        }
+        v.clear();
     }
-    v.clear();
 }
 template<typename T>
-void dSafeDeleteArray( T* v )
+void dSafeDeleteArray ( T* v )
 {
-	CXDelete []v;
+    CXDelete []v;
 }
 template<typename T>
 void dSafeDeleteMap2 ( T& v )
@@ -146,12 +149,12 @@ const XI32 dArrayCount ( T ( &arr ) [N] )
 template<typename T1, typename T2>
 void dCast ( T1& dst, T2* src )
 {
-	dst = * ( ( T1* ) src );
+    dst = * ( ( T1* ) src );
 }
 template<typename T1, typename T2>
 void dCast ( T1* dst, T2 src )
 {
-	* ( ( T2* ) dst ) = src;
+    * ( ( T2* ) dst ) = src;
 }
 //#pragma warning(push)
 //#pragma warning(disable:4996)

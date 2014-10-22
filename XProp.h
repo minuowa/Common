@@ -122,22 +122,24 @@ CXPropEntity<T>::CXPropEntity ( T* val, bool managedMemory/*=true*/ )
 class CXPropEnum: public CXPropEntity<int>
 {
 public:
-    CXPropEnum ( int* var, bool managedMemory = true )
+    CXPropEnum ( int* var, const CXEnumStructList& arr, bool managedMemory = true )
         : CXPropEntity ( var, managedMemory )
+        , mStringList ( arr )
     {
     }
     virtual void toString ( std::string& dst );
     virtual void setValue ( const char* val );
 
     virtual ePropertyType getType();
-	int getIndex() const;
-	int getIndex(int var) const;
-	int getIndex(const char* name) const;
-	int getValue(int idx) const;
-    const CXDynaArray<CXEnumStruct>& getStringList() const;
-    void init ( const CXDynaArray<CXEnumStruct>& arr );
+    int getIndex() const;
+    int getIndex ( int var ) const;
+    int getIndex ( const char* name ) const;
+    int getValue ( int idx ) const;
+	int getValue() const;
+	const char* getTheName() const;
+    const CXEnumStructList& getStructList() const;
 protected:
-    CXDynaArray<CXEnumStruct> mStringList;
+    const CXEnumStructList& mStringList;
 };
 
 #endif // XProp_h__
