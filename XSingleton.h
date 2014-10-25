@@ -4,29 +4,38 @@
 template<typename T>
 class CXSingleton
 {
+public:
+    typedef CXSingleton<T> MyType;
 private:
     CXSingleton()
     {
     }
-    CXSingleton (const CXSingleton& );
-    CXSingleton& operator=(const CXSingleton&);
+    CXSingleton ( const CXSingleton& );
+    CXSingleton& operator= ( const CXSingleton& );
 public:
     virtual ~CXSingleton()
     {
     }
     static T* GetSingletonPtr()
     {
-        static T* instance=0;
-        if ( !instance )
+        if ( !mInstance )
         {
-            static T t;
-            instance =&t;
+            mInstance = new T;
         }
-        return instance;
+        return mInstance;
     }
     static  T& GetSingleton()
     {
         return *GetSingletonPtr();
     }
+    static void destoryInstance()
+    {
+        dSafeDelete ( mInstance );
+    }
+    static T* mInstance;
 };
+
+template<typename T>
+__declspec ( selectany )
+T* CXSingleton<T>::mInstance = nullptr;
 #endif // CXSingleton_h__

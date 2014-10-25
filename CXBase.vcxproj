@@ -162,16 +162,18 @@
     <ClCompile Include="XRandom.cpp" />
     <ClCompile Include="XRapidxmlLoader.cpp" />
     <ClCompile Include="XRapidxmlWriter.cpp" />
+    <ClCompile Include="XStringHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="XStringHelper.h" />
+    <ClInclude Include="Rapidxml\rapidxml_help.hpp" />
     <ClInclude Include="XDelegate.h" />
     <ClInclude Include="XEnum.h" />
     <ClInclude Include="XIndex.h" />
     <ClInclude Include="XMultimap.h" />
     <ClInclude Include="XFileName.hpp" />
     <ClInclude Include="XIDGenerator.h" />
-    <ClInclude Include="rapidxml_help.hpp" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="XBase.h" />
     <ClInclude Include="XBiTree.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="XRapidxmlLoader.h" />
     <ClInclude Include="XRapidxmlWriter.h" />
     <ClInclude Include="XSingleton.h" />
+    <ClInclude Include="XStack.h" />
     <ClInclude Include="XString.h" />
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="Rapidxml\rapidxml.hpp" />

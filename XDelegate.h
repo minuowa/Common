@@ -25,6 +25,14 @@ public:
         this->push_back ( callback );
         return *this;
     }
+    CXDelegate& operator-= ( CXCallBack* callback )
+    {
+        iterator iter = std::find ( this->begin(), this->end(), callback );
+        //CXASSERT ( iter!=this->end() );
+        if ( iter != this->end() )
+            this->erase ( iter );
+        return *this;
+    }
     void trigger()
     {
         for ( size_t i = 0; i < this->size(); ++i )

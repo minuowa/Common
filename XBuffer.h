@@ -17,6 +17,7 @@ public:
     inline char* getPointer();
 	inline void copyTo(void* dst);
 	inline void copyFrom(void* src);
+	inline void setChar(XUI32 idx,char c);
 protected:
     XUI32 mElementSize;
     XUI32 mCount;
@@ -32,7 +33,7 @@ inline char* CXBuffer::getPointer()
 }
 inline void CXBuffer::setElementSize( XUI32 size )
 {
-	mCount=size;
+	mElementSize=size;
 }
 
 inline void CXBuffer::copyTo( void* dst )
@@ -43,5 +44,10 @@ inline void CXBuffer::copyTo( void* dst )
 inline void CXBuffer::copyFrom(void* src)
 {
 	dMemoryCopy(mData,src,this->length());
+}
+void CXBuffer::setChar ( XUI32 idx, char c )
+{
+    CXASSERT ( mData );
+    mData[idx] = c;
 }
 #endif // XBuffer_h__

@@ -24,19 +24,19 @@
 #define _IDGENERATOR_H_
 #include "XDynaArray.h"
 
-typedef unsigned int U32;
+typedef unsigned int u32;
 class CXIDGenerator
 {
 private:
-   U32 mIdBlockBase;
-   U32 mIdRangeSize;
-   CXDynaArray<U32> mPool;
-   U32 mNextId;
+   u32 mIdBlockBase;
+   u32 mIdRangeSize;
+   CXDynaArray<u32> mPool;
+   u32 mNextId;
 
    void reclaim();
 
 public:
-   CXIDGenerator(U32 base, U32 numIds)
+   CXIDGenerator(u32 base, u32 numIds)
    {
       //VECTOR_SET_ASSOCIATION(mPool);
 
@@ -51,12 +51,12 @@ public:
       mNextId = mIdBlockBase;
    }
 
-   U32 alloc()
+   u32 alloc()
    {
       // fist check the pool:
       if(!mPool.empty())
       {
-         U32 id = mPool.back();
+         u32 id = mPool.back();
          mPool.pop_back();
          reclaim();
          return id;
@@ -67,7 +67,7 @@ public:
       return mNextId++;
    }
 
-   void free(U32 id)
+   void free(u32 id)
    {
       CXASSERT(id >= mIdBlockBase);
       if(id == mNextId - 1)
@@ -79,7 +79,7 @@ public:
          mPool.push_back(id);
    }
 
-   U32 numIdsUsed()
+   u32 numIdsUsed()
    {
       return mNextId - mIdBlockBase - mPool.size();
    }

@@ -130,7 +130,7 @@ inline bool SuccessFindStr ( const stdString& subStr, const stdString& str )
 
 //--------------------------------------------------------------------------------------------------
 typedef CXCharString<char> GString;
-typedef CXCharString<wchar_t> StringW;
+typedef CXCharString<wchar_t> GStringW;
 typedef CXDynaArray<GString> GStringArr;
 //typedef  CXDynaArray<CharString> CXStringDynaArr;
 

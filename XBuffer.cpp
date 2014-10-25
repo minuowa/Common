@@ -4,7 +4,6 @@
 
 CXBuffer::CXBuffer ( void )
 {
-    mElementSize = 0;
     mData = 0;
     mCount = 0;
 }
@@ -20,7 +19,9 @@ void CXBuffer::reAllocate ( XUI32 count )
     dSafeDelete ( mData );
     mCount = count;
     mData = new char[count];
-    dMemoryZero ( mData, mElementSize * mCount );
+    dMemoryZero ( mData, mCount * mElementSize );
 }
+
+
 
 

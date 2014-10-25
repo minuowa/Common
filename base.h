@@ -51,8 +51,8 @@ typedef std::string CXString;
 
 typedef unsigned int XUI32;
 typedef int	XI32;
-typedef short XS16;
-typedef float XF32;
+typedef short s16;
+typedef float f32;
 
 #define CHECK(exp)					assert(exp)
 #define CHECK_RETURN_BOOL(exp)		{if(!exp){ assert(0);return false;}}
@@ -140,6 +140,10 @@ void dMemoryZeroArray ( T ( &arr ) [N] )
 {
     dMemoryZero ( &arr, sizeof ( T ) *N );
 }
+inline bool dStrEqual ( const char* s1, const char* s2 )
+{
+    return 0 == strcmp ( s1, s2 );
+}
 template<typename T, XI32 N>
 const XI32 dArrayCount ( T ( &arr ) [N] )
 {
@@ -168,15 +172,16 @@ void dCast ( T1* dst, T2 src )
     ((int)&((ClassName*)0)->memberName)
 
 // TODO: 在此处引用程序需要的其他头文件
-typedef unsigned int U32;
-typedef int S32;
+typedef unsigned int u32;
+typedef int s32;
 
 #define CXDeclareSingleton(ClassName) \
 	private:\
 	static ClassName* mInstance;\
 	public:\
-	static ClassName& GetSingleton()	{ if(!mInstance) { static ClassName instance; mInstance=&instance;}	return *mInstance;}\
-	static ClassName* GetSingletonPtr()	{ return &GetSingleton();}
+	static ClassName& GetSingleton()	{ if(!mInstance) { mInstance=new ClassName;}	return *mInstance;}\
+	static ClassName* GetSingletonPtr()	{ return &GetSingleton();}\
+	static ClassName* DestorySingleton() { if(mInstance) delete mInstance; mInstance=0;}
 
 #define CXImpleteSingleton(ClassName) \
 	ClassName* ClassName::mInstance=0;

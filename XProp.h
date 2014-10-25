@@ -3,7 +3,7 @@
 
 #include "XString.h"
 #include "XEnum.h"
-
+#include "XStringHelper.h"
 
 /** @brief 兼容qt,加的类型识别 **/
 enum ePropertyType
@@ -16,47 +16,34 @@ enum ePropertyType
     eType_Enum,
     eType_UnKnown,
 };
-
 namespace CXPropHelper
 {
-void toString ( std::string& dst, GString* var );
-void toString ( std::string& dst, int* var );
-void toString ( std::string& dst, float* var );
-void toString ( std::string& dst, bool* var );
-
-void setValue ( const char* val, GString* var );
-void setValue ( const char* val, int* var );
-void setValue ( const char* val, float* var );
-void setValue ( const char* val, bool* var );
-
-template<typename T>
-inline ePropertyType getType()
-{
-    return eType_UnKnown;
+	template<typename T>
+	inline ePropertyType getType()
+	{
+		return eType_UnKnown;
+	}
+	template<> inline ePropertyType getType<int>()
+	{
+		return eType_Int;
+	}
+	template<> inline ePropertyType getType<bool>()
+	{
+		return eType_Bool;
+	}
+	template<> inline ePropertyType getType<float>()
+	{
+		return eType_Float;
+	}
+	template<> inline ePropertyType getType<double>()
+	{
+		return eType_Double;
+	}
+	template<> inline ePropertyType getType<GString>()
+	{
+		return eType_String;
+	}
 }
-template<> inline ePropertyType getType<int>()
-{
-    return eType_Int;
-}
-template<> inline ePropertyType getType<bool>()
-{
-    return eType_Bool;
-}
-template<> inline ePropertyType getType<float>()
-{
-    return eType_Float;
-}
-template<> inline ePropertyType getType<double>()
-{
-    return eType_Double;
-}
-template<> inline ePropertyType getType<GString>()
-{
-    return eType_String;
-}
-}
-
-
 class CXProp
 {
 public:
@@ -93,13 +80,13 @@ ePropertyType CXPropEntity<T>::getType()
 template<typename T>
 void CXPropEntity<T>::toString ( std::string& dst )
 {
-    CXPropHelper::toString ( dst, mVar );
+    CXStringHelper::toString ( dst, mVar );
 }
 
 template<typename T>
 void CXPropEntity<T>::setValue ( const char* val )
 {
-    CXPropHelper::setValue ( val, mVar );
+    CXStringHelper::setValue ( val, mVar );
 }
 
 
@@ -131,9 +118,9 @@ public:
     virtual void setValue ( const char* val );
 
     virtual ePropertyType getType();
-    int getIndex() const;
-    int getIndex ( int var ) const;
-    int getIndex ( const char* name ) const;
+    u32 getIndex() const;
+    u32 getIndex ( int var ) const;
+    u32 getIndex ( const char* name ) const;
     int getValue ( int idx ) const;
 	int getValue() const;
 	const char* getTheName() const;

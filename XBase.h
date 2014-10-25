@@ -9,6 +9,7 @@
 #include "XList.h"
 #include "XDynaArray.h"
 #include "XStaticArray.h"
+#include "XStack.h"
 #include "XBuffer.h"
 #include "XBiTree.h"
 #include "XRapidxmlLoader.h"

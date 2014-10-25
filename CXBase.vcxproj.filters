@@ -18,6 +18,7 @@
     <ClCompile Include="XIndex.cpp" />
     <ClCompile Include="XRandom.cpp" />
     <ClCompile Include="XEnum.cpp" />
+    <ClCompile Include="XStringHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
@@ -30,9 +31,6 @@
       <Filter>Rapidxml</Filter>
     </ClInclude>
     <ClInclude Include="Rapidxml\rapidxml_utils.hpp">
-      <Filter>Rapidxml</Filter>
-    </ClInclude>
-    <ClInclude Include="rapidxml_help.hpp">
       <Filter>Rapidxml</Filter>
     </ClInclude>
     <ClInclude Include="base.h" />
@@ -57,6 +55,11 @@
     <ClInclude Include="XIndex.h" />
     <ClInclude Include="XRandom.h" />
     <ClInclude Include="XEnum.h" />
+    <ClInclude Include="XStack.h" />
+    <ClInclude Include="Rapidxml\rapidxml_help.hpp">
+      <Filter>Rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="XStringHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
