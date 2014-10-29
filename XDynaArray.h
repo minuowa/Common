@@ -11,6 +11,15 @@ class CXDynaArray : public std::vector<T>
         {
             return this->end() !=std::find( this->begin(), this->end(), rhs );
         }
+		void destroyPoint(T* n)
+		{
+			iterator i=std::find( this->begin(), this->end(), rhs );
+			if (i!=this->end())
+			{
+				delete i;
+				this->erase(i);
+			}
+		}
         void Destroy()
         {
 			size_t cnt=this->size();

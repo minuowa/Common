@@ -79,6 +79,7 @@ void dSafeDelete ( T*& v )
         v = 0;
     }
 }
+
 template<typename T>
 T dMin ( const T& v1, const T& v2 )
 {
@@ -94,6 +95,13 @@ void dSafeRelease ( T*& v )
         v->Release();
         v = 0;
     }
+}
+template<typename T, typename E>
+void dRemoveChild ( T& v, E* e )
+{
+    typename T::iterator i = std::find ( v.begin(), v.end(), e );
+    if ( i != v.end() )
+        v.erase ( i );
 }
 template<typename T>
 void dSafeDeleteVector ( T& v )
