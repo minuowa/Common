@@ -10,44 +10,98 @@ class CXBuffer
 public:
     CXBuffer();
     ~CXBuffer();
-    void reAllocate ( XUI32 count );
-
-	inline void setElementSize ( XUI32 size );
-	inline XUI32 length();
+	void reAllocate ( u32 byteSize );
+	void reAllocateByElementCount(u32 cnt);
+	void clear();
+    inline void setElementByteCount ( u32 size );
+    inline u32 length();
+	inline u32 size();
+	inline u32 capacity() const;
     inline char* getPointer();
-	inline void copyTo(void* dst);
-	inline void copyFrom(void* src);
-	inline void setChar(XUI32 idx,char c);
+    inline void copyTo ( void* dst );
+    inline void copyFrom ( void* src );
+    inline void setChar ( u32 idx, char c );
+	template<typename T>
+	void addElement(T v);
+	template<typename T>
+	void addElement(T* v,u32 cnt);
+
+    //template<typename T>
+    //T& operator[] ( u32 idx )
+    //{
+    //    return * ( ( T* ) &mData[idx * sizeof ( T )] );
+    //}
+    template<typename T>
+    void set ( u32 idx,const T& v );
+	template<typename T>
+	inline T& get(u32 idx)
+	{
+		return* ( ( T* ) &mData[idx * sizeof ( T )] ) ;
+	}
 protected:
-    XUI32 mElementSize;
-    XUI32 mCount;
+    u32 mElementByteCount;
+	u32 mCapacity;
+    u32 mCount;
     char* mData;
 };
-inline XUI32 CXBuffer::length()
+inline u32 CXBuffer::length()
 {
-	return mCount * mElementSize;
+    return mCapacity * mElementByteCount;
 }
 inline char* CXBuffer::getPointer()
 {
-	return mData;
+    return mData;
 }
-inline void CXBuffer::setElementSize( XUI32 size )
+inline void CXBuffer::setElementByteCount ( u32 size )
 {
-	mElementSize=size;
+    mElementByteCount = size;
 }
 
-inline void CXBuffer::copyTo( void* dst )
+inline void CXBuffer::copyTo ( void* dst )
 {
-	dMemoryCopy(dst,mData,this->length());
+    dMemoryCopy ( dst, mData, mCount*mElementByteCount );
 }
 
-inline void CXBuffer::copyFrom(void* src)
+inline void CXBuffer::copyFrom ( void* src )
 {
-	dMemoryCopy(mData,src,this->length());
+    dMemoryCopy ( mData, src, mCount*mElementByteCount );
 }
-void CXBuffer::setChar ( XUI32 idx, char c )
+template<typename T>
+inline void CXBuffer::addElement( T* v,u32 cnt )
+{
+	dMemoryCopy(&mData[mCount*mElementByteCount],v,cnt*mElementByteCount);
+	mCount+=cnt;
+}
+
+template<typename T>
+inline void CXBuffer::addElement( T v )
+{
+	* ( ( T* ) &mData[mCount * sizeof ( T )] ) = v;
+	mCount++;
+}
+template<typename T>
+void CXBuffer::set( u32 idx,const T& v )
+{
+	* ( ( T* ) &mData[idx * sizeof ( T )] ) = v;
+}
+
+u32 CXBuffer::size()
+{
+	return mCount;
+}
+
+inline void CXBuffer::setChar ( u32 idx, char c )
 {
     CXASSERT ( mData );
     mData[idx] = c;
+}
+inline u32 CXBuffer::capacity() const
+{
+	return mCapacity;
+}
+
+inline void CXBuffer::clear()
+{
+	mCount=0;
 }
 #endif // XBuffer_h__

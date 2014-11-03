@@ -19,6 +19,9 @@
     <ClCompile Include="XRandom.cpp" />
     <ClCompile Include="XEnum.cpp" />
     <ClCompile Include="XStringHelper.cpp" />
+    <ClCompile Include="XEaser.cpp" />
+    <ClCompile Include="XVector3.cpp" />
+    <ClCompile Include="XColor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
@@ -60,6 +63,10 @@
       <Filter>Rapidxml</Filter>
     </ClInclude>
     <ClInclude Include="XStringHelper.h" />
+    <ClInclude Include="XEaser.h" />
+    <ClInclude Include="XTime.h" />
+    <ClInclude Include="XVector3.h" />
+    <ClInclude Include="XColor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

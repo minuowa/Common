@@ -27,7 +27,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <WholeProgramOptimization>PGOptimize</WholeProgramOptimization>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -147,7 +147,10 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="XColor.cpp" />
+    <ClCompile Include="XVector3.cpp" />
     <ClCompile Include="XDelegate.cpp" />
+    <ClCompile Include="XEaser.cpp" />
     <ClCompile Include="XEnum.cpp" />
     <ClCompile Include="XIDGenerator.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -168,6 +171,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="XColor.h" />
+    <ClInclude Include="XVector3.h" />
+    <ClInclude Include="XEaser.h" />
     <ClInclude Include="XStringHelper.h" />
     <ClInclude Include="Rapidxml\rapidxml_help.hpp" />
     <ClInclude Include="XDelegate.h" />
@@ -191,7 +197,7 @@
     <ClInclude Include="XSingleton.h" />
     <ClInclude Include="XStack.h" />
     <ClInclude Include="XString.h" />
-    <ClInclude Include="XVector3.h" />
+    <ClInclude Include="XTime.h" />
     <ClInclude Include="Rapidxml\rapidxml.hpp" />
     <ClInclude Include="Rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="Rapidxml\rapidxml_print.hpp" />

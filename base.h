@@ -79,6 +79,7 @@ void dSafeDelete ( T*& v )
         v = 0;
     }
 }
+#define dSequare(x) (x)*(x)
 
 template<typename T>
 T dMin ( const T& v1, const T& v2 )
@@ -138,6 +139,8 @@ inline void dMemoryZero ( void* p, XI32 len )
     CXASSERT ( p );
     memset ( p, 0, len );
 }
+#define dMemoryZeroStruct(p) memset(p,0,sizeof(*p))
+
 inline void dMemoryCopy ( void* dst, void* src, XI32 len )
 {
     CXASSERT ( dst && src );
@@ -188,7 +191,7 @@ typedef int s32;
 	static ClassName* mInstance;\
 	public:\
 	static ClassName& GetSingleton()	{ if(!mInstance) { mInstance=new ClassName;}	return *mInstance;}\
-	static ClassName* GetSingletonPtr()	{ return &GetSingleton();}\
+	static ClassName* getInstance()	{ return &GetSingleton();}\
 	static ClassName* DestorySingleton() { if(mInstance) delete mInstance; mInstance=0;}
 
 #define CXImpleteSingleton(ClassName) \

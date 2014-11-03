@@ -16,7 +16,7 @@ public:
     virtual ~CXSingleton()
     {
     }
-    static T* GetSingletonPtr()
+    static T* getInstance()
     {
         if ( !mInstance )
         {
@@ -26,7 +26,7 @@ public:
     }
     static  T& GetSingleton()
     {
-        return *GetSingletonPtr();
+        return *getInstance();
     }
     static void destoryInstance()
     {

@@ -23,7 +23,10 @@
 #include "XIndex.h"
 #include "XString.h"
 #include "XRandom.h"
-
+#include "XEaser.h"
+#include "XTime.h"
+#include "XVector3.h"
+#include "XColor.h"
 /** @brief 查找一个数组或vector中cur之后的第一个符合条件的元素 **/
 template<typename Array, typename T, typename CondtionObj>
 T* dFindNextElementInArray ( Array&  arr, T* cur, CondtionObj& funObj )
