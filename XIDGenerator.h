@@ -28,61 +28,61 @@ typedef unsigned int u32;
 class CXIDGenerator
 {
 private:
-   u32 mIdBlockBase;
-   u32 mIdRangeSize;
-   CXDynaArray<u32> mPool;
-   u32 mNextId;
+	u32 mIdBlockBase;
+	u32 mIdRangeSize;
+	CXDynaArray<u32> mPool;
+	u32 mNextId;
 
-   void reclaim();
+	void reclaim();
 
 public:
-   CXIDGenerator(u32 base, u32 numIds)
-   {
-      //VECTOR_SET_ASSOCIATION(mPool);
+	CXIDGenerator(u32 base, u32 numIds)
+	{
+		//VECTOR_SET_ASSOCIATION(mPool);
 
-      mIdBlockBase = base;
-      mIdRangeSize = numIds;
-      mNextId = mIdBlockBase;
-   }
+		mIdBlockBase = base;
+		mIdRangeSize = numIds;
+		mNextId = mIdBlockBase;
+	}
 
-   void reset()
-   {
-      mPool.clear();
-      mNextId = mIdBlockBase;
-   }
+	void reset()
+	{
+		mPool.clear();
+		mNextId = mIdBlockBase;
+	}
 
-   u32 alloc()
-   {
-      // fist check the pool:
-      if(!mPool.empty())
-      {
-         u32 id = mPool.back();
-         mPool.pop_back();
-         reclaim();
-         return id;
-      }
-      if(mIdRangeSize && mNextId >= mIdBlockBase + mIdRangeSize)
-         return 0;
+	u32 alloc()
+	{
+		// fist check the pool:
+		if(!mPool.empty())
+		{
+			u32 id = mPool.back();
+			mPool.pop_back();
+			reclaim();
+			return id;
+		}
+		if(mIdRangeSize && mNextId >= mIdBlockBase + mIdRangeSize)
+			return 0;
 
-      return mNextId++;
-   }
+		return mNextId++;
+	}
 
-   void free(u32 id)
-   {
-      CXASSERT(id >= mIdBlockBase);
-      if(id == mNextId - 1)
-      {
-         mNextId--;
-         reclaim();
-      }
-      else
-         mPool.push_back(id);
-   }
+	void free(u32 id)
+	{
+		CXASSERT(id >= mIdBlockBase);
+		if(id == mNextId - 1)
+		{
+			mNextId--;
+			reclaim();
+		}
+		else
+			mPool.push_back(id);
+	}
 
-   u32 numIdsUsed()
-   {
-      return mNextId - mIdBlockBase - mPool.size();
-   }
+	u32 numIdsUsed()
+	{
+		return mNextId - mIdBlockBase - mPool.size();
+	}
 };
 
 #endif

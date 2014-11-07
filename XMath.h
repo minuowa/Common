@@ -18,6 +18,6 @@
 class CXMath
 {
 public:
-    CXMath ( void );
-    ~CXMath ( void );
+	CXMath ( void );
+	~CXMath ( void );
 };

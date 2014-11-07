@@ -4,6 +4,9 @@
     <Filter Include="Rapidxml">
       <UniqueIdentifier>{fe332630-7a03-4243-a825-a433015287ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="luawarper">
+      <UniqueIdentifier>{dcce5aae-d0ca-45f9-a1c3-ebbb96b76d17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -22,6 +25,11 @@
     <ClCompile Include="XEaser.cpp" />
     <ClCompile Include="XVector3.cpp" />
     <ClCompile Include="XColor.cpp" />
+    <ClCompile Include="luawrapper-master\luaWrapper.cpp">
+      <Filter>luawarper</Filter>
+    </ClCompile>
+    <ClCompile Include="XLuaScript.cpp" />
+    <ClCompile Include="XObjectPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
@@ -67,10 +75,51 @@
     <ClInclude Include="XTime.h" />
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="XColor.h" />
+    <ClInclude Include="luawrapper-master\any.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\luaClass.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\luacommon.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\luaFunction.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\luaObject.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\luaWrapper.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\ObjPush.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\PopValue.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\Trait.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\TypeList.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="luawrapper-master\utility.h">
+      <Filter>luawarper</Filter>
+    </ClInclude>
+    <ClInclude Include="XLuaScript.h" />
+    <ClInclude Include="XObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="XMap.inl" />
     <None Include="XString.inl" />
+    <None Include="luawrapper-master\README.md">
+      <Filter>luawarper</Filter>
+    </None>
+    <None Include="luawrapper-master\start.lua">
+      <Filter>luawarper</Filter>
+    </None>
   </ItemGroup>
 </Project>

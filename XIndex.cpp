@@ -7,7 +7,7 @@ CXIndex::CXIndex ( void )
 }
 
 CXIndex::CXIndex ( int i )
-    : mValue ( i )
+	: mValue ( i )
 {
 
 }

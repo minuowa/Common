@@ -4,30 +4,30 @@
 
 CXBuffer::CXBuffer ( void )
 {
-    mData = 0;
-    mCount = 0;
+	mData = 0;
+	mCount = 0;
 	mCapacity=0;
 }
 
 
 CXBuffer::~CXBuffer ( void )
 {
-    dSafeDelete ( mData );
+	dSafeDelete ( mData );
 }
 
 void CXBuffer::reAllocate ( u32 byteSize )
 {
-    dSafeDelete ( mData );
-    mData = new char[byteSize];
-    dMemoryZero ( mData, byteSize );
+	dSafeDelete ( mData );
+	mData = new char[byteSize];
+	dMemoryZero ( mData, byteSize );
 }
 
 void CXBuffer::reAllocateByElementCount ( u32 cnt )
 {
-    dSafeDelete ( mData );
+	dSafeDelete ( mData );
 	mCapacity=cnt;
-    mData = new char[mCapacity * mElementByteCount];
-    dMemoryZero ( mData, mCapacity * mElementByteCount );
+	mData = new char[mCapacity * mElementByteCount];
+	dMemoryZero ( mData, mCapacity * mElementByteCount );
 }
 
 

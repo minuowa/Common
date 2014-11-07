@@ -70,106 +70,112 @@ typedef float f32;
 #define CXNew new
 #define CXDelete delete
 
-template<typename T>
-void dSafeDelete ( T*& v )
-{
-    if ( v )
-    {
-        CXDelete v;
-        v = 0;
-    }
-}
+//template<typename T>
+//void dSafeDelete ( T*& v )
+//{
+//	if ( v )
+//	{
+//		CXDelete v;
+//		v = 0;
+//	}
+//}
+#define dSafeDelete(x) if(x){ delete x;x=nullptr;}
 #define dSequare(x) (x)*(x)
 
 template<typename T>
 T dMin ( const T& v1, const T& v2 )
 {
-    if ( v1 < v2 )
-        return v1;
-    return v2;
+	if ( v1 < v2 )
+		return v1;
+	return v2;
 }
 template<typename T>
 void dSafeRelease ( T*& v )
 {
-    if ( v )
-    {
-        v->Release();
-        v = 0;
-    }
+	if ( v )
+	{
+		v->Release();
+		v = 0;
+	}
+}
+template<typename T>
+void dConstruct(void* ptr)
+{
+	::new (ptr)T;
 }
 template<typename T, typename E>
 void dRemoveChild ( T& v, E* e )
 {
-    typename T::iterator i = std::find ( v.begin(), v.end(), e );
-    if ( i != v.end() )
-        v.erase ( i );
+	typename T::iterator i = std::find ( v.begin(), v.end(), e );
+	if ( i != v.end() )
+		v.erase ( i );
 }
 template<typename T>
 void dSafeDeleteVector ( T& v )
 {
-    if ( v.size() > 0 )
-    {
-        typename T::iterator it = v.begin();
-        typename T::iterator end = v.end();
-        for ( ; it != end; ++it )
-        {
-            dSafeDelete ( *it );
-        }
-        v.clear();
-    }
+	if ( v.size() > 0 )
+	{
+		typename T::iterator it = v.begin();
+		typename T::iterator end = v.end();
+		for ( ; it != end; ++it )
+		{
+			dSafeDelete ( *it );
+		}
+		v.clear();
+	}
 }
 template<typename T>
 void dSafeDeleteArray ( T* v )
 {
-    CXDelete []v;
+	CXDelete []v;
 }
 template<typename T>
 void dSafeDeleteMap2 ( T& v )
 {
-    typename T::iterator it = v.begin();
-    typename T::iterator end = v.end();
-    for ( ; it != end; ++it )
-    {
-        dSafeDelete ( it->second );
-    }
-    v.clear();
+	typename T::iterator it = v.begin();
+	typename T::iterator end = v.end();
+	for ( ; it != end; ++it )
+	{
+		dSafeDelete ( it->second );
+	}
+	v.clear();
 }
 inline void dMemoryZero ( void* p, XI32 len )
 {
-    CXASSERT ( p );
-    memset ( p, 0, len );
+	CXASSERT ( p );
+	memset ( p, 0, len );
 }
 #define dMemoryZeroStruct(p) memset(p,0,sizeof(*p))
 
 inline void dMemoryCopy ( void* dst, void* src, XI32 len )
 {
-    CXASSERT ( dst && src );
-    memcpy ( dst, src, len );
+	CXASSERT ( dst && src );
+	memcpy ( dst, src, len );
 }
 template<typename T, XI32 N>
 void dMemoryZeroArray ( T ( &arr ) [N] )
 {
-    dMemoryZero ( &arr, sizeof ( T ) *N );
+	dMemoryZero ( &arr, sizeof ( T ) *N );
 }
 inline bool dStrEqual ( const char* s1, const char* s2 )
 {
-    return 0 == strcmp ( s1, s2 );
+	return 0 == strcmp ( s1, s2 );
 }
 template<typename T, XI32 N>
 const XI32 dArrayCount ( T ( &arr ) [N] )
 {
-    return N;
+	return N;
 }
 
 template<typename T1, typename T2>
 void dCast ( T1& dst, T2* src )
 {
-    dst = * ( ( T1* ) src );
+	dst = * ( ( T1* ) src );
 }
 template<typename T1, typename T2>
 void dCast ( T1* dst, T2 src )
 {
-    * ( ( T2* ) dst ) = src;
+	* ( ( T2* ) dst ) = src;
 }
 //#pragma warning(push)
 //#pragma warning(disable:4996)
@@ -180,11 +186,12 @@ void dCast ( T1* dst, T2 src )
 //#pragma warning(pop)
 
 #define dMemberOffset(ClassName,memberName)\
-    ((int)&((ClassName*)0)->memberName)
+	((int)&((ClassName*)0)->memberName)
 
 // TODO: 在此处引用程序需要的其他头文件
 typedef unsigned int u32;
 typedef int s32;
+typedef unsigned char uchar;
 
 #define CXDeclareSingleton(ClassName) \
 	private:\

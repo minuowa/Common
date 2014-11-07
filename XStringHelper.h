@@ -7,11 +7,13 @@ namespace CXStringHelper
 	void toString ( std::string& dst, int* var );
 	void toString ( std::string& dst, float* var );
 	void toString ( std::string& dst, bool* var );
+	void toString ( std::string& dst, unsigned int* var );
 
 	void setValue ( const char* val, GString* var );
 	void setValue ( const char* val, int* var );
 	void setValue ( const char* val, float* var );
 	void setValue ( const char* val, bool* var );
+	void setValue ( const char* val, unsigned int* var );
 }
 
 #endif // CXStringHelper_h__

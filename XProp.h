@@ -8,13 +8,14 @@
 /** @brief 兼容qt,加的类型识别 **/
 enum ePropertyType
 {
-    eType_Bool,
-    eType_Int,
-    eType_Float,
-    eType_Double,
-    eType_String,
-    eType_Enum,
-    eType_UnKnown,
+	eType_Bool,
+	eType_Int,
+	eType_UInt,
+	eType_Float,
+	eType_Double,
+	eType_String,
+	eType_Enum,
+	eType_UnKnown,
 };
 namespace CXPropHelper
 {
@@ -26,6 +27,10 @@ namespace CXPropHelper
 	template<> inline ePropertyType getType<int>()
 	{
 		return eType_Int;
+	}
+	template<> inline ePropertyType getType<unsigned int>()
+	{
+		return eType_UInt;
 	}
 	template<> inline ePropertyType getType<bool>()
 	{
@@ -47,86 +52,86 @@ namespace CXPropHelper
 class CXProp
 {
 public:
-    //CXProp(void);
-    virtual ~CXProp ( void );
-    virtual void toString ( std::string& dst ) = 0;
-    virtual void setValue ( const char* val ) = 0;
-    virtual ePropertyType getType()
-    {
-        return eType_UnKnown;
-    }
+	//CXProp(void);
+	virtual ~CXProp ( void );
+	virtual void toString ( std::string& dst ) = 0;
+	virtual void setValue ( const char* val ) = 0;
+	virtual ePropertyType getType()
+	{
+		return eType_UnKnown;
+	}
 };
 template<typename T>
 class CXPropEntity: public CXProp
 {
 public:
-    CXPropEntity ( T* val, bool managedMemory = true );
-    ~CXPropEntity();
-    virtual void toString ( std::string& dst );
-    virtual void setValue ( const char* val );
-    virtual ePropertyType getType();
+	CXPropEntity ( T* val, bool managedMemory = true );
+	~CXPropEntity();
+	virtual void toString ( std::string& dst );
+	virtual void setValue ( const char* val );
+	virtual ePropertyType getType();
 
-    T* mVar;
+	T* mVar;
 private:
-    bool mManagedMemory;
+	bool mManagedMemory;
 };
 
 template<typename T>
 ePropertyType CXPropEntity<T>::getType()
 {
-    return CXPropHelper::getType<T>();
+	return CXPropHelper::getType<T>();
 }
 
 template<typename T>
 void CXPropEntity<T>::toString ( std::string& dst )
 {
-    CXStringHelper::toString ( dst, mVar );
+	CXStringHelper::toString ( dst, mVar );
 }
 
 template<typename T>
 void CXPropEntity<T>::setValue ( const char* val )
 {
-    CXStringHelper::setValue ( val, mVar );
+	CXStringHelper::setValue ( val, mVar );
 }
 
 
 template<typename T>
 CXPropEntity<T>::~CXPropEntity()
 {
-    if ( mManagedMemory )
-    {
-        delete mVar;
-        mVar = 0;
-    }
+	if ( mManagedMemory )
+	{
+		delete mVar;
+		mVar = 0;
+	}
 }
 
 template<typename T>
 CXPropEntity<T>::CXPropEntity ( T* val, bool managedMemory/*=true*/ )
-    : mVar ( val ), mManagedMemory ( managedMemory )
+	: mVar ( val ), mManagedMemory ( managedMemory )
 {
 
 }
 class CXPropEnum: public CXPropEntity<int>
 {
 public:
-    CXPropEnum ( int* var, const CXEnumStructList& arr, bool managedMemory = true )
-        : CXPropEntity ( var, managedMemory )
-        , mStringList ( arr )
-    {
-    }
-    virtual void toString ( std::string& dst );
-    virtual void setValue ( const char* val );
+	CXPropEnum ( int* var, const CXEnumStructList& arr, bool managedMemory = true )
+		: CXPropEntity ( var, managedMemory )
+		, mStringList ( arr )
+	{
+	}
+	virtual void toString ( std::string& dst );
+	virtual void setValue ( const char* val );
 
-    virtual ePropertyType getType();
-    u32 getIndex() const;
-    u32 getIndex ( int var ) const;
-    u32 getIndex ( const char* name ) const;
-    int getValue ( int idx ) const;
+	virtual ePropertyType getType();
+	u32 getIndex() const;
+	u32 getIndex ( int var ) const;
+	u32 getIndex ( const char* name ) const;
+	int getValue ( int idx ) const;
 	int getValue() const;
 	const char* getTheName() const;
-    const CXEnumStructList& getStructList() const;
+	const CXEnumStructList& getStructList() const;
 protected:
-    const CXEnumStructList& mStringList;
+	const CXEnumStructList& mStringList;
 };
 
 #endif // XProp_h__

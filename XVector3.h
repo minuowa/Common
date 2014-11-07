@@ -41,17 +41,17 @@ public:
 	{
 		switch(i)
 		{
-			case 0:
-				return mX;
-				break;
+		case 0:
+			return mX;
+			break;
 
-			case 1:
-				return mY;
-				break;
+		case 1:
+			return mY;
+			break;
 
-			default:
-				return mZ;
-				break;
+		default:
+			return mZ;
+			break;
 		}
 	}
 
@@ -59,17 +59,17 @@ public:
 	{
 		switch(i)
 		{
-			case 0:
-				return mX;
-				break;
+		case 0:
+			return mX;
+			break;
 
-			case 1:
-				return mY;
-				break;
+		case 1:
+			return mY;
+			break;
 
-			default:
-				return mZ;
-				break;
+		default:
+			return mZ;
+			break;
 		}
 	}
 

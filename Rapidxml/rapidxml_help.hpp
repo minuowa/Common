@@ -13,17 +13,17 @@ class CXXMLHelper
 {
 public:
 	CXXMLHelper ( CXXMLNodeStack& stack, CXRapidxmlNode*& n,const char* nodeName );
-    ~CXXMLHelper();
+	~CXXMLHelper();
 private:
-    CXRapidxmlNode*& mNode;
-    CXXMLNodeStack& mNodeStack;
+	CXRapidxmlNode*& mNode;
+	CXXMLNodeStack& mNodeStack;
 };
 
 template<typename T>
 void _xml_get_attribute ( CXRapidxmlNode* node, const char* attr, T& var )
 {
-    CXRapidxmlAttr* pAttri = node->first_attribute ( attr );
-    CXASSERT ( pAttri );
+	CXRapidxmlAttr* pAttri = node->first_attribute ( attr );
+	CXASSERT ( pAttri );
 	const char* svar=pAttri->value();
 	CXStringHelper::setValue(svar,&var);
 }

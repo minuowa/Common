@@ -94,12 +94,18 @@
       <PrecompiledHeaderFile>base.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>.\Rapidxml\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\Rapidxml\;.\lua51\;.\luawrapper-master\;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
+    <Lib>
+      <AdditionalDependencies>lua.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>.\lua51\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -147,7 +153,12 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="luawrapper-master\luaWrapper.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="XColor.cpp" />
+    <ClCompile Include="XLuaScript.cpp" />
+    <ClCompile Include="XObjectPool.cpp" />
     <ClCompile Include="XVector3.cpp" />
     <ClCompile Include="XDelegate.cpp" />
     <ClCompile Include="XEaser.cpp" />
@@ -171,7 +182,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="luawrapper-master\any.h" />
+    <ClInclude Include="luawrapper-master\luaClass.h" />
+    <ClInclude Include="luawrapper-master\luacommon.h" />
+    <ClInclude Include="luawrapper-master\luaFunction.h" />
+    <ClInclude Include="luawrapper-master\luaObject.h" />
+    <ClInclude Include="luawrapper-master\luaWrapper.h" />
+    <ClInclude Include="luawrapper-master\ObjPush.h" />
+    <ClInclude Include="luawrapper-master\PopValue.h" />
+    <ClInclude Include="luawrapper-master\Trait.h" />
+    <ClInclude Include="luawrapper-master\TypeList.h" />
+    <ClInclude Include="luawrapper-master\utility.h" />
     <ClInclude Include="XColor.h" />
+    <ClInclude Include="XLuaScript.h" />
+    <ClInclude Include="XObjectPool.h" />
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="XEaser.h" />
     <ClInclude Include="XStringHelper.h" />
@@ -204,6 +228,8 @@
     <ClInclude Include="Rapidxml\rapidxml_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="luawrapper-master\README.md" />
+    <None Include="luawrapper-master\start.lua" />
     <None Include="XMap.inl" />
     <None Include="XString.inl" />
     <None Include="ReadMe.txt" />

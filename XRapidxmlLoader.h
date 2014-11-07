@@ -9,21 +9,21 @@
 class CXRapidxmlLoader
 {
 public:
-    CXRapidxmlLoader ( CChar* name );
-    ~CXRapidxmlLoader ( void );
+	CXRapidxmlLoader ( CChar* name );
+	~CXRapidxmlLoader ( void );
 
-    bool loadFile();
-    CXRapidxmlNode* getRootNode();
+	bool loadFile();
+	CXRapidxmlNode* getRootNode();
 protected:
-    bool LoadFile ( CChar* name );
+	bool LoadFile ( CChar* name );
 
-    const char* mFileName;
+	const char* mFileName;
 
-    CXRapidxmlDocument mRapidxmlDoc;
+	CXRapidxmlDocument mRapidxmlDoc;
 
-    CXFileLoader mFileLoader;
+	CXFileLoader mFileLoader;
 
-    Char* mBuffer;
+	Char* mBuffer;
 };
 
 

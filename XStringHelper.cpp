@@ -29,6 +29,14 @@ void CXStringHelper::toString ( std::string& dst, bool* var )
 	dst = ( *var ) ? "True" : "False";
 }
 
+void CXStringHelper::toString( std::string& dst, unsigned int* var )
+{
+	CXASSERT ( var );
+	GString str;
+	str.Format ( "%u", *var );
+	dst = str.c_str();
+}
+
 void CXStringHelper::setValue ( const char* val, GString* var )
 {
 	CXASSERT ( val );
@@ -51,4 +59,11 @@ void CXStringHelper::setValue ( const char* val, bool* var )
 {
 	*var = !strcmp ( "True", val ) || !strcmp ( "true", val );
 }
+
+void CXStringHelper::setValue( const char* val, unsigned int* var )
+{
+	CXASSERT ( val );
+	sscanf_s ( val, "%d", var );
+}
+
 #pragma warning(pop)
