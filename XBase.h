@@ -5,6 +5,7 @@
 #include "XSingleton.h"
 #include "XString.h"
 #include "XMap.h"
+#include "XHashMap.h"
 #include "XMultiMap.h"
 #include "XList.h"
 #include "XDynaArray.h"

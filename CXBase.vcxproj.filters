@@ -30,6 +30,7 @@
     </ClCompile>
     <ClCompile Include="XLuaScript.cpp" />
     <ClCompile Include="XObjectPool.cpp" />
+    <ClCompile Include="XHashMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
@@ -110,6 +111,7 @@
     </ClInclude>
     <ClInclude Include="XLuaScript.h" />
     <ClInclude Include="XObjectPool.h" />
+    <ClInclude Include="XHashMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

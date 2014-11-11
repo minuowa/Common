@@ -157,6 +157,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="XColor.cpp" />
+    <ClCompile Include="XHashMap.cpp" />
     <ClCompile Include="XLuaScript.cpp" />
     <ClCompile Include="XObjectPool.cpp" />
     <ClCompile Include="XVector3.cpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="luawrapper-master\TypeList.h" />
     <ClInclude Include="luawrapper-master\utility.h" />
     <ClInclude Include="XColor.h" />
+    <ClInclude Include="XHashMap.h" />
     <ClInclude Include="XLuaScript.h" />
     <ClInclude Include="XObjectPool.h" />
     <ClInclude Include="XVector3.h" />

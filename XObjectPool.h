@@ -24,8 +24,8 @@ public:
     CXObjectPool ( int chunkSize = mDefaultChunkSize );
     ~CXObjectPool();
 
-    T* acquireObject();
-    void releaseObject ( void* obj );
+    inline T* acquireObject();
+    inline void releaseObject ( void* obj );
 
     int getFreeNum()
     {
@@ -72,7 +72,7 @@ for ( auto p: mAllObjects )
 }
 
 template <typename T>
-T* CXObjectPool<T>::acquireObject()
+inline T* CXObjectPool<T>::acquireObject()
 {
     if ( mFreeList.empty() )
         allocateChunk ( mChunkSize );
@@ -82,7 +82,7 @@ T* CXObjectPool<T>::acquireObject()
 }
 
 template <typename T>
-void CXObjectPool<T>::releaseObject ( void* obj )
+inline void CXObjectPool<T>::releaseObject ( void* obj )
 {
     if ( obj != nullptr )
     {
