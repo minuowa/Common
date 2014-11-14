@@ -6,31 +6,37 @@
 template<typename T>
 class CXDynaArray : public std::vector<T>
 {
-    public:
-        bool Find( const T& rhs )
+public:
+    bool Find ( const T& rhs )
+    {
+        return this->end() != std::find ( this->begin(), this->end(), rhs );
+    }
+    void destroyPoint ( T* n )
+    {
+        iterator i = std::find ( this->begin(), this->end(), rhs );
+        if ( i != this->end() )
         {
-            return this->end() !=std::find( this->begin(), this->end(), rhs );
+            delete i;
+            this->erase ( i );
         }
-		void destroyPoint(T* n)
-		{
-			iterator i=std::find( this->begin(), this->end(), rhs );
-			if (i!=this->end())
-			{
-				delete i;
-				this->erase(i);
-			}
-		}
-        void Destroy()
+    }
+    void remove ( const T& rhs )
+    {
+        iterator i = std::find ( this->begin(), this->end(), rhs );
+        if ( i != this->end() )
+            this->erase ( i );
+    }
+    void Destroy()
+    {
+        size_t cnt = this->size();
+        for ( size_t i = 0; i < cnt; ++i )
         {
-			size_t cnt=this->size();
-			for (size_t i=0;i<cnt;++i)
-			{
-				T& ptr=(*this)[i];
-				delete ptr;
-				ptr=0;
-			}
-            this->clear();
+            T& ptr = ( *this ) [i];
+            delete ptr;
+            ptr = 0;
         }
+        this->clear();
+    }
 };
 
 #endif // XDynaArray_h__

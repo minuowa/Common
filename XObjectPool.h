@@ -33,7 +33,7 @@ public:
     }
     void allocateChunk ( int chunkSize = mDefaultChunkSize );
 protected:
-    queue<T *> mFreeList;
+    queue<T*> mFreeList;
     vector<void*> mAllObjects;
 
     int mChunkSize;
@@ -86,6 +86,23 @@ inline void CXObjectPool<T>::releaseObject ( void* obj )
 {
     if ( obj != nullptr )
     {
-		mFreeList.push ( ( T* ) obj );
+        mFreeList.push ( ( T* ) obj );
     }
 }
+#define CXDeclareObjectPool(type) \
+	public:\
+	static CXObjectPool<type> mPool##type;\
+		static void* operator new ( unsigned int n )\
+		{\
+		return mPool##type.acquireObject();\
+		}\
+		static void operator delete ( void* p )\
+		{\
+		mPool##type.releaseObject ( p );\
+		}
+
+#define CXImpleteObjectPool(type) \
+	CXObjectPool<type> type::mPool##type();
+
+#define CXImpleteObjectPoolN(type,n) \
+	CXObjectPool<type> type::mPool##type ( n );
