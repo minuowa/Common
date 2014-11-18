@@ -10,7 +10,7 @@ public:
 
 	~CXRapidxmlWriter(void);
 
-	bool Write(CChar* name);
+	bool Write(const char* name);
 
 	bool AppendChild(CXRapidxmlNode* node);
 

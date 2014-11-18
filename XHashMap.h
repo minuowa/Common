@@ -38,6 +38,5 @@ public:
 
 		clear();
 	}
-#include "XMap.inl"
 };
 

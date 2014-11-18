@@ -12,7 +12,7 @@ CXFileLoader::~CXFileLoader ( void )
 {
 }
 
-bool CXFileLoader::OpenFile ( CChar* name )
+bool CXFileLoader::OpenFile ( const char* name )
 {
 	CXASSERT_RETURN_FALSE ( name );
 

@@ -5,3 +5,4 @@
 *.pch
 *.pdb
 /Debug/*.idb
+*.sbr

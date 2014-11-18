@@ -1,7 +1,7 @@
 #include "base.h"
 #include "XRapidxmlLoader.h"
 
-CXRapidxmlLoader::CXRapidxmlLoader ( CChar* name )
+CXRapidxmlLoader::CXRapidxmlLoader ( const char* name )
 	: mFileName ( name )
 {
 }
@@ -13,7 +13,7 @@ CXRapidxmlLoader::~CXRapidxmlLoader ( void )
 	dSafeDelete ( mBuffer );
 }
 
-bool CXRapidxmlLoader::LoadFile ( CChar* name )
+bool CXRapidxmlLoader::LoadFile ( const char* name )
 {
 	CXASSERT_RETURN_FALSE ( mFileLoader.OpenFile ( name ) );
 

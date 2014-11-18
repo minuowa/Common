@@ -859,10 +859,10 @@ namespace luacpp{
 			 check parent is whether registered,none-registered class will 
 			 produce error when use there parent's pointer
 			 **/
-			assert(isRegistered<Parent1>());
-			assert(isRegistered<Parent2>());
-			assert(isRegistered<Parent3>());
-			assert(isRegistered<Parent4>());
+			//assert(isRegistered<Parent1>());
+			//assert(isRegistered<Parent2>());
+			//assert(isRegistered<Parent3>());
+			//assert(isRegistered<Parent4>());
 
 			DefParent<Parent1,T>(Int2Type<isVoid<Parent1>::is_Void>());
 			DefParent<Parent2,T>(Int2Type<isVoid<Parent2>::is_Void>());

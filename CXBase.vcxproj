@@ -96,6 +96,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalIncludeDirectories>.\Rapidxml\;.\lua51\;.\luawrapper-master\;..\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FunctionLevelLinking>true</FunctionLevelLinking>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -106,6 +107,9 @@
     <Lib>
       <AdditionalLibraryDirectories>.\lua51\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -153,6 +157,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="XBitArray.cpp" />
     <ClCompile Include="luawrapper-master\luaWrapper.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -183,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="XBitArray.h" />
     <ClInclude Include="luawrapper-master\any.h" />
     <ClInclude Include="luawrapper-master\luaClass.h" />
     <ClInclude Include="luawrapper-master\luacommon.h" />
@@ -196,8 +202,11 @@
     <ClInclude Include="luawrapper-master\utility.h" />
     <ClInclude Include="XColor.h" />
     <ClInclude Include="XHashMap.h" />
+    <ClInclude Include="XIDObjectManager.h" />
+    <ClInclude Include="XLexer.h" />
     <ClInclude Include="XLuaScript.h" />
     <ClInclude Include="XObjectPool.h" />
+    <ClInclude Include="XStrongPtr.h" />
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="XEaser.h" />
     <ClInclude Include="XStringHelper.h" />
@@ -228,6 +237,7 @@
     <ClInclude Include="Rapidxml\rapidxml_iterators.hpp" />
     <ClInclude Include="Rapidxml\rapidxml_print.hpp" />
     <ClInclude Include="Rapidxml\rapidxml_utils.hpp" />
+    <ClInclude Include="XWeakPtr.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="luawrapper-master\README.md" />

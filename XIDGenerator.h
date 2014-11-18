@@ -24,7 +24,6 @@
 #define _IDGENERATOR_H_
 #include "XDynaArray.h"
 
-typedef unsigned int u32;
 class CXIDGenerator
 {
 private:

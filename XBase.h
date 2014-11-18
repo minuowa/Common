@@ -11,7 +11,6 @@
 #include "XDynaArray.h"
 #include "XStaticArray.h"
 #include "XStack.h"
-#include "XBuffer.h"
 #include "XBiTree.h"
 #include "XRapidxmlLoader.h"
 #include "XRapidxmlWriter.h"
@@ -30,6 +29,16 @@
 #include "XColor.h"
 #include "XLuaScript.h"
 #include "XObjectPool.h"
+#include "XBitArray.h"
+#include "XIDObjectManager.h"
+#include "XStrongPtr.h"
+#include "XWeakPtr.h"
+#include "XLexer.h"
+
+#define DeclareFilmObj(type) 
+#define DeclareFilmObjBase(type,parentType) 
+#define DeclareFilmTool
+
 /** @brief 查找一个数组或vector中cur之后的第一个符合条件的元素 **/
 template<typename Array, typename T, typename CondtionObj>
 T* dFindNextElementInArray ( Array&  arr, T* cur, CondtionObj& funObj )

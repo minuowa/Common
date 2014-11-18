@@ -79,6 +79,10 @@ bool isEmpty() const
 {
 	return empty();
 }
+operator size_t ()
+{
+	return size_t(c_str());
+}
 bool operator == ( const MyChar* s ) const
 {
 	return !compare ( s );

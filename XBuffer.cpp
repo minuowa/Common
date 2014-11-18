@@ -22,7 +22,7 @@ void CXBuffer::reAllocate ( u32 byteSize )
 	dMemoryZero ( mData, byteSize );
 }
 
-void CXBuffer::reAllocateByElementCount ( u32 cnt )
+void CXBuffer::reallocateByElementCount ( u32 cnt )
 {
 	dSafeDelete ( mData );
 	mCapacity=cnt;

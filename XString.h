@@ -38,6 +38,7 @@ inline size_t XSPrintf ( wchar_t* dstBuffer, size_t size, const wchar_t* format,
 {
 	return _vswprintf_s_l ( dstBuffer, size, format, _Locale, args );
 }
+
 template<typename T>
 class CXCharString: public std::basic_string<T>
 {
@@ -64,8 +65,12 @@ public:
 private:
 
 };
-
-
+template<class _Elem>
+inline size_t hash_value(const CXCharString<_Elem>& _Str)
+{	// hash string to size_t value
+	return (_STD _Hash_seq((const unsigned char *)_Str.c_str(),
+		_Str.size() * sizeof (_Elem)));
+}
 inline int FindString ( stdString src, const char* s )
 {
 	if ( !s )

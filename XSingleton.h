@@ -24,7 +24,7 @@ public:
 		}
 		return mInstance;
 	}
-	static  T& GetSingleton()
+	static  T& getSingleton()
 	{
 		return *getInstance();
 	}

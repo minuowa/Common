@@ -9,13 +9,13 @@
 class CXRapidxmlLoader
 {
 public:
-	CXRapidxmlLoader ( CChar* name );
+	CXRapidxmlLoader ( const char* name );
 	~CXRapidxmlLoader ( void );
 
 	bool loadFile();
 	CXRapidxmlNode* getRootNode();
 protected:
-	bool LoadFile ( CChar* name );
+	bool LoadFile ( const char* name );
 
 	const char* mFileName;
 

@@ -18,7 +18,7 @@ bool CXRapidxmlWriter::AppendChild( CXRapidxmlNode* node )
 	return true;
 }
 
-bool CXRapidxmlWriter::Write( CChar* name )
+bool CXRapidxmlWriter::Write( const char* name )
 {
 	std::ofstream of(name);
 	CXASSERT_RETURN_FALSE(!of.bad());
