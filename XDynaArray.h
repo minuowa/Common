@@ -11,12 +11,12 @@ public:
     {
         return this->end() != std::find ( this->begin(), this->end(), rhs );
     }
-    void destroyPoint ( T* n )
+    void destroyPointer ( const T& n )
     {
-        iterator i = std::find ( this->begin(), this->end(), rhs );
+        iterator i = std::find ( this->begin(), this->end(), n );
         if ( i != this->end() )
         {
-            delete i;
+            delete n;
             this->erase ( i );
         }
     }
@@ -25,6 +25,11 @@ public:
         iterator i = std::find ( this->begin(), this->end(), rhs );
         if ( i != this->end() )
             this->erase ( i );
+    }
+    void Insert ( const T& after, const T& rhs )
+    {
+        iterator i = std::find ( this->begin(), this->end(), after );
+        this->insert ( i, rhs );
     }
     void Destroy()
     {

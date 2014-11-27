@@ -32,6 +32,7 @@
     <ClCompile Include="XObjectPool.cpp" />
     <ClCompile Include="XHashMap.cpp" />
     <ClCompile Include="XBitArray.cpp" />
+    <ClCompile Include="XSyntax.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
@@ -118,6 +119,7 @@
     <ClInclude Include="XStrongPtr.h" />
     <ClInclude Include="XWeakPtr.h" />
     <ClInclude Include="XLexer.h" />
+    <ClInclude Include="XSyntax.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

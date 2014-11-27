@@ -84,7 +84,6 @@ typedef float f32;
 //	}
 //}
 #define dSafeDelete(x) if(x){ delete x;x=nullptr;}
-
 #define dSequare(x) (x)*(x)
 #define dSumOfSequare(x,y) (dSequare(x)+dSequare(y))
 #define dMin(x,y) ((x)<(y)?(x):(y))

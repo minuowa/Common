@@ -2,13 +2,20 @@
 #include "XDynaArray.h"
 #include "base.h"
 class CXDelegate;
+struct CXEventArgs
+{
+public:
+    virtual ~CXEventArgs() 
+	{
+	};
+};
 class CXCallBack
 {
 public:
     virtual ~CXCallBack()
     {
     }
-    virtual void onCallBack ( const CXDelegate&  )
+    virtual void onCallBack ( const CXDelegate&, CXEventArgs*  )
     {
     }
 };
@@ -32,11 +39,11 @@ public:
             this->erase ( iter );
         return *this;
     }
-    void trigger()
+    void trigger ( CXEventArgs* event = nullptr )
     {
 for ( auto callback: ( *this ) )
         {
-            callback->onCallBack ( *this );
+            callback->onCallBack ( *this, event );
         }
     }
 };
