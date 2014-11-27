@@ -122,6 +122,10 @@ public:
         else
             clearBit ( idx );
     }
+    inline bool operator[] ( unsigned long idx ) const
+    {
+        return bitSet ( idx );
+    }
 };
 typedef BitArray CXBitArray;
 

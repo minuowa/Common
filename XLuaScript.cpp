@@ -16,8 +16,8 @@ CXLuaScript::~CXLuaScript ( void )
 bool CXLuaScript::init()
 {
     //mState = lua_open();
-	mLuaOwner.init();
-	mState=mLuaOwner;
+    mLuaOwner.init();
+    mState = mLuaOwner;
     CXASSERT ( mState != nullptr );
     //luaopen_base ( mState );
     //luaL_openlibs ( mState );
@@ -32,12 +32,23 @@ bool CXLuaScript::doFile ( const char* name )
         return true;
 
     GString sError = lua_tostring ( mState, -1 );
-	OutputDebugStringA ( "\n" );
-	OutputDebugStringA ( sError );
+    OutputDebugStringA ( "\n" );
+    OutputDebugStringA ( sError );
     return false;
 }
 
 lua_State* CXLuaScript::getState() const
 {
-	return mState;
+    return mState;
+}
+
+bool CXLuaScript::doString ( const char* str )
+{
+	if ( 0 == luaL_dostring ( mState, str ) )
+		return true;
+
+	GString sError = lua_tostring ( mState, -1 );
+	OutputDebugStringA ( "\n" );
+	OutputDebugStringA ( sError );
+    return true;
 }

@@ -38,6 +38,7 @@
 #define DeclareFilmObj(type) 
 #define DeclareFilmObjBase(type,parentType) 
 #define DeclareFilmTool
+#define DeclareFilmToolGlobal
 
 /** @brief 查找一个数组或vector中cur之后的第一个符合条件的元素 **/
 template<typename Array, typename T, typename CondtionObj>
@@ -121,5 +122,31 @@ void takeElementToVectorUntil ( CXDynaArray<T*>& dstArray, T* parent, T* cur, bo
 		takeElementToVectorUntil ( dstArray, a, cur, end );
 
 }
+
+
+
+inline void dDebugOutWithFile ( const char* file, int line, const char* fmt, ... )
+{
+	va_list arglist;
+	va_start ( arglist, fmt );
+	int nLen = XGetLength ( fmt, arglist ) /* + 1*/;
+	char* buffer = new char[nLen + 1];
+	XSPrintf ( buffer, nLen + 1, fmt, 0, arglist );
+	va_end ( arglist );
+	GString str, str2;
+#ifdef WIN32
+	str2.Format ( "%s(%d):", file, line );
+	str.append ( str2 );
+#endif
+	str.append ( buffer );
+	str.append ( "\n" );
+#ifdef WIN32
+	OutputDebugStringA ( str.c_str() );
+#else
+	std::cout<<str.c_str();
+#endif
+	delete[] buffer;
+}
+#define dDebugOut(fmt,...) dDebugOutWithFile(__FILE__,__LINE__,fmt,__VA_ARGS__)
 //--------------------------------------------------------------------------------------------------
 #endif // CXBase_h__
