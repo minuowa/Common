@@ -1,10 +1,16 @@
 #pragma once
 #include <hash_map>
+#ifdef CPP1999
+using namespace stdext;
+#else
+using namespace std;
+#endif
+
 template<typename TK, typename TV>
-class CXHashMap: public std::hash_map<TK,TV>
+class CXHashMap: public hash_map<TK,TV>
 {
 public:
-	typedef std::hash_map<TK, TV> Super;
+	typedef hash_map<TK, TV> Super;
 	typedef typename Super::iterator iterator;
 	bool findkey ( TK k ) const
 	{

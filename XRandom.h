@@ -39,7 +39,7 @@ public:
 private:
 	static void init()
 	{
-		srand ( ( unsigned int ) time ( nullptr ) );
+		srand ( ( unsigned int ) time ( 0 ) );
 	}
 	static CXRandomIniter mRandomIniter;
 };

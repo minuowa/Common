@@ -61,6 +61,7 @@ public:
 	typedef CXCharString<MyChar> MyType;
 	typedef std::basic_string<MyChar> Supper;
 	CXCharString() {}
+
 #include "XString.inl"
 private:
 
@@ -138,6 +139,7 @@ typedef CXCharString<char> GString;
 typedef CXCharString<wchar_t> GStringW;
 typedef CXDynaArray<GString> GStringArr;
 //typedef  CXDynaArray<CharString> CXStringDynaArr;
+
 
 
 #endif // CXString_h__

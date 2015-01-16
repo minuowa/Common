@@ -5,8 +5,15 @@
 #include "XSingleton.h"
 #include "XString.h"
 #include "XMap.h"
+
+#ifndef CPP1999
 #include "XHashMap.h"
+#include "XLuaScript.h"
+#include "XStrongPtr.h"
+#include "XWeakPtr.h"
 #include "XMultiMap.h"
+#endif
+
 #include "XList.h"
 #include "XDynaArray.h"
 #include "XStaticArray.h"
@@ -27,16 +34,14 @@
 #include "XTime.h"
 #include "XVector3.h"
 #include "XColor.h"
-#include "XLuaScript.h"
 #include "XObjectPool.h"
 #include "XBitArray.h"
 #include "XIDObjectManager.h"
-#include "XStrongPtr.h"
-#include "XWeakPtr.h"
+
 #include "XLexer.h"
 
-#define DeclareFilmObj(type) 
-#define DeclareFilmObjBase(type,parentType) 
+#define DeclareFilmObj(type)
+#define DeclareFilmObjBase(type,parentType)
 #define DeclareFilmTool
 #define DeclareFilmToolGlobal
 
@@ -44,19 +49,19 @@
 template<typename Array, typename T, typename CondtionObj>
 T* dFindNextElementInArray ( Array&  arr, T* cur, CondtionObj& funObj )
 {
-	bool existCur = false;
-	for ( auto & e: arr )
-	{
-		if ( existCur && funObj ( e ) )
-		{
-			return e;
-		}
-		if ( e == cur )
-		{
-			existCur = true;
-		}
-	}
-	return nullptr;
+    bool existCur = false;
+for ( auto & e: arr )
+    {
+        if ( existCur && funObj ( e ) )
+        {
+            return e;
+        }
+        if ( e == cur )
+        {
+            existCur = true;
+        }
+    }
+    return nullptr;
 }
 /** @brief
 find the
@@ -66,87 +71,115 @@ the tree has children with Array<T*> pattern
 template<typename T, typename CondtionObj>
 T* dFindNextElementInTree ( T*  parent, T* cur, CondtionObj& funObj )
 {
-	CXASSERT ( parent );
-	CXASSERT ( cur );
-	bool existCur = parent == cur;
-	auto& children = parent->getChildren();
-	for ( auto & e: children )
-	{
-		if ( existCur && funObj ( e ) )
-		{
-			return e;
-		}
-		if ( e == cur )
-		{
-			existCur = true;
-		}
-		T* tar = dFindNextElementInTree ( e, cur, funObj );
-		if ( tar != nullptr )
-			return tar;
-	}
-	return nullptr;
+    CXASSERT ( parent );
+    CXASSERT ( cur );
+    bool existCur = parent == cur;
+    auto& children = parent->getChildren();
+for ( auto & e: children )
+    {
+        if ( existCur && funObj ( e ) )
+        {
+            return e;
+        }
+        if ( e == cur )
+        {
+            existCur = true;
+        }
+        T* tar = dFindNextElementInTree ( e, cur, funObj );
+        if ( tar != nullptr )
+            return tar;
+    }
+    return nullptr;
 }
 template<typename T, typename CondtionObj>
 T* dFindNextElementInTreeCycle ( T*  parent, T* cur, CondtionObj& funObj )
 {
-	CXDynaArray<T*> dstArray;
-	bool begin = parent == cur;
-	bool end = parent == cur;
-	takeElementToTopFromTreeToVector ( dstArray, parent, cur, begin );
-	takeElementToVectorUntil ( dstArray, parent, cur, end );
-	return dFindNextElementInArray ( dstArray, cur, funObj );
+    CXDynaArray<T*> dstArray;
+    bool begin = parent == cur;
+    bool end = parent == cur;
+    takeElementToTopFromTreeToVector ( dstArray, parent, cur, begin );
+    takeElementToVectorUntil ( dstArray, parent, cur, end );
+    return dFindNextElementInArray ( dstArray, cur, funObj );
 }
 template<typename T>
 void takeElementToTopFromTreeToVector ( CXDynaArray<T*>& dstArray, T* parent, T* cur, bool& begin )
 {
-	if ( parent == cur )
-		begin = true;
-	if ( begin )
-		dstArray.push_back ( parent );
-	auto& children = parent->getChildren();
-	for ( auto & a: children )
-		takeElementToTopFromTreeToVector ( dstArray, a, cur, begin );
+    if ( parent == cur )
+        begin = true;
+    if ( begin )
+        dstArray.push_back ( parent );
+    auto& children = parent->getChildren();
+for ( auto & a: children )
+        takeElementToTopFromTreeToVector ( dstArray, a, cur, begin );
 }
 template<typename T>
 void takeElementToVectorUntil ( CXDynaArray<T*>& dstArray, T* parent, T* cur, bool& end )
 {
-	if ( parent == cur )
-	{
-		end = true;
-		return;
-	}
-	if ( !end )
-		dstArray.push_back ( parent );
-	auto& children = parent->getChildren();
-	for ( auto & a: children )
-		takeElementToVectorUntil ( dstArray, a, cur, end );
+    if ( parent == cur )
+    {
+        end = true;
+        return;
+    }
+    if ( !end )
+        dstArray.push_back ( parent );
+    auto& children = parent->getChildren();
+for ( auto & a: children )
+        takeElementToVectorUntil ( dstArray, a, cur, end );
 
 }
 
-
+void convertToWString ( GStringW& dst, const char* str );
+void convertToString ( GString& dst, const wchar_t* str );
 
 inline void dDebugOutWithFile ( const char* file, int line, const char* fmt, ... )
 {
-	va_list arglist;
-	va_start ( arglist, fmt );
-	int nLen = XGetLength ( fmt, arglist ) /* + 1*/;
-	char* buffer = new char[nLen + 1];
-	XSPrintf ( buffer, nLen + 1, fmt, 0, arglist );
-	va_end ( arglist );
-	GString str, str2;
+    va_list arglist;
+    va_start ( arglist, fmt );
+    int nLen = XGetLength ( fmt, arglist ) /* + 1*/;
+    char* buffer = new char[nLen + 1];
+    XSPrintf ( buffer, nLen + 1, fmt, 0, arglist );
+    va_end ( arglist );
+    GString str, str2;
 #ifdef WIN32
-	str2.Format ( "%s(%d):", file, line );
-	str.append ( str2 );
+    str2.Format ( "%s(%d):", file, line );
+    str.append ( str2 );
 #endif
-	str.append ( buffer );
-	str.append ( "\n" );
+    str.append ( buffer );
+    str.append ( "\n" );
 #ifdef WIN32
-	OutputDebugStringA ( str.c_str() );
+    OutputDebugStringA ( str.c_str() );
 #else
-	std::cout<<str.c_str();
+    std::cout << str.c_str();
 #endif
-	delete[] buffer;
+    delete[] buffer;
 }
+
+inline void convertToWString ( GStringW& dst, const char* str )
+{
+    int len = strlen ( str );
+
+    int iLen = ::MultiByteToWideChar ( CP_ACP, 0, str, len, NULL, 0 );
+
+    if ( iLen > 0 )
+    {
+        dst.assign ( iLen, 0 );
+        iLen = ::MultiByteToWideChar ( CP_ACP, 0, str, -1, ( LPWSTR ) dst.c_str(), iLen );
+    }
+}
+
+inline void convertToString ( GString& dst, const wchar_t* str )
+{
+    int len = wcslen ( str );
+
+    int iLen = ::WideCharToMultiByte ( CP_ACP, 0, str, len, 0, 0, 0, 0 );
+
+    if ( iLen > 0 )
+    {
+        dst.assign ( iLen, 0 );
+        iLen = ::WideCharToMultiByte ( CP_ACP, 0, str, -1, ( LPSTR ) dst.c_str(), iLen, 0, 0 );
+    }
+}
+
 #define dDebugOut(fmt,...) dDebugOutWithFile(__FILE__,__LINE__,fmt,__VA_ARGS__)
 //--------------------------------------------------------------------------------------------------
 #endif // CXBase_h__

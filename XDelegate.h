@@ -24,7 +24,10 @@ class CXDelegate: public CXDynaArray<CXCallBack*>
 {
 public:
     typedef CXDynaArray<CXCallBack*> SuperType;
-    virtual ~CXDelegate ( void );
+    virtual ~CXDelegate ( void )
+	{
+
+	}
 
     CXDelegate& operator+= ( CXCallBack* callback )
     {
@@ -39,12 +42,14 @@ public:
             this->erase ( iter );
         return *this;
     }
-    void trigger ( CXEventArgs* event = nullptr )
+    void trigger ( CXEventArgs* event = 0 )
     {
-for ( auto callback: ( *this ) )
-        {
-            callback->onCallBack ( *this, event );
-        }
+		iterator iEnd=this->end();
+		for (iterator i=this->begin();i!=iEnd;++i)
+		{
+			CXCallBack* callback=*i;
+			callback->onCallBack ( *this, event );
+		}
     }
 };
 inline bool operator== ( const CXDelegate& lhs, const CXDelegate& rhs )
