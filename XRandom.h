@@ -18,6 +18,7 @@ class CXRandom
 {
 	friend class CXRandomIniter;
 public:
+	/** 生成指定范围的整数随机数 **/
 	inline int randI ( int minv, int maxv )
 	{
 		assert ( minv < maxv );

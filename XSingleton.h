@@ -16,8 +16,9 @@ public:
 	virtual ~CXSingleton()
 	{
 	}
-	static T* getInstance()
+	static T*& getInstance()
 	{
+		static T* mInstance=nullptr;
 		if ( !mInstance )
 		{
 			mInstance = new T;
@@ -30,12 +31,13 @@ public:
 	}
 	static void destoryInstance()
 	{
-		dSafeDelete ( mInstance );
+		T*& p=getInstance();
+		dSafeDelete ( p );
 	}
-	static T* mInstance;
+	//static T* mInstance;
 };
 
-template<typename T>
-__declspec ( selectany )
-	T* CXSingleton<T>::mInstance = nullptr;
+//template<typename T>
+//__declspec ( selectany )
+//	T* CXSingleton<T>::mInstance = nullptr;
 #endif // CXSingleton_h__

@@ -31,8 +31,10 @@
     <ClCompile Include="XLuaScript.cpp" />
     <ClCompile Include="XObjectPool.cpp" />
     <ClCompile Include="XHashMap.cpp" />
-    <ClCompile Include="XBitArray.cpp" />
     <ClCompile Include="XSyntax.cpp" />
+    <ClCompile Include="XBase.cpp" />
+    <ClCompile Include="XRect.cpp" />
+    <ClCompile Include="XPoint2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
@@ -114,12 +116,15 @@
     <ClInclude Include="XLuaScript.h" />
     <ClInclude Include="XObjectPool.h" />
     <ClInclude Include="XHashMap.h" />
-    <ClInclude Include="XBitArray.h" />
     <ClInclude Include="XIDObjectManager.h" />
     <ClInclude Include="XStrongPtr.h" />
     <ClInclude Include="XWeakPtr.h" />
     <ClInclude Include="XLexer.h" />
     <ClInclude Include="XSyntax.h" />
+    <ClInclude Include="XRect.h" />
+    <ClInclude Include="XPoint2.h" />
+    <ClInclude Include="XBitArray.h" />
+    <ClInclude Include="XBitArray.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />

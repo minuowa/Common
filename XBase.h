@@ -37,6 +37,7 @@
 #include "XObjectPool.h"
 #include "XBitArray.h"
 #include "XIDObjectManager.h"
+#include "XRect.h"
 
 #include "XLexer.h"
 
@@ -179,6 +180,7 @@ inline void convertToString ( GString& dst, const wchar_t* str )
         iLen = ::WideCharToMultiByte ( CP_ACP, 0, str, -1, ( LPSTR ) dst.c_str(), iLen, 0, 0 );
     }
 }
+BASE_API bool dIsPath( const char* str );
 
 #define dDebugOut(fmt,...) dDebugOutWithFile(__FILE__,__LINE__,fmt,__VA_ARGS__)
 //--------------------------------------------------------------------------------------------------

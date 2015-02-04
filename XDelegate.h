@@ -15,7 +15,7 @@ public:
     virtual ~CXCallBack()
     {
     }
-    virtual void onCallBack ( const CXDelegate&, CXEventArgs*  )
+    virtual void onCallBack ( const CXDelegate& d, CXEventArgs*  e)
     {
     }
 };

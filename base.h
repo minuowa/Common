@@ -17,17 +17,29 @@ typedef const char CChar;
 typedef wchar_t WChar;
 typedef const wchar_t CWChar;
 // TODO: 在此处引用程序需要的其他头文件
+typedef unsigned short u16;
 typedef unsigned int u32;
 typedef int s32;
 typedef unsigned char uchar;
+
+//#ifdef _LIB
+//#define BASE_API __declspec(dllexport)
+//#else
+//#define BASE_API __declspec(dllimport)
+//#endif
+#define BASE_API 
 
 #define CXASSERT(exp)				if(!(exp)){__debugbreak();}
 #define CXASSERT_RETURN(exp)		if(!(exp)){__debugbreak();return;}
 #define CXASSERT_RETURN_FALSE(exp)	if(!(exp)){__debugbreak();return false;}
 
+#define CXCheck(exp) assert(exp)
+
 #define CXASSERT_RESULT(exp)		if(FAILED(exp)){__debugbreak();return;}
 #define CXASSERT_RESULT_FALSE(exp)	if(FAILED((exp))) {__debugbreak();return false;}
 #define BIT(n) (1<<n)
+
+#define IS2SQUARE(n) (0==(n&(n-1)))
 
 #define CXUnuse(v) (void)v;
 
@@ -58,10 +70,6 @@ typedef int	XI32;
 typedef short s16;
 typedef float f32;
 
-#define CHECK(exp)					assert(exp)
-#define CHECK_RETURN_BOOL(exp)		{if(!exp){ assert(0);return false;}}
-#define CHECK_RETURN(exp)			{if(!exp){ assert(0);return;}}
-#define CHECK_RESULT_BOOL(exp)		{if(!SUCCEEDED(exp)){ assert(0);return false;}}
 #define ISIN(x,min,max) ( x>=min && x<=max )
 
 #ifdef _LIB
@@ -74,27 +82,11 @@ typedef float f32;
 #define CXNew new
 #define CXDelete delete
 
-//template<typename T>
-//void dSafeDelete ( T*& v )
-//{
-//	if ( v )
-//	{
-//		CXDelete v;
-//		v = 0;
-//	}
-//}
 #define dSafeDelete(x) if(x){ delete x;x=nullptr;}
 #define dSequare(x) (x)*(x)
 #define dSumOfSequare(x,y) (dSequare(x)+dSequare(y))
 #define dMin(x,y) ((x)<(y)?(x):(y))
 #define dMax(x,y) ((x)>(y)?(x):(y))
-//template<typename T>
-//T dMin ( const T& v1, const T& v2 )
-//{
-//	if ( v1 < v2 )
-//		return v1;
-//	return v2;
-//}
 template<typename T>
 void dSafeRelease ( T*& v )
 {
@@ -203,19 +195,6 @@ void dCast ( T1* dst, T2 src )
 
 #define dMemberOffset(ClassName,memberName)\
 	((int)&((ClassName*)0)->memberName)
-
-
-
-//#define CXDeclareSingleton(ClassName) \
-//	private:\
-//	static ClassName* mInstance;\
-//	public:\
-//	static ClassName& getSingleton()	{ if(!mInstance) { mInstance=new ClassName;}	return *mInstance;}\
-//	static ClassName* getInstance()	{ return &getSingleton();}\
-//	static ClassName* DestorySingleton() { if(mInstance) delete mInstance; mInstance=0;}
-
-//#define CXImpleteSingleton(ClassName) \
-//	ClassName* ClassName::mInstance=0;
 
 #define CXDefineOnce __declspec(selectany)
 

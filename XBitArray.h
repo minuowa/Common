@@ -1,132 +1,92 @@
-#ifndef XBitArray_h__
-#define XBitArray_h__
+#pragma once
+#include "base.h"
+typedef int IndexType;
 
-/** @brief from ogre **/
-class BitArray
+template<IndexType BYTE_COUNT>
+class CXBitArray
 {
-private:
-    /** The number of bits in this array
-    	*/
-    unsigned long arraysize;
-    /** The number of unsigned longs for storing at least arraysize bits
-    */
-    unsigned long bitlongs;
-    /** The array of unsigned longs containing the bits
-    */
-    unsigned long *bits;
 public:
-    /** Constructors.
-        */
-    BitArray ( unsigned long newsize );
-    BitArray ( const BitArray& b );
-
-    BitArray ( unsigned long newsize, bool setclear );
-    BitArray ( unsigned long newsize, unsigned long *newbits );
-
-    /** Destructor.
-    */
-    ~BitArray();
-
-    BitArray& operator = ( const BitArray& b );
-    BitArray operator ~ ( void );
-    BitArray& operator ^= ( const BitArray& b );
-    BitArray& operator &= ( const BitArray& b );
-    BitArray& operator |= ( const BitArray& b );
-    BitArray operator ^ ( const BitArray& b );
-    BitArray operator & ( const BitArray& b );
-    BitArray operator | ( const BitArray& b );
-
-    /** Test to see if a single bit is set.
-    */
-    inline bool bitSet ( unsigned long index ) const
+    enum
     {
-        return bits[ ( index >> 5 )] >> ( index & 0x0000001f ) & 0x00000001;
-    }
-    /** Clear all bits in this array.
-    */
-    inline void clear ( void )
-    {
-        fillBitArray ( 0x00000000 );
-    }
-    /** Clear a single bit.
-    */
-    inline void clearBit ( unsigned long index )
-    {
-        bits[index >> 5] &= ~ ( 0x00000001 << ( index & 0x0000001f ) );
-    }
-    /** fill with a 32-bit pattern.
-    */
-    inline void fillBitArray ( unsigned long pattern )
-    {
-        for ( unsigned long i = 0; i < bitlongs; bits[i++] = pattern );
-    }
-
-    /** flip a single bit.
-    */
-    inline void flipBit ( unsigned long index )
-    {
-        if ( bitSet ( index ) )
-            clearBit ( index );
-        else
-            setBit ( index );
+        BYTE_SIZE = 8,
+        THIS_SIZE = BYTE_COUNT,
+        BIT_SIZE = BYTE_COUNT * BYTE_SIZE,
     };
-
-    /** Returns index of next set bit in array (wraps around)
-    */
-    inline long getNextSet ( unsigned long index )
+    CXBitArray()
     {
-        unsigned long i;
-        for ( i = index + 1; i < arraysize; i++ ) if ( bitSet ( i ) ) return i;
-        for ( i = 0; i < index - 1; i++ ) if ( bitSet ( i ) ) return i;
-        return -1;
+        dMemoryZeroArray ( mBytes );
     }
 
-    /** Returns index of previous set bit in array (wraps around)
-    */
-    inline long getPreviousSet ( unsigned long index )
+    template<typename T>
+    void fillFrom ( T* val )
     {
-        unsigned long i;
-        if ( index != 0 )
-        {
-            for ( i = index - 1; i > 0; i-- ) if ( bitSet ( i ) ) return i;
-            if ( bitSet ( 0 ) ) return 0;
-        }
-        for ( i = arraysize - 1; i > index; i-- ) if ( bitSet ( i ) ) return i;
-        return -1;
+        dMemoryCopy ( mBytes, val, THIS_SIZE );
     }
 
-    /** Set all bits in this array.
-    */
-    inline void set ( void )
+    template<typename T>
+    void fillTo ( T* val )
     {
-        fillBitArray ( 0xffffffff );
+        dMemoryCopy ( val, mBytes, THIS_SIZE );
     }
 
-    /** Set a single bit.
-    */
-    inline void setBit ( unsigned long index )
+    void setAll ( bool b )
     {
-        bits[index >> 5] |= 0x00000001 << ( index & 0x0000001f );
+        for ( IndexType i = 0; i < BYTE_COUNT; ++i )
+            mBytes[i] = b ? 0XFF : 0;
     }
 
-    /** return the number of bits in this bit array..
-    */
-    inline unsigned long size ( void )
+    void bitClear ( IndexType idx )
     {
-        return arraysize;
+        CXASSERT_RETURN ( idx < BIT_SIZE );
+
+        IndexType col = idx % BYTE_SIZE;
+        IndexType row = idx / BYTE_SIZE;
+
+        mBytes[row] &= ( ~ ( 1 << col ) );
     }
-    inline void setBit ( unsigned long idx, bool v )
+    void setBit ( IndexType i, bool b )
     {
-        if ( v )
-            setBit ( idx );
+        if ( b )
+            bitSet ( i );
         else
-            clearBit ( idx );
+            bitClear ( i );
     }
-    inline bool operator[] ( unsigned long idx ) const
+    void bitSet ( IndexType idx )
     {
-        return bitSet ( idx );
-    }
-};
-typedef BitArray CXBitArray;
+        CXASSERT_RETURN ( idx < BIT_SIZE );
 
-#endif // XBitArray_h__
+        IndexType col = idx % BYTE_SIZE;
+        IndexType row = idx / BYTE_SIZE;
+
+        mBytes[row] |= ( 1 << col );
+    }
+
+    bool get ( IndexType idx ) const
+    {
+        CXASSERT_RETURN_FALSE ( idx < BIT_SIZE );
+
+        IndexType col = idx % BYTE_SIZE;
+        IndexType row = idx / BYTE_SIZE;
+        return ( 1 << col ) == ( mBytes[row] & ( 1 << col ) );
+    }
+
+    bool operator[] ( IndexType idx ) const
+    {
+        return get ( idx );
+    }
+    IndexType count ( bool val ) const
+    {
+        IndexType cnt = 0;
+        for ( int i = 0; i < BIT_SIZE; ++i )
+        {
+            if ( val == get ( i ) )
+                cnt++;
+        }
+        return cnt;
+    }
+protected:
+    BYTE mBytes[BYTE_COUNT];
+};
+typedef CXBitArray<4> CXBitArray32;
+typedef CXBitArray<2> cBitSeter_Word;
+typedef CXBitArray<1> cBitSeter_Byte;
