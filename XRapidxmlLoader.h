@@ -15,7 +15,7 @@ public:
 	bool loadFile();
 	CXRapidxmlNode* getRootNode();
 protected:
-	bool LoadFile ( const char* name );
+	bool loadFile ( const char* name );
 
 	const char* mFileName;
 

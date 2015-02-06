@@ -18,6 +18,7 @@ public:
     inline u32 size();
     inline u32 capacity() const;
     inline char* getPointer();
+	inline const char* getString() const;
     inline void copyTo ( void* dst );
     inline void copyFrom ( void* src );
     inline void setChar ( u32 idx, char c );
@@ -51,6 +52,10 @@ inline u32 CXBuffer::length()
 inline char* CXBuffer::getPointer()
 {
     return mData;
+}
+const char* CXBuffer::getString() const
+{
+	return ( const char* ) mData;
 }
 inline void CXBuffer::setElementByteCount ( u32 size )
 {

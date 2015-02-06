@@ -27,7 +27,7 @@ typedef unsigned char uchar;
 //#else
 //#define BASE_API __declspec(dllimport)
 //#endif
-#define BASE_API 
+#define BASE_API
 
 #define CXASSERT(exp)				if(!(exp)){__debugbreak();}
 #define CXASSERT_RETURN(exp)		if(!(exp)){__debugbreak();return;}
@@ -46,6 +46,10 @@ typedef unsigned char uchar;
 #include <string>
 #include <vector>
 #include <algorithm>
+
+#include <iostream>
+#include <fstream>
+
 typedef std::string					stdString;
 typedef std::vector<stdString>		stdStringArr;
 //--------------------------------------------------------------------------------------------------
@@ -162,11 +166,13 @@ inline bool dStrEqual ( const char* s1, const char* s2 )
 }
 inline u32 dStrLen ( const wchar_t* s )
 {
-	return wcslen ( s );
+    CXASSERT ( s != 0 );
+    return wcslen ( s );
 }
 inline u32 dStrLen ( const char* s )
 {
-    return strlen ( s );
+	CXASSERT ( s != 0 );
+	return strlen ( s );
 }
 
 template<typename T, XI32 N>

@@ -20,18 +20,22 @@ public:
             this->erase ( i );
         }
     }
-    void remove ( const T& rhs )
+    bool remove ( const T& rhs )
     {
         iterator i = std::find ( this->begin(), this->end(), rhs );
         if ( i != this->end() )
-            this->erase ( i );
+		{
+			this->erase ( i );
+			return true;
+		}
+		return false;
     }
     void Insert ( const T& after, const T& rhs )
     {
         iterator i = std::find ( this->begin(), this->end(), after );
         this->insert ( i, rhs );
     }
-    void Destroy()
+    void destroy()
     {
         size_t cnt = this->size();
         for ( size_t i = 0; i < cnt; ++i )

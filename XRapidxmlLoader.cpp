@@ -13,7 +13,7 @@ CXRapidxmlLoader::~CXRapidxmlLoader ( void )
 	dSafeDelete ( mBuffer );
 }
 
-bool CXRapidxmlLoader::LoadFile ( const char* name )
+bool CXRapidxmlLoader::loadFile ( const char* name )
 {
 	CXASSERT_RETURN_FALSE ( mFileLoader.OpenFile ( name ) );
 
@@ -33,7 +33,7 @@ CXRapidxmlNode* CXRapidxmlLoader::getRootNode()
 bool CXRapidxmlLoader::loadFile()
 {
 	CXASSERT_RETURN_FALSE ( mFileName );
-	return LoadFile ( mFileName );
+	return loadFile ( mFileName );
 }
 
 CXXMLHelper::CXXMLHelper ( CXXMLNodeStack& stack, CXRapidxmlNode*& n, const char* nodeName )

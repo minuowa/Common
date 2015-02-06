@@ -41,6 +41,8 @@
 
 #include "XLexer.h"
 
+#include "XTreeNode.h"
+
 #define DeclareFilmObj(type)
 #define DeclareFilmObjBase(type,parentType)
 #define DeclareFilmTool
@@ -129,8 +131,8 @@ for ( auto & a: children )
 
 }
 
-void convertToWString ( GStringW& dst, const char* str );
-void convertToString ( GString& dst, const wchar_t* str );
+void dConvertToWString ( GStringW& dst, const char* str );
+void dConvertToString ( GString& dst, const wchar_t* str );
 
 inline void dDebugOutWithFile ( const char* file, int line, const char* fmt, ... )
 {
@@ -155,7 +157,7 @@ inline void dDebugOutWithFile ( const char* file, int line, const char* fmt, ...
     delete[] buffer;
 }
 
-inline void convertToWString ( GStringW& dst, const char* str )
+inline void dConvertToWString ( GStringW& dst, const char* str )
 {
     int len = strlen ( str );
 
@@ -168,7 +170,7 @@ inline void convertToWString ( GStringW& dst, const char* str )
     }
 }
 
-inline void convertToString ( GString& dst, const wchar_t* str )
+inline void dConvertToString ( GString& dst, const wchar_t* str )
 {
     int len = wcslen ( str );
 

@@ -363,6 +363,7 @@
     <ClInclude Include="XRect.h" />
     <ClInclude Include="XStrongPtr.h" />
     <ClInclude Include="XSyntax.h" />
+    <ClInclude Include="XTreeNode.h" />
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="XEaser.h" />
     <ClInclude Include="XStringHelper.h" />

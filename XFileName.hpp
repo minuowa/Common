@@ -14,10 +14,10 @@ public:
     CXFileName ( const char* fileName );
     const char* GetRelativePath ();
     const char* GetFileName ();
-    void GetRelativeFileName ( GString& name );
+    const char* GetRelativeFileName ();
     void GetLastPath ( GString& lastPath );
     const char* GetAbsolutePath();
-    const char* GetOrignalName();
+    const char* getOrignalName();
     //************************************
     // Brief:	  e.g:D:\\abc\\a.txt return abc;D:\\a.txt return D:
     // Method:    GetCurPath
@@ -30,6 +30,8 @@ public:
 public:
     static bool GetDirectory ( const GString& path, GString& dir );
     static void ConvertToStandSpliter ( GString& path );
+    /** È¥µô¶àÓàµÄÐ±¸Ü **/
+    static void deleteRedundentSpliter ( GString& path );
     static GString GetAppFullName ();
     static bool GetExt ( const char* fileName, GString& ext );
     static bool GetRelativePath ( const char* fileName, GString& path );
@@ -41,6 +43,7 @@ public:
 protected:
     GString	mOrignalName;
     GString	mRelativePath;
+    GString mRelativeFileName;
     GString	mAbsoultePath;
     GString	mFileName;
     GString	mExt;
@@ -53,6 +56,11 @@ inline const char* CXFileName::GetRelativePath ()
 
 inline bool CXFileName::GetRelativePath ( const char* fileName, GString& path )
 {
+    if ( dStrLen ( fileName ) == 0 )
+    {
+        path.clear();
+        return false;
+    }
     if ( IsRelative ( fileName ) )
     {
         return GetPath ( fileName, path );
@@ -74,22 +82,25 @@ inline bool CXFileName::GetRelativePath ( const char* fileName, GString& path )
     int size1 = eles1.size();
     CXASSERT ( size0 >= 2 );
     CXASSERT ( size1 >= 2 );
-    GString commonpath;
     //-------------------------------------------------------------------------
     // directroy not equal
     if ( idx == 0 )
         return false;
     if ( idx >= size0 - 2 )
     {
-        for ( int i = 0; i < size0 - idx; i++ )
+        for ( int i = 0; i < size0 - idx - 1; i++ )
         {
-            commonpath.appendChar ( Dot );
-            commonpath.appendChar ( Dot );
-            commonpath.appendChar ( PathSpliter );
+            path.appendChar ( Dot );
+            path.appendChar ( Dot );
+            path.appendChar ( PathSpliter );
         }
     }
-    for ( int i = 0; i < size1 - idx - 1; ++i )
-        commonpath.append ( eles1[i] );
+    for ( int i = idx; i < eles1.size() - 1; ++i )
+    {
+        path.appendChar ( PathSpliter );
+        path.append ( eles1[i] );
+    }
+    deleteRedundentSpliter ( path );
     return true;
 }
 
@@ -232,6 +243,7 @@ inline CXFileName::CXFileName ( const char* fileName )
     GetDirectory ( mOrignalName, mDirectory );
     GetAbsolutePath ( mOrignalName, mAbsoultePath );
     GetRelativePath ( mOrignalName, mRelativePath );
+    mRelativeFileName = mRelativePath + PathSpliter + mFileName;
 }
 
 inline bool CXFileName::GetDirectory ( const GString& path, GString& dir )
@@ -243,10 +255,9 @@ inline bool CXFileName::GetDirectory ( const GString& path, GString& dir )
     return true;
 }
 
-inline void CXFileName::GetRelativeFileName ( GString& name )
+inline const char* CXFileName::GetRelativeFileName()
 {
-    name += mRelativePath;
-    name += mFileName;
+    return mRelativeFileName.c_str();
 }
 
 inline bool CXFileName::IsRelative ( const char* pathOrFile )
@@ -270,7 +281,7 @@ inline bool CXFileName::GetCurPath ( GString& curPath )
 
 inline bool CXFileName::GetParentPath ( GString& parentPath )
 {
-    GString stmp = mAbsoultePath;
+    GString stmp = mOrignalName;
     GString::size_type pos = stmp.find_last_of ( PathSpliter );
     int i = 0;
     do
@@ -298,9 +309,14 @@ inline const char* CXFileName::GetAbsolutePath()
     return mAbsoultePath.c_str();
 }
 
-inline const char* CXFileName::GetOrignalName()
+inline const char* CXFileName::getOrignalName()
 {
     return mOrignalName.c_str();
+}
+
+inline void CXFileName::deleteRedundentSpliter ( GString& path )
+{
+    path.replace ( "\\\\", "\\" );
 }
 
 
