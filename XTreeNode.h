@@ -4,6 +4,7 @@ class CXTreeNode
 {
 public:
     typedef CXTreeNode<T> MyType;
+    typedef CXDynaArray<T*> Array;
 public:
     CXDynaArray<MyType*> mChildren;
     CXTreeNode* mParent;
@@ -26,6 +27,12 @@ public:
     T* getData()
     {
         return mData;
+    }
+    void addToArray ( Array& arr )
+    {
+        arr.push_back ( mData );
+for ( auto i: mChildren )
+            i->addToArray ( arr );
     }
     void addChild ( MyType* child )
     {
@@ -69,10 +76,10 @@ for ( auto i: mChildren )
         return false;
     }
     /** 移除符合条件的节点 **/
-    template<typename CONDTION>
-    bool removeChild ( OUT MyType*& child, CONDTION con )
+    template<typename CONDTION, typename PARA>
+    bool removeChild ( OUT MyType*& child, CONDTION con, PARA para )
     {
-        if ( con ( this ) )
+        if ( con ( this, para ) )
         {
             child = this;
 
@@ -87,7 +94,7 @@ for ( auto i: mChildren )
         {
 for ( auto i: mChildren )
             {
-                if ( i.findChild ( child, con ) )
+                if ( i->removeChild ( child, con, para ) )
                 {
                     return true;
                 }
@@ -97,43 +104,33 @@ for ( auto i: mChildren )
     }
 
 
+
     /** 销毁符合条件的节点 **/
-    template<typename CONDTION, typename ONDESTORY>
-    bool destroyChild ( CONDTION con, ONDESTORY onDestroy )
+    template<typename CONDTION, typename PARA>
+    bool deleteChild ( CONDTION con, PARA para )
     {
-        if ( con ( this ) )
+        MyType* child = nullptr;
+        if ( removeChild ( child, con, para ) )
         {
-            onDestroy ( this );
-
-            this->destroy();
-
+            delete child;
+            child = nullptr;
             return true;
-        }
-        else
-        {
-for ( auto i: mChildren )
-            {
-                if ( i.destroyChild ( con, onDestroy ) )
-                {
-                    return true;
-                }
-            }
         }
         return false;
     }
 
     void destroy()
     {
-for ( MyType * child: mChildren )
-            child->destroy();
+        mParent = 0;
+        mChildren.destroy();
+        ondestroy();
+        dSafeDelete ( mData );
+
         if ( mParent != nullptr )
         {
             mParent->removeChild ( this );
+            mParent = nullptr;
         }
-
-        ondestroy();
-        mParent = 0;
-        dSafeDelete ( mData );
     }
     virtual void ondestroy()
     {
@@ -146,7 +143,13 @@ class CXTree
 {
 public:
     typedef CXTreeNode<T> Node;
-
+    typedef CXDynaArray<T*> Array;
+    typedef CXTree<T> MyType;
+public:
+    ~CXTree()
+    {
+        mNodes.destroy();
+    }
     /** 查找符合条件的节点 **/
     template<typename CONDTION, typename PARA>
     bool findChild ( OUT Node*& child, CONDTION con, PARA para )
@@ -160,9 +163,51 @@ for ( auto i: mNodes )
         }
         return false;
     }
+    /** 删除符合条件的节点 **/
+    template<typename CONDTION, typename PARA>
+    bool deleteChild ( CONDTION con, PARA para )
+    {
+for ( auto i: mNodes )
+        {
+            Node* child = nullptr;
+            if ( i->deleteChild ( con, para ) )
+                return true;
+        }
+        return false;
+    }
+    /** 删除符合条件的节点 **/
+    template<typename CONDTION, typename PARA>
+    bool remove ( OUT Node*& child, CONDTION con, PARA para )
+    {
+        child = nullptr;
+for ( auto i: mNodes )
+        {
+            if ( i->removeChild ( child, con, para ) )
+                return true;
+        }
+        return false;
+    }
     void destroy()
     {
         dSafeDeleteVector ( mNodes );
+    }
+    void toArray ( Array& arr )
+    {
+for ( auto i: mNodes )
+        {
+            i->addToArray ( arr );
+        }
+    }
+
+    void add ( Node* child )
+    {
+        CXCheck ( child != nullptr );
+        mNodes.push_back ( child );
+    }
+    void remove ( Node* child )
+    {
+        CXCheck ( child != nullptr );
+        mNodes.remove ( child );
     }
 public:
     CXDynaArray<Node*> mNodes;
