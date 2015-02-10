@@ -242,8 +242,12 @@ inline CXFileName::CXFileName ( const char* fileName )
     GetFileName ( mOrignalName, mFileName );
     GetDirectory ( mOrignalName, mDirectory );
     GetAbsolutePath ( mOrignalName, mAbsoultePath );
-    GetRelativePath ( mOrignalName, mRelativePath );
-    mRelativeFileName = mRelativePath + PathSpliter + mFileName;
+    if ( GetRelativePath ( mOrignalName, mRelativePath ) )
+    {
+        if ( mRelativePath.isEmpty() )
+            mRelativePath.append ( 1, Dot );
+        mRelativeFileName = mRelativePath + PathSpliter + mFileName;
+    }
 }
 
 inline bool CXFileName::GetDirectory ( const GString& path, GString& dir )

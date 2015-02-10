@@ -108,5 +108,6 @@ inline u32 CXBuffer::capacity() const
 inline void CXBuffer::clear()
 {
     mCount = 0;
+	dMemoryZero ( mData, length() );
 }
 #endif // XBuffer_h__
