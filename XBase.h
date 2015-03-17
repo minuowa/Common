@@ -3,7 +3,7 @@
 //--------------------------------------------------------------------------------------------------
 #include "base.h"
 #include "XSingleton.h"
-#include "XString.h"
+#include "XCharString.h"
 #include "XMap.h"
 
 #ifndef CPP1999
@@ -28,7 +28,7 @@
 #include "XProp.h"
 #include "XBuffer.h"
 #include "XIndex.h"
-#include "XString.h"
+#include "XCharString.h"
 #include "XRandom.h"
 #include "XEaser.h"
 #include "XTime.h"
@@ -67,9 +67,7 @@ for ( auto & e: arr )
     return nullptr;
 }
 /** @brief
-find the
 查找一棵树中(中序遍历)cur之后的第一个符合条件的元素
-the tree has children with Array<T*> pattern
 **/
 template<typename T, typename CondtionObj>
 T* dFindNextElementInTree ( T*  parent, T* cur, CondtionObj& funObj )
@@ -182,7 +180,15 @@ inline void dConvertToString ( GString& dst, const wchar_t* str )
         iLen = ::WideCharToMultiByte ( CP_ACP, 0, str, -1, ( LPSTR ) dst.c_str(), iLen, 0, 0 );
     }
 }
-BASE_API bool dIsPath( const char* str );
+#include <sys\stat.h>
+
+
+inline bool dIsPath ( const char* str )
+{
+	struct stat info;
+	stat ( str, &info );
+	return ( ( ( info.st_mode ) & S_IFMT ) == S_IFDIR );
+}
 
 #define dDebugOut(fmt,...) dDebugOutWithFile(__FILE__,__LINE__,fmt,__VA_ARGS__)
 //--------------------------------------------------------------------------------------------------

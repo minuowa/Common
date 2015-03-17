@@ -77,5 +77,15 @@ inline bool operator < ( const CXIndex& lhs, const CXIndex& rhs )
 	return lhs.Value() < rhs.Value();
 }
 #pragma warning(pop)
+inline CXIndex::CXIndex ( int i )
+	: mValue ( i )
+{
 
+}
+inline CXIndex::CXIndex ( void )
+{
+}
+inline CXIndex::~CXIndex ( void )
+{
+}
 #endif // XIndex_h__

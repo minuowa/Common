@@ -127,7 +127,7 @@ void CXLuaScript::regClassCreator()
     regdClass.constructor<void>();
 }
 
-extern CXLuaScript gLuaScript;
+CXDefineOnce CXLuaScript gLuaScript;
 
 template<typename CLASSNAME, typename FUNC>
 void CXLuaScript::regClassFunction ( const char* name, FUNC fun )
@@ -157,3 +157,52 @@ void CXLuaScript::regGlobalFun ( const char* name, FUNC fun )
     luacpp::reg_cfun ( mState, name, fun );
 }
 
+inline CXLuaScript::CXLuaScript ( void )
+	: mState ( nullptr )
+{
+}
+
+
+inline CXLuaScript::~CXLuaScript ( void )
+{
+}
+
+inline bool CXLuaScript::init()
+{
+	//mState = lua_open();
+	mLuaOwner.init();
+	mState = mLuaOwner;
+	CXASSERT ( mState != nullptr );
+	//luaopen_base ( mState );
+	//luaL_openlibs ( mState );
+	//luaopen_string ( mState );
+	//luaopen_math ( mState );
+	return true;
+}
+
+inline bool CXLuaScript::doFile ( const char* name )
+{
+	if ( 0 == luaL_dofile ( mState, name ) )
+		return true;
+
+	GString sError = lua_tostring ( mState, -1 );
+	OutputDebugStringA ( "\n" );
+	OutputDebugStringA ( sError );
+	return false;
+}
+
+inline lua_State* CXLuaScript::getState() const
+{
+	return mState;
+}
+
+inline bool CXLuaScript::doString ( const char* str )
+{
+	if ( 0 == luaL_dostring ( mState, str ) )
+		return true;
+
+	GString sError = lua_tostring ( mState, -1 );
+	OutputDebugStringA ( "\n" );
+	OutputDebugStringA ( sError );
+	return true;
+}

@@ -83,5 +83,15 @@ public:
 		return mNextId - mIdBlockBase - mPool.size();
 	}
 };
+inline void CXIDGenerator::reclaim()
+{
+	// attempt to keep the pool vector as small as possible by reclaiming
+	// pool entries back into the nextIdBlock variable
 
+	while (!mPool.empty() && (mPool.back() == (mNextId-1)) )
+	{
+		mNextId--;
+		mPool.pop_back();
+	}
+}
 #endif

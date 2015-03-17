@@ -22,12 +22,15 @@ typedef unsigned int u32;
 typedef int s32;
 typedef unsigned char uchar;
 
-//#ifdef _LIB
-//#define BASE_API __declspec(dllexport)
-//#else
-//#define BASE_API __declspec(dllimport)
-//#endif
-#define BASE_API
+#pragma comment(lib,"lua.lib")
+
+#pragma warning(disable:4244)
+#pragma warning(disable:4251)//需要有 dll 接口由 class“GRectNode”的客户端使用
+#pragma warning(disable:4275)
+#pragma warning(disable:4305)
+#pragma warning(disable:4800)
+
+
 
 #define CXASSERT(exp)				if(!(exp)){__debugbreak();}
 #define CXASSERT_RETURN(exp)		if(!(exp)){__debugbreak();return;}
@@ -37,12 +40,14 @@ typedef unsigned char uchar;
 
 #define CXASSERT_RESULT(exp)		if(FAILED(exp)){__debugbreak();return;}
 #define CXASSERT_RESULT_FALSE(exp)	if(FAILED((exp))) {__debugbreak();return false;}
+
 #define BIT(n) (1<<n)
 
 #define IS2SQUARE(n) (0==(n&(n-1)))
 
 #define CXUnuse(v) (void)v;
 
+#include <xstring>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -60,6 +65,8 @@ typedef std::vector<stdString>		stdStringArr;
 
 typedef std::string StdString;
 typedef std::wstring StdWString;
+
+#define CXDefineOnce __declspec(selectany)
 
 #define WIDE_CHAR_FLAG 0X80
 #define IS_WIDE_CHAR(c) (WIDE_CHAR_FLAG & (c))
@@ -171,8 +178,8 @@ inline u32 dStrLen ( const wchar_t* s )
 }
 inline u32 dStrLen ( const char* s )
 {
-	CXASSERT ( s != 0 );
-	return strlen ( s );
+    CXASSERT ( s != 0 );
+    return strlen ( s );
 }
 
 template<typename T, XI32 N>
@@ -202,7 +209,6 @@ void dCast ( T1* dst, T2 src )
 #define dMemberOffset(ClassName,memberName)\
 	((int)&((ClassName*)0)->memberName)
 
-#define CXDefineOnce __declspec(selectany)
 
 #define GCat(a,b)		a##b
 #define GCatF(a,b)		GCat(a,b)

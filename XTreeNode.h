@@ -87,8 +87,12 @@ for ( auto i: mChildren )
             {
                 mParent->mChildren.remove ( this );
                 mParent = nullptr;
+                return true;
             }
-            return true;
+            else
+            {
+                return false;
+            }
         }
         else
         {
@@ -167,6 +171,22 @@ for ( auto i: mNodes )
     template<typename CONDTION, typename PARA>
     bool deleteChild ( CONDTION con, PARA para )
     {
+        Node* child = nullptr;
+
+for ( auto i: mNodes )
+        {
+            if ( con ( i, para ) )
+            {
+                child = i;
+            }
+        }
+
+        if ( child != nullptr )
+        {
+            mNodes.destroyPointer ( child );
+            return true;
+        }
+
 for ( auto i: mNodes )
         {
             Node* child = nullptr;

@@ -7,7 +7,7 @@ typedef rapidxml::xml_document<Char> CXRapidxmlDocument;
 typedef rapidxml::xml_node<Char> CXRapidxmlNode;
 typedef rapidxml::xml_attribute<Char> CXRapidxmlAttr;
 
-typedef CXStack<CXRapidxmlNode*> CXXMLNodeStack;
+typedef  class CXStack<CXRapidxmlNode*> CXXMLNodeStack;
 
 class CXXMLHelper
 {

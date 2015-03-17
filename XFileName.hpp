@@ -1,6 +1,6 @@
 #ifndef XFileName_h__
 #define XFileName_h__
-#include "XString.h"
+#include "XCharString.h"
 #include "XDynaArray.h"
 
 class CXFileName
@@ -71,11 +71,15 @@ inline bool CXFileName::GetRelativePath ( const char* fileName, GString& path )
     CXDynaArray<GString>  eles1;
     appname.Splite ( PathSpliter, eles0 );
     fullname.Splite ( PathSpliter, eles1 );
-    int cnt = dMin ( eles0.size(), eles1.size() );
-    int idx = 0;
+    u32 cnt = dMin ( eles0.size(), eles1.size() );
+    u32 idx = 0;
     for ( ; idx < cnt - 1; ++idx )
     {
-        if ( eles0[idx] != eles1[idx] )
+        GString str0 = eles0[idx];
+        GString str1 = eles1[idx];
+        transform ( str0.begin(), str0.end(), str0.begin(), tolower );
+        transform ( str1.begin(), str1.end(), str1.begin(), tolower );
+        if ( str0 != str1 )
             break;
     }
     int size0 = eles0.size();
@@ -86,20 +90,25 @@ inline bool CXFileName::GetRelativePath ( const char* fileName, GString& path )
     // directroy not equal
     if ( idx == 0 )
         return false;
-    if ( idx >= size0 - 2 )
+    if (  size0 - idx > 0 )
     {
-        for ( int i = 0; i < size0 - idx - 1; i++ )
+        for ( u32 i = 0; i < size0 - idx - 1; i++ )
         {
             path.appendChar ( Dot );
             path.appendChar ( Dot );
             path.appendChar ( PathSpliter );
         }
     }
-    for ( int i = idx; i < eles1.size() - 1; ++i )
+    if ( idx < eles1.size() - 1 )
     {
-        path.appendChar ( PathSpliter );
-        path.append ( eles1[i] );
+        path.append ( 1, Dot );
+        for ( u32 i = idx; i < eles1.size() - 1; ++i )
+        {
+            path.appendChar ( PathSpliter );
+            path.append ( eles1[i] );
+        }
     }
+
     deleteRedundentSpliter ( path );
     return true;
 }
@@ -242,8 +251,12 @@ inline CXFileName::CXFileName ( const char* fileName )
     GetFileName ( mOrignalName, mFileName );
     GetDirectory ( mOrignalName, mDirectory );
     GetAbsolutePath ( mOrignalName, mAbsoultePath );
-    GetRelativePath ( mOrignalName, mRelativePath );
-    mRelativeFileName = mRelativePath + PathSpliter + mFileName;
+    if ( GetRelativePath ( mOrignalName, mRelativePath ) )
+    {
+        if ( mRelativePath.isEmpty() )
+            mRelativePath.append ( 1, Dot );
+        mRelativeFileName = mRelativePath + PathSpliter + mFileName;
+    }
 }
 
 inline bool CXFileName::GetDirectory ( const GString& path, GString& dir )

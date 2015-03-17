@@ -1,7 +1,7 @@
 #ifndef XProp_h__
 #define XProp_h__
 
-#include "XString.h"
+#include "XCharString.h"
 #include "XEnum.h"
 #include "XStringHelper.h"
 
@@ -62,7 +62,7 @@ public:
 	}
 };
 template<typename T>
-class CXPropEntity: public CXProp
+class  CXPropEntity: public CXProp
 {
 public:
 	CXPropEntity ( T* val, bool managedMemory = true );
@@ -133,5 +133,84 @@ public:
 protected:
 	const CXEnumStructList& mStringList;
 };
+inline CXProp::~CXProp ( void )
+{
+}
+
+
+
+inline ePropertyType CXPropEnum::getType()
+{
+	return eType_Enum;
+}
+
+inline const CXEnumStructList& CXPropEnum::getStructList() const
+{
+	return mStringList;
+}
+
+
+inline void CXPropEnum::toString ( std::string& dst )
+{
+
+}
+
+inline void CXPropEnum::setValue ( const char* val )
+{
+
+}
+
+inline u32 CXPropEnum::getIndex ( int var ) const
+{
+	for ( u32 i = 0; i <  mStringList.size(); ++i )
+	{
+		const CXEnumStruct* est = mStringList[i];
+		if ( var == est->mValue )
+		{
+			return i;
+		}
+	}
+	CXASSERT ( 0 );
+	return 0;
+}
+
+inline u32 CXPropEnum::getIndex ( const char* name ) const
+{
+	for ( u32 i = 0; i <  mStringList.size(); ++i )
+	{
+		const CXEnumStruct* est = mStringList[i];
+		if ( !strcmp ( name, est->mName ) )
+		{
+			return i;
+		}
+	}
+	CXASSERT ( 0 );
+	return 0;
+}
+
+inline u32 CXPropEnum::getIndex() const
+{
+	int v = 0;
+	dCast ( v, mVar );
+	return getIndex ( v );
+}
+
+inline int CXPropEnum::getValue ( int idx ) const
+{
+	return mStringList[idx]->mValue;
+}
+
+inline int CXPropEnum::getValue() const
+{
+	int v = 0;
+	dCast ( v, mVar );
+	return v;
+}
+
+inline const char* CXPropEnum::getTheName() const
+{
+	int idx = getIndex ( getValue() );
+	return mStringList[idx]->mName;
+}
 
 #endif // XProp_h__

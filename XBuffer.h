@@ -53,7 +53,7 @@ inline char* CXBuffer::getPointer()
 {
     return mData;
 }
-const char* CXBuffer::getString() const
+inline const char* CXBuffer::getString() const
 {
 	return ( const char* ) mData;
 }
@@ -85,12 +85,12 @@ inline void CXBuffer::addElement ( T v )
     mCount++;
 }
 template<typename T>
-void CXBuffer::set ( u32 idx, const T& v )
+inline void CXBuffer::set ( u32 idx, const T& v )
 {
     * ( ( T* ) &mData[idx * sizeof ( T )] ) = v;
 }
 
-u32 CXBuffer::size()
+inline u32 CXBuffer::size()
 {
     return mCount;
 }
@@ -108,5 +108,32 @@ inline u32 CXBuffer::capacity() const
 inline void CXBuffer::clear()
 {
     mCount = 0;
+}
+inline CXBuffer::CXBuffer ( void )
+{
+	mData = 0;
+	mCount = 0;
+	mCapacity = 0;
+}
+
+
+inline CXBuffer::~CXBuffer ( void )
+{
+	dSafeDelete ( mData );
+}
+
+inline void CXBuffer::reAllocate ( u32 byteSize )
+{
+	dSafeDelete ( mData );
+	mData = new char[byteSize];
+	dMemoryZero ( mData, byteSize );
+}
+
+inline void CXBuffer::reallocateByElementCount ( u32 cnt )
+{
+	dSafeDelete ( mData );
+	mCapacity = cnt;
+	mData = new char[mCapacity * mElementByteCount];
+	dMemoryZero ( mData, mCapacity * mElementByteCount );
 }
 #endif // XBuffer_h__

@@ -44,5 +44,11 @@ private:
 	}
 	static CXRandomIniter mRandomIniter;
 };
-extern CXRandom gRandom;
+CXDefineOnce CXRandom gRandom;
+inline CXRandomIniter::CXRandomIniter()
+{
+	CXRandom::init();
+}
+
+CXDefineOnce CXRandomIniter CXRandom::mRandomIniter;
 #endif // XRandom_h__

@@ -8,3 +8,13 @@ public:
 	long mY;
 };
 
+inline CXPoint2::CXPoint2 ( void )
+	: mX ( 0 )
+	, mY ( 0 )
+{
+}
+
+
+inline CXPoint2::~CXPoint2 ( void )
+{
+}

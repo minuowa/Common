@@ -5,6 +5,7 @@ class CXIDObjectManager
 {
 public:
     CXIDObjectManager ( void );
+	~CXIDObjectManager();
     /** @brief
     	@return objID
     **/
@@ -16,6 +17,13 @@ protected:
     u32 mObjCount;
     CXHashMap<u32, T*> mObjMap;
 };
+
+template<typename T>
+CXIDObjectManager<T>::~CXIDObjectManager()
+{
+	mObjCount=0;
+	mObjMap.clear();
+}
 
 template<typename T>
 CXIDObjectManager<T>::CXIDObjectManager ( void )

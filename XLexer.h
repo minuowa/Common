@@ -1,5 +1,5 @@
 #pragma once
-#include "XString.h"
+#include "XCharString.h"
 #include "XHashMap.h"
 template<typename CH>
 class CXToken

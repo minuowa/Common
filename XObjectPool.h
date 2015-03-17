@@ -33,8 +33,8 @@ public:
     }
     void allocateChunk ( int chunkSize = mDefaultChunkSize );
 protected:
-    queue<T*> mFreeList;
-    vector<void*> mAllObjects;
+    class queue<T*> mFreeList;
+    class vector<void*> mAllObjects;
 
     int mChunkSize;
     static const int mDefaultChunkSize = 32;

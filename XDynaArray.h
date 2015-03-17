@@ -11,14 +11,16 @@ public:
     {
         return this->end() != std::find ( this->begin(), this->end(), rhs );
     }
-    void destroyPointer ( const T& n )
+    bool destroyPointer ( const T& n )
     {
         iterator i = std::find ( this->begin(), this->end(), n );
         if ( i != this->end() )
         {
             delete n;
             this->erase ( i );
+			return true;
         }
+		return false;
     }
     bool remove ( const T& rhs )
     {
