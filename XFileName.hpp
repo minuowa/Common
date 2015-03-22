@@ -99,13 +99,14 @@ inline bool CXFileName::GetRelativePath ( const char* fileName, GString& path )
             path.appendChar ( PathSpliter );
         }
     }
-    if ( idx < eles1.size() - 1 )
+    int leftcnt = eles1.size() - 1;
+    if ( ( int ) idx < leftcnt )
     {
-        path.append ( 1, Dot );
-        for ( u32 i = idx; i < eles1.size() - 1; ++i )
+        for ( u32 i = idx; ( int )i < leftcnt; ++i )
         {
-            path.appendChar ( PathSpliter );
             path.append ( eles1[i] );
+            if ( i != leftcnt - 1 )
+                path.append ( 1, PathSpliter );
         }
     }
 
@@ -256,6 +257,7 @@ inline CXFileName::CXFileName ( const char* fileName )
         if ( mRelativePath.isEmpty() )
             mRelativePath.append ( 1, Dot );
         mRelativeFileName = mRelativePath + PathSpliter + mFileName;
+        deleteRedundentSpliter ( mRelativeFileName );
     }
 }
 

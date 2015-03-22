@@ -20,12 +20,14 @@ private:
 };
 
 template<typename T>
-void _xml_get_attribute ( CXRapidxmlNode* node, const char* attr, T& var )
+bool _xml_get_attribute ( CXRapidxmlNode* node, const char* attr, T& var )
 {
+	CXASSERT_RETURN_FALSE ( node && attr );
 	CXRapidxmlAttr* pAttri = node->first_attribute ( attr );
-	CXASSERT ( pAttri );
+	CXASSERT_RETURN_FALSE ( pAttri );
 	const char* svar=pAttri->value();
 	CXStringHelper::setValue(svar,&var);
+	return true;
 }
 
 //void xml_get_attribute ( CXRapidxmlNode* node, const char* attr, int& var );

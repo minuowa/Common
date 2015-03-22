@@ -5,7 +5,7 @@ class CXTreeNode
 public:
     typedef CXTreeNode<T> MyType;
     typedef CXDynaArray<T*> Array;
-public:
+protected:
     CXDynaArray<MyType*> mChildren;
     CXTreeNode* mParent;
 private:
@@ -20,6 +20,14 @@ public:
         , mParent ( 0 )
     {
     }
+	u32 childCount()
+	{
+		return mChildren.size();
+	}
+	const CXDynaArray<MyType*>& children()
+	{
+		return mChildren;
+	}
     void setData ( T* data )
     {
         mData = data;
@@ -38,6 +46,16 @@ for ( auto i: mChildren )
     {
         child->mParent = this;
         mChildren.push_back ( child );
+    }
+    /** 查找符合条件的节点 **/
+    template<typename FUNC, typename PARA>
+    void traverse (  FUNC callBack, PARA para )
+    {
+        callBack ( this, para ) ;
+for ( auto i: mChildren )
+        {
+            i->traverse (  callBack, para );
+        }
     }
     /** 查找符合条件的节点 **/
     template<typename CONDTION, typename PARA>
@@ -154,6 +172,15 @@ public:
     {
         mNodes.destroy();
     }
+    template<typename FUNC, typename PARA>
+    bool traverse ( FUNC con, PARA para )
+    {
+for ( auto i: mNodes )
+        {
+            i->traverse ( con, para );
+        }
+        return false;
+    }
     /** 查找符合条件的节点 **/
     template<typename CONDTION, typename PARA>
     bool findChild ( OUT Node*& child, CONDTION con, PARA para )
@@ -229,6 +256,10 @@ for ( auto i: mNodes )
         CXCheck ( child != nullptr );
         mNodes.remove ( child );
     }
-public:
+	const CXDynaArray<Node*> getNodes()
+	{
+		return mNodes;
+	}
+private:
     CXDynaArray<Node*> mNodes;
 };

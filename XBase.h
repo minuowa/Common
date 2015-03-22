@@ -38,7 +38,7 @@
 #include "XBitArray.h"
 #include "XIDObjectManager.h"
 #include "XRect.h"
-
+#include "XPoint2.h"
 #include "XLexer.h"
 
 #include "XTreeNode.h"

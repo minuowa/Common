@@ -84,6 +84,6 @@ inline CXXMLHelper::~CXXMLHelper()
 #define xml_get_node(name) \
 	for(CXXMLHelper _helper(_nodeStack, _node, name);_node!=nullptr;_node=_node->next_sibling(name))
 
-#define xml_get_attr(attr,var) _xml_get_attribute(_node,attr,var)
+#define xml_get_attr(attr,var) if(!_xml_get_attribute(_node,attr,var)) return false;
 
 #endif // XRapidxmlLoader_h__

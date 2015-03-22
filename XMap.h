@@ -31,9 +31,10 @@ public:
     {
         Super::const_iterator i = this->find ( k );
 
-        if ( i != end() )
+        if ( i != this->end() )
         {
-            dSafeDelete ( i->second );
+            TV p = i->second;
+            dSafeDelete ( p );
             this->erase ( i );
         }
     }

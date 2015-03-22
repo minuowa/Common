@@ -7,6 +7,7 @@ public:
     ~CXRect ( void );
     bool operator== ( const CXRect& rhs ) const;
     bool operator!= ( const CXRect& rhs ) const;
+    CXRect& operator= ( const CXRect& rhs );
     long mX;
     long mY;
     long mW;
@@ -19,7 +20,9 @@ public:
     long bottom() const;
     long area() const;
     bool isOverlaps ( const CXRect& rc ) const;
+    void offset ( long x, long y );
 };
+
 
 inline CXRect::~CXRect ( void )
 {
@@ -27,73 +30,84 @@ inline CXRect::~CXRect ( void )
 
 inline bool CXRect::isOverlaps ( const CXRect& rc ) const
 {
-	if ( rc.contain ( this->center() ) )
-	{
-		return true;
-	}
-	if ( contain ( rc.center() ) )
-	{
-		return true;
-	}
+    long x0 = dMax ( mX, rc.mX );
+    long y0 = dMax ( mY, rc.mY );
+    long x1 = dMin ( right(), rc.right() );
+    long y1 = dMin ( bottom(), rc.bottom() );
 
-	return false;
+    return x0 < x1 && y0 < y1;
 }
 
 inline long CXRect::right() const
 {
-	return mX + mW;
+    return mX + mW;
 }
 
 inline long CXRect::bottom() const
 {
-	return mY + mH;
+    return mY + mH;
 }
 
 inline long CXRect::area() const
 {
-	return mW * mH;
+    return mW * mH;
 }
 
 inline CXRect::CXRect()
 {
-	mX = 0;
-	mY = 0;
-	mW = 1;
-	mH = 1;
+    mX = 0;
+    mY = 0;
+    mW = 1;
+    mH = 1;
 }
 
 inline bool CXRect::contain ( long x, long y ) const
 {
-	return x >= mX && x <= right() && y >= mY && y <= bottom();
+    return x >= mX && x <= right() && y >= mY && y <= bottom();
 }
 
 inline bool CXRect::contain ( const CXPoint2& pt ) const
 {
-	return contain ( pt.mX, pt.mY );
+    return contain ( pt.mX, pt.mY );
 }
 
 inline bool CXRect::operator== ( const CXRect& rhs ) const
 {
-	return mX == rhs.mX && mY == rhs.mY && mW == rhs.mW && mH == rhs.mH;
+    return mX == rhs.mX && mY == rhs.mY && mW == rhs.mW && mH == rhs.mH;
 }
 
 inline bool CXRect::operator!= ( const CXRect& rhs ) const
 {
-	if ( mX != rhs.mX )
-		return true;
-	if ( mY != rhs.mY )
-		return true;
-	if ( mW != rhs.mW )
-		return true;
-	if ( mH != rhs.mH )
-		return true;
-	return false;
+    if ( mX != rhs.mX )
+        return true;
+    if ( mY != rhs.mY )
+        return true;
+    if ( mW != rhs.mW )
+        return true;
+    if ( mH != rhs.mH )
+        return true;
+    return false;
 }
 
 inline CXPoint2 CXRect::center() const
 {
-	CXPoint2 pt;
-	pt.mX = mX + mW / 2;
-	pt.mY = mY + mH / 2;
-	return pt;
+    CXPoint2 pt;
+    pt.mX = mX + mW / 2;
+    pt.mY = mY + mH / 2;
+    return pt;
+}
+
+inline void CXRect::offset ( long x, long y )
+{
+    mX += x;
+    mY += y;
+}
+
+inline CXRect& CXRect::operator= ( const CXRect& rhs )
+{
+    mX = rhs.mX;
+    mY = rhs.mY;
+    mW = rhs.mW;
+    mH = rhs.mH;
+    return *this;
 }
