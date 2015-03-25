@@ -32,6 +32,10 @@ namespace CXPropHelper
 	{
 		return eType_UInt;
 	}
+	template<> inline ePropertyType getType<long>()
+	{
+		return eType_Int;
+	}
 	template<> inline ePropertyType getType<bool>()
 	{
 		return eType_Bool;

@@ -9,6 +9,7 @@
 #include "base.h"
 #include <crtdefs.h>
 #include <stdarg.h>
+#include <string>
 //inline wchar_t* towchar( const char* src );
 
 //std::string ToString( const wchar_t* ws )
