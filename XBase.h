@@ -3,7 +3,7 @@
 //--------------------------------------------------------------------------------------------------
 #include "base.h"
 #include "XSingleton.h"
-#include "XCharString.h"
+#include "uString.h"
 #include "XMap.h"
 
 #ifndef CPP1999
@@ -28,7 +28,7 @@
 #include "XProp.h"
 #include "XBuffer.h"
 #include "XIndex.h"
-#include "XCharString.h"
+#include "ustring.h"
 #include "XRandom.h"
 #include "XEaser.h"
 #include "XTime.h"
@@ -42,6 +42,7 @@
 #include "XLexer.h"
 
 #include "XTreeNode.h"
+#include "uString.h"
 
 #define DeclareFilmObj(type)
 #define DeclareFilmObjBase(type,parentType)
@@ -129,57 +130,6 @@ for ( auto & a: children )
 
 }
 
-void dConvertToWString ( GStringW& dst, const char* str );
-void dConvertToString ( GString& dst, const wchar_t* str );
-
-inline void dDebugOutWithFile ( const char* file, int line, const char* fmt, ... )
-{
-    va_list arglist;
-    va_start ( arglist, fmt );
-    int nLen = XGetLength ( fmt, arglist ) /* + 1*/;
-    char* buffer = new char[nLen + 1];
-    XSPrintf ( buffer, nLen + 1, fmt, 0, arglist );
-    va_end ( arglist );
-    GString str, str2;
-#ifdef WIN32
-    str2.Format ( "%s(%d):", file, line );
-    str.append ( str2 );
-#endif
-    str.append ( buffer );
-    str.append ( "\n" );
-#ifdef WIN32
-    OutputDebugStringA ( str.c_str() );
-#else
-    std::cout << str.c_str();
-#endif
-    delete[] buffer;
-}
-
-inline void dConvertToWString ( GStringW& dst, const char* str )
-{
-    int len = strlen ( str );
-
-    int iLen = ::MultiByteToWideChar ( CP_ACP, 0, str, len, NULL, 0 );
-
-    if ( iLen > 0 )
-    {
-        dst.assign ( iLen, 0 );
-        iLen = ::MultiByteToWideChar ( CP_ACP, 0, str, -1, ( LPWSTR ) dst.c_str(), iLen );
-    }
-}
-
-inline void dConvertToString ( GString& dst, const wchar_t* str )
-{
-    int len = wcslen ( str );
-
-    int iLen = ::WideCharToMultiByte ( CP_ACP, 0, str, len, 0, 0, 0, 0 );
-
-    if ( iLen > 0 )
-    {
-        dst.assign ( iLen, 0 );
-        iLen = ::WideCharToMultiByte ( CP_ACP, 0, str, -1, ( LPSTR ) dst.c_str(), iLen, 0, 0 );
-    }
-}
 #include <sys\stat.h>
 
 
@@ -190,6 +140,5 @@ inline bool dIsPath ( const char* str )
 	return ( ( ( info.st_mode ) & S_IFMT ) == S_IFDIR );
 }
 
-#define dDebugOut(fmt,...) dDebugOutWithFile(__FILE__,__LINE__,fmt,__VA_ARGS__)
 //--------------------------------------------------------------------------------------------------
 #endif // CXBase_h__

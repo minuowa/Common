@@ -1,5 +1,5 @@
 #pragma once
-typedef DWORD TYPEN;
+typedef unsigned int TYPEN;
 template<TYPEN N>
 class CXTimeDim
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include "base.h"
 typedef int IndexType;
-
+typedef unsigned char BYTE;
 template<IndexType BYTE_COUNT>
 class CXBitArray
 {

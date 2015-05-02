@@ -1,6 +1,6 @@
 #ifndef XFileName_h__
 #define XFileName_h__
-#include "XCharString.h"
+#include "uString.h"
 #include "XDynaArray.h"
 
 class CXFileName
@@ -15,8 +15,8 @@ public:
     const char* GetRelativePath ();
     const char* GetFileName ();
     const char* GetRelativeFileName ();
-	const char* GetFullFileName();
-    void GetLastPath ( GString& lastPath );
+    const char* GetFullFileName();
+    void GetLastPath ( uString& lastPath );
     const char* GetAbsolutePath();
     const char* getOrignalName();
     //************************************
@@ -24,40 +24,40 @@ public:
     // Method:    GetCurPath
     // Returns:   bool
     // Parameter: const char * filename
-    // Parameter: GString & curPath
+    // Parameter: uString & curPath
     //************************************
-    bool GetCurPath ( GString& curPath );
-    bool GetParentPath ( GString& parentPath );
+    bool GetCurPath ( uString& curPath );
+    bool GetParentPath ( uString& parentPath );
 public:
-    static bool GetDirectory ( const GString& path, GString& dir );
-    static void ConvertToStandSpliter ( GString& path );
+    static bool GetDirectory ( const uString& path, uString& dir );
+    static void ConvertToStandSpliter ( uString& path );
     /** È¥µô¶àÓàµÄÐ±¸Ü **/
-    static void deleteRedundentSpliter ( GString& path );
-    static GString GetAppFullName ();
-    static bool GetExt ( const char* fileName, GString& ext );
-    static bool MakeRelativeFileName ( const char* fileName, GString& path );
-    static bool MakeFullFileName ( const char* fileName, GString& fullFileName );
-    static bool GetAbsolutePath ( const char* fileName, GString& path );
-    static bool GetPath ( const char* fileName, GString& path );
-    static bool GetFileName ( const char* str, GString& fileName );
-    static bool AmendAbsolutePath ( const char* str, GString& path );
+    static void deleteRedundentSpliter ( uString& path );
+    static uString GetAppFullName ();
+    static bool GetExt ( const char* fileName, uString& ext );
+    static bool MakeRelativeFileName ( const char* fileName, uString& path );
+    static bool MakeFullFileName ( const char* fileName, uString& fullFileName );
+    static bool GetAbsolutePath ( const char* fileName, uString& path );
+    static bool GetPath ( const char* fileName, uString& path );
+    static bool GetFileName ( const char* str, uString& fileName );
+    static bool AmendAbsolutePath ( const char* str, uString& path );
     static bool IsRelative ( const char* pathOrFile );
 protected:
-    GString	mOrignalName;
-    GString	mRelativePath;
-    GString mRelativeFileName;
-    GString mFullFileName;
-    GString	mAbsoultePath;
-    GString	mFileName;
-    GString	mExt;
-    GString	mDirectory;
+    uString	mOrignalName;
+    uString	mRelativePath;
+    uString mRelativeFileName;
+    uString mFullFileName;
+    uString	mAbsoultePath;
+    uString	mFileName;
+    uString	mExt;
+    uString	mDirectory;
 };
 inline const char* CXFileName::GetRelativePath ()
 {
     return mRelativePath.c_str();
 }
 
-inline bool CXFileName::MakeRelativeFileName ( const char* fileName, GString& path )
+inline bool CXFileName::MakeRelativeFileName ( const char* fileName, uString& path )
 {
     if ( dStrLen ( fileName ) == 0 )
     {
@@ -69,25 +69,25 @@ inline bool CXFileName::MakeRelativeFileName ( const char* fileName, GString& pa
         path = fileName;
         return true;
     }
-    GString appname = GetAppFullName();
-    GString apppath;
-    CXASSERT_RESULT_FALSE ( GetAbsolutePath ( appname, apppath ) );
+    uString appname = GetAppFullName();
+    uString apppath;
+    CXASSERT_RETURN_FALSE ( GetAbsolutePath ( appname, apppath ) );
 
-    GString fullname ( fileName );
-    CXDynaArray<GString>  eles0;
-    CXDynaArray<GString>  eles1;
+    uString fullname ( fileName );
+    CXDynaArray<uString>  eles0;
+    CXDynaArray<uString>  eles1;
 
-    apppath.Splite ( PathSpliter, eles0 );
-    fullname.Splite ( PathSpliter, eles1 );
+    apppath.split ( PathSpliter, eles0 );
+    fullname.split ( PathSpliter, eles1 );
 
     u32 cnt = dMin ( eles0.size(), eles1.size() );
     u32 idx = 0;
     for ( ; idx < cnt ; ++idx )
     {
-        GString str0 = eles0[idx];
-        GString str1 = eles1[idx];
-        transform ( str0.begin(), str0.end(), str0.begin(), tolower );
-        transform ( str1.begin(), str1.end(), str1.begin(), tolower );
+        uString str0 = eles0[idx];
+        uString str1 = eles1[idx];
+        //transform ( str0.begin(), str0.end(), str0.begin(), tolower );
+        //transform ( str1.begin(), str1.end(), str1.begin(), tolower );
         if ( str0 != str1 )
             break;
     }
@@ -101,9 +101,9 @@ inline bool CXFileName::MakeRelativeFileName ( const char* fileName, GString& pa
     int left1 = size1 - idx ;
     for ( int i = 0; i < left0 && left1 > left0; i++ )
     {
-        path.appendChar ( Dot );
-        path.appendChar ( Dot );
-        path.appendChar ( PathSpliter );
+        path.append ( 1, Dot );
+        path.append ( 1, Dot );
+        path.append ( 1, PathSpliter );
     }
     int leftcnt = eles1.size();
     for ( u32 i = idx; ( int ) i < leftcnt; ++i )
@@ -126,15 +126,15 @@ inline bool CXFileName::MakeRelativeFileName ( const char* fileName, GString& pa
 // Parameter: const char * str
 // Parameter: String & path
 //************************************
-inline bool CXFileName::AmendAbsolutePath ( const char* str, GString& path )
+inline bool CXFileName::AmendAbsolutePath ( const char* str, uString& path )
 {
-    GString dir;
+    uString dir;
     CXASSERT_RETURN_FALSE ( GetDirectory ( str, dir ) );
-    GString fullName = str;
+    uString fullName = str;
     CXASSERT_RETURN_FALSE ( fullName.length() >= 2  );
-    CXDynaArray<GString> stack;
-    GString ele;
-    for ( GString::size_type i = 0; i < fullName.length() - 2; ++i )
+    CXDynaArray<uString> stack;
+    uString ele;
+    for ( uString::size_type i = 0; i < fullName.length() - 2; ++i )
     {
         char ch = fullName.at ( i );
         if ( ch == PathSpliter )
@@ -155,10 +155,10 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, GString& path )
     ele.append ( 1, fullName[fullName.length() - 2] );
     ele.append ( 1, fullName[fullName.length() - 1] );
     stack.push_back ( ele );
-    for ( CXDynaArray<GString>::iterator walk = stack.begin(); walk != stack.end(); ++walk )
+    for ( CXDynaArray<uString>::iterator walk = stack.begin(); walk != stack.end(); ++walk )
     {
         path.append ( *walk );
-        path.appendChar ( PathSpliter );
+        path.append ( 1, PathSpliter );
     }
     path = path.substr ( 0, path.length() - 1 );
     return true;
@@ -172,16 +172,16 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, GString& path )
 // Qualifier:
 // Parameter: String & path
 //************************************
-inline void CXFileName::ConvertToStandSpliter ( GString& path )
+inline void CXFileName::ConvertToStandSpliter ( uString& path )
 {
-    for ( GString::size_type i = 0; i < path.length(); ++i )
+    for ( uString::size_type i = 0; i < path.length(); ++i )
     {
-        char& ch = path[i];
+        char ch = path[i];
         if ( ch == PathSpliterEx )
             ch = PathSpliter;
     }
 
-    GString::size_type len = path.length();
+    uString::size_type len = path.length();
     if ( len > 0 )
     {
         int i = len;
@@ -194,33 +194,33 @@ inline void CXFileName::ConvertToStandSpliter ( GString& path )
         path = path.substr ( 0, i + 1 );
     }
 }
-inline GString CXFileName::GetAppFullName()
+inline uString CXFileName::GetAppFullName()
 {
     char* modulename = 0;
     _get_pgmptr ( &modulename );
-    GString rawname;
+    uString rawname;
     AmendAbsolutePath ( modulename, rawname );
     return rawname;
 }
 
-inline bool CXFileName::GetPath ( const char* fileName, GString& path )
+inline bool CXFileName::GetPath ( const char* fileName, uString& path )
 {
-    GString name ( fileName );
-    GString::size_type pos = name.find_last_of ( PathSpliter );
-    if ( pos == GString::npos )
+    uString name ( fileName );
+    uString::size_type pos = name.find_last_of ( PathSpliter );
+    if ( pos == uString::npos )
         return false;
     path = name.substr ( 0, pos );
     return true;
 }
 
 
-inline bool CXFileName::GetExt ( const char* fileName, GString& ext )
+inline bool CXFileName::GetExt ( const char* fileName, uString& ext )
 {
-    GString name = fileName;
+    uString name = fileName;
     ext.clear();
-    GString::size_type pos = name.find_last_of ( Dot );
-    GString::size_type posPathSpliter = name.find_last_of ( PathSpliter );
-    if ( pos == GString::npos || posPathSpliter > pos )
+    uString::size_type pos = name.find_last_of ( Dot );
+    uString::size_type posPathSpliter = name.find_last_of ( PathSpliter );
+    if ( pos == uString::npos || posPathSpliter > pos )
         return false;
     ext = name.substr ( pos + 1 );
     return true;
@@ -228,12 +228,12 @@ inline bool CXFileName::GetExt ( const char* fileName, GString& ext )
 
 
 
-inline bool CXFileName::GetFileName ( const char* str, GString& fileName )
+inline bool CXFileName::GetFileName ( const char* str, uString& fileName )
 {
-    GString name = str;
+    uString name = str;
     fileName.clear();
-    GString::size_type pos = name.find_last_of ( PathSpliter );
-    if ( pos == GString::npos )
+    uString::size_type pos = name.find_last_of ( PathSpliter );
+    if ( pos == uString::npos )
         return false;
     fileName = name.substr ( pos + 1 );
     return true;
@@ -251,7 +251,13 @@ inline CXFileName::CXFileName ( const char* fileName )
 {
     ConvertToStandSpliter ( mOrignalName );
     if ( IsRelative ( mOrignalName ) )
+    {
         CXASSERT ( MakeFullFileName ( mOrignalName, mFullFileName ) );
+    }
+    else
+    {
+        mFullFileName = mOrignalName;
+    }
     GetExt ( mFullFileName, mExt );
     GetFileName ( mFullFileName, mFileName );
     GetDirectory ( mFullFileName, mDirectory );
@@ -260,12 +266,12 @@ inline CXFileName::CXFileName ( const char* fileName )
         GetPath ( mRelativeFileName, mRelativePath );
 }
 
-inline bool CXFileName::GetDirectory ( const GString& path, GString& dir )
+inline bool CXFileName::GetDirectory ( const uString& path, uString& dir )
 {
-    GString::size_type pos = path.find ( Directory );
-    if ( pos == GString::npos )
+    uString::size_type pos = path.find ( Directory );
+    if ( pos == uString::npos )
         return false;
-    dir = path.substr ( 0, pos + 1 );
+    dir = path.substr ( 0, 2 );
     return true;
 }
 
@@ -276,16 +282,16 @@ inline const char* CXFileName::GetRelativeFileName()
 
 inline bool CXFileName::IsRelative ( const char* pathOrFile )
 {
-    GString file ( pathOrFile );
-    GString dirFlag;
+    uString file ( pathOrFile );
+    uString dirFlag;
     dirFlag += Directory;
-    return file.Find ( dirFlag.c_str() ) == GString::npos;
+    return file.find ( dirFlag.c_str() ) == uString::npos;
 }
 
-inline bool CXFileName::GetCurPath ( GString& curPath )
+inline bool CXFileName::GetCurPath ( uString& curPath )
 {
-    GString::size_type pos = mAbsoultePath.find_last_of ( PathSpliter );
-    if ( pos != GString::npos )
+    uString::size_type pos = mAbsoultePath.find_last_of ( PathSpliter );
+    if ( pos != uString::npos )
     {
         curPath = mAbsoultePath.substr ( pos + 1 );
         return true;
@@ -293,10 +299,10 @@ inline bool CXFileName::GetCurPath ( GString& curPath )
     return false;
 }
 
-inline bool CXFileName::GetParentPath ( GString& parentPath )
+inline bool CXFileName::GetParentPath ( uString& parentPath )
 {
-    GString stmp = mOrignalName;
-    GString::size_type pos = stmp.find_last_of ( PathSpliter );
+    uString stmp = mOrignalName;
+    uString::size_type pos = stmp.find_last_of ( PathSpliter );
     int i = 0;
     do
     {
@@ -304,17 +310,17 @@ inline bool CXFileName::GetParentPath ( GString& parentPath )
         parentPath = stmp;
         i++;
     }
-    while ( pos != GString::npos && i < 2 );
+    while ( pos != uString::npos && i < 2 );
     return true;
 }
 
-inline bool CXFileName::GetAbsolutePath ( const char* fileName, GString& path )
+inline bool CXFileName::GetAbsolutePath ( const char* fileName, uString& path )
 {
     if ( !IsRelative ( fileName ) )
     {
-        GString name = fileName;
-        GString::size_type pos = name.find_last_of ( PathSpliter );
-        if ( pos == GString::npos )
+        uString name = fileName;
+        uString::size_type pos = name.find_last_of ( PathSpliter );
+        if ( pos == uString::npos )
             return false;
         path = name.substr ( 0, pos );
         return true;
@@ -332,12 +338,12 @@ inline const char* CXFileName::getOrignalName()
     return mOrignalName.c_str();
 }
 
-inline void CXFileName::deleteRedundentSpliter ( GString& path )
+inline void CXFileName::deleteRedundentSpliter ( uString& path )
 {
     path.replace ( "\\\\", "\\" );
 }
 
-inline bool CXFileName::MakeFullFileName ( const char* fileName, GString& fullFileName )
+inline bool CXFileName::MakeFullFileName ( const char* fileName, uString& fullFileName )
 {
     CXASSERT ( IsRelative ( fileName ) );
     CXASSERT ( fileName );
@@ -349,7 +355,7 @@ inline bool CXFileName::MakeFullFileName ( const char* fileName, GString& fullFi
 
 inline const char* CXFileName::GetFullFileName()
 {
-	return mFullFileName;
+    return mFullFileName;
 }
 
 

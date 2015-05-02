@@ -1,5 +1,5 @@
 #pragma once
-#include "XCharString.h"
+#include "uString.h"
 #include "XHashMap.h"
 template<typename CH>
 class CXToken
@@ -33,9 +33,9 @@ protected:
     int getTokenType ( const CH* str ) const;
     inline CH getNextChar();
 
-    CXHashMap<CXCharString<CH>, int> mTokenMap;
-    CXBuffer mBuffer;
-    CXCharString<CH> mCurString;
+    CXHashMap<std::basic_string<CH>, int> mTokenMap;
+    uBuffer mBuffer;
+    std::basic_string<CH> mCurString;
     u32 mLine;
     u32 mCursor;
     eCharState mState;

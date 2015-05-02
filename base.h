@@ -30,8 +30,12 @@ typedef unsigned char uchar;
 #pragma warning(disable:4305)
 #pragma warning(disable:4800)
 
-
-
+#ifndef IN
+#define IN
+#endif
+#ifndef OUT
+#define OUT
+#endif
 #define CXASSERT(exp)				if(!(exp)){__debugbreak();}
 #define CXASSERT_RETURN(exp)		if(!(exp)){__debugbreak();return;}
 #define CXASSERT_RETURN_FALSE(exp)	if(!(exp)){__debugbreak();return false;}
@@ -93,20 +97,39 @@ typedef float f32;
 #define CXNew new
 #define CXDelete delete
 
-#define dSafeDelete(x) if(x){ delete x;x=nullptr;}
+#define dSafeDelete(x) {if(x){ delete x;x=nullptr;}}
 #define dSequare(x) (x)*(x)
 #define dSumOfSequare(x,y) (dSequare(x)+dSequare(y))
 #define dMin(x,y) ((x)<(y)?(x):(y))
 #define dMax(x,y) ((x)>(y)?(x):(y))
-template<typename T>
-void dSafeRelease ( T*& v )
+
+#define dSafeRelease(v) if(v){v->Release();v=nullptr;}
+
+inline void dDebugOutWithFile ( const char* file, int line, const char* fmt, ... )
 {
-    if ( v )
-    {
-        v->Release();
-        v = 0;
-    }
+	//va_list arglist;
+	//va_start ( arglist, fmt );
+	//int nLen = XGetLength ( fmt, arglist ) /* + 1*/;
+	//char* buffer = new char[nLen + 1];
+	//XSPrintf ( buffer, nLen + 1, fmt, 0, arglist );
+	//va_end ( arglist );
+	//uString str, str2;
+//#ifdef WIN32
+//	str2.format( "%s(%d):", file, line );
+//	str.append ( str2 );
+//#endif
+//	str.append ( buffer );
+//	str.append ( "\n" );
+#ifdef WIN32
+	//OutputDebugStringA ( str.c_str() );
+#else
+	std::cout << str.c_str();
+#endif
+	//delete[] buffer;
 }
+
+#define dDebugOut(fmt,...) dDebugOutWithFile(__FILE__,__LINE__,fmt,__VA_ARGS__)
+
 template<typename T>
 void dConstruct ( void* ptr )
 {
@@ -133,10 +156,11 @@ void dSafeDeleteVector ( T& v )
         v.clear();
     }
 }
-template<typename T>
-void dSafeDeleteArray ( T* v )
+template<typename T, XI32 N>
+void dSafeDeleteArray ( T * ( &arr ) [N] )
 {
-    CXDelete []v;
+for ( auto & i: arr )
+        dSafeDelete ( i );
 }
 template<typename T>
 void dSafeDeleteMap2 ( T& v )
@@ -198,13 +222,6 @@ void dCast ( T1* dst, T2 src )
 {
     * ( ( T2* ) dst ) = src;
 }
-//#pragma warning(push)
-//#pragma warning(disable:4996)
-//inline void dSSCanf(const char* format,...)
-//{
-//	//sscanf_s(format,);
-//}
-//#pragma warning(pop)
 
 #define dMemberOffset(ClassName,memberName)\
 	((int)&((ClassName*)0)->memberName)

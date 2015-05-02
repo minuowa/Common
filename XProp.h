@@ -1,7 +1,7 @@
 #ifndef XProp_h__
 #define XProp_h__
 
-#include "XCharString.h"
+#include "uString.h"
 #include "XEnum.h"
 #include "XStringHelper.h"
 
@@ -48,7 +48,7 @@ namespace CXPropHelper
 	{
 		return eType_Double;
 	}
-	template<> inline ePropertyType getType<GString>()
+	template<> inline ePropertyType getType<uString>()
 	{
 		return eType_String;
 	}

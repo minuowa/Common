@@ -15,9 +15,27 @@
 //
 //void MatrixToQuaternion(const D3DXMATRIX& m, D3DXQUATERNION& q);
 
-class CXMath
+template<typename T>
+T  dScale ( T src, T reference, double scale )
 {
-public:
-	CXMath ( void );
-	~CXMath ( void );
-};
+    return reference + scale * ( src - reference );
+}
+
+template<typename T>
+T dClamp ( T src, T minv, T maxv )
+{
+    T t0 = dMin ( minv, maxv );
+    T t1 = dMax ( minv, maxv );
+    if ( src < t0 )
+        src = t0;
+    if ( src > t1 )
+        src = t1;
+    return src;
+}
+inline int dRound ( double src, int base = 1 )
+{
+    int d = ( int ) src / base * base;
+    if ( src + base / 2.0 > d + base )
+        return int ( d + base );
+    return d;
+}

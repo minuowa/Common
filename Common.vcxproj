@@ -27,7 +27,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
@@ -172,6 +172,9 @@
     <ClInclude Include="luawrapper-master\Trait.h" />
     <ClInclude Include="luawrapper-master\TypeList.h" />
     <ClInclude Include="luawrapper-master\utility.h" />
+    <ClInclude Include="uEncodingHelper.h" />
+    <ClInclude Include="uRefCounter.h" />
+    <ClInclude Include="uString.h" />
     <ClInclude Include="XBitArray.h" />
     <ClInclude Include="XColor.h" />
     <ClInclude Include="XHashMap.h" />
@@ -207,7 +210,6 @@
     <ClInclude Include="XRapidxmlWriter.h" />
     <ClInclude Include="XSingleton.h" />
     <ClInclude Include="XStack.h" />
-    <ClInclude Include="XCharString.h" />
     <ClInclude Include="XTime.h" />
     <ClInclude Include="Rapidxml\rapidxml.hpp" />
     <ClInclude Include="Rapidxml\rapidxml_iterators.hpp" />

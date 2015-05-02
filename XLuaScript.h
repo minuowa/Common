@@ -80,39 +80,45 @@ public:
         ret = luacpp::call<Ret> ( mState, funcname, arg1, arg2, arg3, arg4, arg5 );
         return true;
     }
-    bool call ( const char* funcname )
+    bool callVoid ( const char* funcname )
     {
         luacpp::call<void> ( mState, funcname );
         return true;
     }
     template<typename Arg1>
-    bool call ( const char* funcname, Arg1 arg1 )
+    bool callVoid ( const char* funcname, Arg1 arg1 )
     {
         luacpp::call<void> ( mState, funcname, arg1 );
         return true;
     }
     template<typename Arg1, typename Arg2>
-    bool call ( const char* funcname, Arg1 arg1, Arg2 arg2 )
+    bool callVoid ( const char* funcname, Arg1 arg1, Arg2 arg2 )
     {
         luacpp::call<void> ( mState, funcname, arg1, arg2 );
         return true;
     }
     template<typename Arg1, typename Arg2, typename Arg3>
-    bool call ( const char* funcname, Arg1 arg1, Arg2 arg2, Arg3 arg3 )
+    bool callVoid ( const char* funcname, Arg1 arg1, Arg2 arg2, Arg3 arg3 )
     {
         luacpp::call<void> ( mState, funcname, arg1, arg2, arg3 );
         return true;
     }
     template<typename Arg1, typename Arg2, typename Arg3, typename Arg4>
-    bool call ( const char* funcname, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4 )
+    bool callVoid ( const char* funcname, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4 )
     {
         luacpp::call<void> ( mState, funcname, arg1, arg2, arg3, arg4 );
         return true;
     }
     template<typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5>
-    bool call ( const char* funcname, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5 )
+    bool callVoid ( const char* funcname, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5 )
     {
         luacpp::call<void> ( mState, funcname, arg1, arg2, arg3, arg4, arg5 );
+        return true;
+    }
+    template<typename Arg1, typename Arg2, typename Arg3, typename Arg4, typename Arg5, typename Arg6>
+    bool callVoid ( const char* funcname, Arg1 arg1, Arg2 arg2, Arg3 arg3, Arg4 arg4, Arg5 arg5 , Arg6 arg6 )
+    {
+        luacpp::call<void> ( mState, funcname, arg1, arg2, arg3, arg4, arg5, arg6 );
         return true;
     }
 private:
@@ -158,7 +164,7 @@ void CXLuaScript::regGlobalFun ( const char* name, FUNC fun )
 }
 
 inline CXLuaScript::CXLuaScript ( void )
-	: mState ( nullptr )
+    : mState ( nullptr )
 {
 }
 
@@ -169,40 +175,38 @@ inline CXLuaScript::~CXLuaScript ( void )
 
 inline bool CXLuaScript::init()
 {
-	//mState = lua_open();
-	mLuaOwner.init();
-	mState = mLuaOwner;
-	CXASSERT ( mState != nullptr );
-	//luaopen_base ( mState );
-	//luaL_openlibs ( mState );
-	//luaopen_string ( mState );
-	//luaopen_math ( mState );
-	return true;
+    //mState = lua_open();
+    mLuaOwner.init();
+    mState = mLuaOwner;
+    CXASSERT ( mState != nullptr );
+    //luaopen_base ( mState );
+    //luaL_openlibs ( mState );
+    //luaopen_string ( mState );
+    //luaopen_math ( mState );
+    return true;
 }
 
 inline bool CXLuaScript::doFile ( const char* name )
 {
-	if ( 0 == luaL_dofile ( mState, name ) )
-		return true;
+    if ( 0 == luaL_dofile ( mState, name ) )
+        return true;
 
-	GString sError = lua_tostring ( mState, -1 );
-	OutputDebugStringA ( "\n" );
-	OutputDebugStringA ( sError );
-	return false;
+    uString sError = lua_tostring ( mState, -1 );
+    dDebugOut ( sError.c_str() );
+    return false;
 }
 
 inline lua_State* CXLuaScript::getState() const
 {
-	return mState;
+    return mState;
 }
 
 inline bool CXLuaScript::doString ( const char* str )
 {
-	if ( 0 == luaL_dostring ( mState, str ) )
-		return true;
+    if ( 0 == luaL_dostring ( mState, str ) )
+        return true;
 
-	GString sError = lua_tostring ( mState, -1 );
-	OutputDebugStringA ( "\n" );
-	OutputDebugStringA ( sError );
-	return true;
+    uString sError = lua_tostring ( mState, -1 );
+    dDebugOut ( sError.c_str() );
+    return true;
 }

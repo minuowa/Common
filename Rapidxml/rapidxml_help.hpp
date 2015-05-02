@@ -32,8 +32,8 @@ bool _xml_get_attribute ( CXRapidxmlNode* node, const char* attr, T& var )
 
 //void xml_get_attribute ( CXRapidxmlNode* node, const char* attr, int& var );
 //void xml_get_attribute ( CXRapidxmlNode* node, const char* attr, float& var );
-//void xml_get_attribute ( CXRapidxmlNode* node, const char* attr, GString& var );
-//void xml_get_attribute ( CXRapidxmlNode* node, const char* attr, GString& var );
+//void xml_get_attribute ( CXRapidxmlNode* node, const char* attr, uString& var );
+//void xml_get_attribute ( CXRapidxmlNode* node, const char* attr, uString& var );
 //void xml_get_attribute ( CXRapidxmlNode* node, const char* attr, bool& var );
 
 #endif // rapidxml_help_h__

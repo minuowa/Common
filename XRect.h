@@ -5,6 +5,7 @@ class CXRect
 public:
     CXRect ( void );
     ~CXRect ( void );
+    CXRect ( long x, long y, long w, long h );
     bool operator== ( const CXRect& rhs ) const;
     bool operator!= ( const CXRect& rhs ) const;
     CXRect& operator= ( const CXRect& rhs );
@@ -21,6 +22,11 @@ public:
     long area() const;
     bool isOverlaps ( const CXRect& rc ) const;
     void offset ( long x, long y );
+    void correct();
+    void clamp ( const CXRect& rc );
+    void scaleX ( double scale, long xRef );
+    void scaleY ( double scale, long yRef );
+    void scale ( double scale, long xref, long yref );
 };
 
 
@@ -59,6 +65,13 @@ inline CXRect::CXRect()
     mY = 0;
     mW = 1;
     mH = 1;
+}
+inline CXRect::CXRect ( long x, long y, long w, long h )
+{
+    mX = x;
+    mY = y;
+    mW = w;
+    mH = h;
 }
 
 inline bool CXRect::contain ( long x, long y ) const
@@ -110,4 +123,51 @@ inline CXRect& CXRect::operator= ( const CXRect& rhs )
     mW = rhs.mW;
     mH = rhs.mH;
     return *this;
+}
+
+inline void CXRect::correct()
+{
+    if ( mW < 0 )
+    {
+        mX += mW;
+        mW = -mW;
+    }
+    if ( mH < 0 )
+    {
+        mY += mH;
+        mH = -mH;
+    }
+}
+
+inline void CXRect::clamp ( const CXRect& rc )
+{
+    CXRect tmp ( rc );
+    tmp.correct();
+    this->correct();
+    long r = right(), b = bottom();
+    mX = dClamp ( mX, rc.mX, rc.right() );
+    mY = dClamp ( mY, rc.mY, rc.bottom() );
+    r = dClamp ( r, rc.mX, rc.right() );
+    b = dClamp ( b, rc.mY, rc.bottom() );
+    mW = r - mX;
+    mH = b - mY;
+}
+
+
+inline void CXRect::scaleY ( double scale, long yRef )
+{
+    mY = dScale ( mY, yRef, scale );
+    mH *= scale;
+}
+
+inline void CXRect::scaleX ( double scale, long xRef )
+{
+    mX = dScale ( mX, xRef, scale );
+    mW *= scale;
+}
+
+inline void CXRect::scale ( double scale, long xref, long yref )
+{
+    scaleX ( scale, xref );
+    scaleY ( scale, yref );
 }

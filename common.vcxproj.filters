@@ -86,7 +86,9 @@
     <ClInclude Include="luawrapper-master\utility.h">
       <Filter>luaWrapper</Filter>
     </ClInclude>
-    <ClInclude Include="XCharString.h" />
+    <ClInclude Include="uString.h" />
+    <ClInclude Include="uEncodingHelper.h" />
+    <ClInclude Include="uRefCounter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="luawrapper-master\README.md" />
