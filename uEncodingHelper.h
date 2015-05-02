@@ -1,7 +1,7 @@
 #ifndef uEncodingHelper_h__
 #define uEncodingHelper_h__
 #include <xlocale>
-#include "XBuffer.h"
+#include "uBuffer.h"
 #include <stdlib.h>
 #include "base.h"
 enum Encoding

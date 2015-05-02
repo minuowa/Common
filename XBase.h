@@ -26,7 +26,7 @@
 #include "XMath.h"
 #include "XDelegate.h"
 #include "XProp.h"
-#include "XBuffer.h"
+#include "uBuffer.h"
 #include "XIndex.h"
 #include "ustring.h"
 #include "XRandom.h"
