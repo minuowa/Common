@@ -19,7 +19,8 @@ public:
     /** @brief with default encoding **/
     uString ( const char* str );
     uString ( const wchar_t* str );
-    uString ( const uString& str, bool sharedata = true );
+    //uString ( const uString& str, bool sharedata  );
+    uString ( const uString& str );
 
     uString& set ( const char* str, Encoding en = Encoding_Default );
     Encoding encoding() const;
@@ -90,7 +91,7 @@ public:
         assert ( i < mLengthOfByte );
         return mRef.pointer() [i];
     }
-    wchar_t atw ( size_t i ) const
+    wchar_t& atw ( size_t i ) const
     {
         assert ( mEncoding == Encoding_Unicode && i < mLengthOfByte );
         return mRef.pointerw() [i];
@@ -214,17 +215,23 @@ inline bool operator < ( const uString& lhs, const uString& rhs )
     else
         return len0 < len1;
 }
-inline uString::uString ( const uString& str, bool sharedata )
+//inline uString::uString ( const uString& str, bool sharedata )
+//    : mEncoding ( str.mEncoding )
+//{
+//    if ( sharedata )
+//    {
+//        mRef = str.mRef;
+//    }
+//    else
+//    {
+//        mRef.copyData ( str.mRef );
+//    }
+//    mLengthOfByte = str.sizeOfByte();
+//}
+inline uString::uString ( const uString& str )
     : mEncoding ( str.mEncoding )
 {
-    if ( sharedata )
-    {
-        mRef = str.mRef;
-    }
-    else
-    {
-        mRef.copyData ( str.mRef );
-    }
+    mRef.copyData ( str.mRef );
     mLengthOfByte = str.sizeOfByte();
 }
 
@@ -255,7 +262,7 @@ inline uString uString::operadd ( const char* str )
 {
     assert ( str );
     size_t len = strlen ( str ) ;
-    uString thiscopy ( *this, false );
+    uString thiscopy ( *this/*, false*/ );
 
     uString tmp ( mEncoding );
     tmp.constructByType ( str, len, Encoding_Default, mEncoding );
@@ -301,7 +308,7 @@ inline uString uString::operadd ( const wchar_t* str )
 {
     assert ( str );
     size_t len = wcslen ( str ) ;
-    uString thiscopy ( *this, false );
+    uString thiscopy ( *this/*, false*/ );
 
     uString tmp ( mEncoding );
     tmp.constructByType ( str, mEncoding );
@@ -497,13 +504,13 @@ inline size_t uString::find ( const char c ) const
 inline size_t uString::find_last_of ( const wchar_t* str, size_t start /*= npos */ ) const
 {
     std::wstring src = unicode().c_strw();
-    return src.find ( str );
+    return src.find_last_of ( str, start );
 }
 inline size_t uString::find_last_of ( const char* str, size_t start /*= npos */ ) const
 {
     std::wstring src = unicode().c_strw();
     uString dst = str;
-    return src.find ( dst.unicode().c_strw(), start );
+    return src.find_last_of ( dst.unicode().c_strw(), start );
 }
 inline size_t uString::find_last_of ( char c, size_t start /*= npos*/ ) const
 {
@@ -511,14 +518,14 @@ inline size_t uString::find_last_of ( char c, size_t start /*= npos*/ ) const
     str[0] = c;
     std::wstring src = unicode().c_strw();
     uString dst = str;
-    return src.find ( dst.unicode().c_strw(), start );
+    return src.find_last_of ( dst.unicode().c_strw(), start );
 }
 inline size_t uString::find_last_of ( wchar_t c, size_t start /*= npos*/ ) const
 {
     wchar_t str[2] = {0};
     str[0] = c;
     std::wstring src = unicode().c_strw();
-    return src.find ( str, start );
+    return src.find_last_of ( str, start );
 }
 inline size_t uString::find ( const wchar_t c ) const
 {
@@ -572,6 +579,7 @@ inline uString uString::utf8() const
 inline void uString::clear()
 {
     mLengthOfByte = 0;
+    mRef.setzero();
 }
 
 inline size_t uString::length() const
@@ -599,7 +607,7 @@ inline uString& uString::append ( const char* str )
     tmp.constructByType ( str, len, Encoding_Default, mEncoding );
     size_t dstlen = mLengthOfByte + tmp.sizeOfByte();
 
-    if ( this->capacity() >= dstlen )
+    if ( this->capacity() >= dstlen + 1 )
     {
         dMemoryCopy ( ( void* ) (  tail() ), ( void* ) tmp.data(), tmp.sizeOfByte() );
         mLengthOfByte = dstlen;
@@ -607,7 +615,7 @@ inline uString& uString::append ( const char* str )
     }
     else
     {
-        uString thiscopy ( *this, false );
+        uString thiscopy ( *this/*, false*/ );
         mRef.reallocate ( dstlen );
         assert ( mRef.capcity() >= dstlen );
         if ( thiscopy.data() )
@@ -649,7 +657,7 @@ inline uString& uString::append ( const wchar_t* str )
     }
     else
     {
-        uString thiscopy ( *this, false );
+        uString thiscopy ( *this/*, false*/ );
         mRef.reallocate ( dstlen );
         assert ( mRef.capcity() >= dstlen );
         if ( thiscopy.data() )

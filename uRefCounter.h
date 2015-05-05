@@ -80,39 +80,48 @@ public:
     {
         if ( counter.capcity() > 0 )
         {
-            reallocate ( counter.capcity() );
+            reallocInner ( counter.capcity() );
             assert ( mSize == counter.capcity() );
             dMemoryCopy ( mData, counter.pointer(), mSize );
         }
     }
     void reallocate ( size_t size )
     {
-        setzero();
-        if ( size == mSize )
-            return;
-        if ( size > mSize )
-        {
-            /** @brief extend capacity **/
-            expand ( size );
-            return;
-        }
-        /** @brief shrink capacity **/
-        size_t tarcnt = mSize;
-        while ( size < tarcnt && tarcnt > 1 )
-        {
-            tarcnt = tarcnt >> 1;
-        }
-        if ( tarcnt != 0X10000000 )
-            tarcnt = tarcnt << 1;
-        else
-            tarcnt = size;
-        if ( tarcnt == mSize )
-            return;
-        mSize = tarcnt;
-        realloc();
+        size += 1;
+        reallocInner(size);
     }
-
+	inline void setzero()
+	{
+		if ( mData )
+			dMemoryZero ( mData, mSize );
+	}
 private:
+	void reallocInner(size_t size)
+	{
+		setzero();
+		if ( size == mSize )
+			return;
+		if ( size > mSize )
+		{
+			/** @brief extend capacity **/
+			expand ( size );
+			return;
+		}
+		/** @brief shrink capacity **/
+		size_t tarcnt = mSize;
+		while ( size < tarcnt && tarcnt > 1 )
+		{
+			tarcnt = tarcnt >> 1;
+		}
+		if ( tarcnt != 0X10000000 )
+			tarcnt = tarcnt << 1;
+		else
+			tarcnt = size;
+		if ( tarcnt == mSize )
+			return;
+		mSize = tarcnt;
+		realloc();
+	}
     void copy ( const  uRefCounter& src )
     {
         decref();
@@ -142,17 +151,11 @@ private:
     }
     void realloc()
     {
-        if ( mSize < 2 )
-            mSize = 2;
         delete []mData;
         mData = new char[mSize];
         setzero();
     }
-    inline void setzero()
-    {
-        if ( mData )
-            dMemoryZero ( mData, mSize );
-    }
+
 private:
     int* mRefCount;
     size_t mSize;

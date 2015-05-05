@@ -176,7 +176,7 @@ inline void CXFileName::ConvertToStandSpliter ( uString& path )
 {
     for ( uString::size_type i = 0; i < path.length(); ++i )
     {
-        char ch = path[i];
+        char& ch = path[i];
         if ( ch == PathSpliterEx )
             ch = PathSpliter;
     }

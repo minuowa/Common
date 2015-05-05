@@ -36,9 +36,9 @@ typedef unsigned char uchar;
 #ifndef OUT
 #define OUT
 #endif
-#define CXASSERT(exp)				if(!(exp)){__debugbreak();}
-#define CXASSERT_RETURN(exp)		if(!(exp)){__debugbreak();return;}
-#define CXASSERT_RETURN_FALSE(exp)	if(!(exp)){__debugbreak();return false;}
+#define CXASSERT(exp)				if(!(exp)){assert(0);}
+#define CXASSERT_RETURN(exp)		if(!(exp)){assert(0);return;}
+#define CXASSERT_RETURN_FALSE(exp)	if(!(exp)){assert(0);return false;}
 
 #define CXCheck(exp) assert(exp)
 
