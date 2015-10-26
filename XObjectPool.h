@@ -34,7 +34,7 @@ public:
     void allocateChunk ( int chunkSize = mDefaultChunkSize );
 protected:
     class queue<T*> mFreeList;
-    class vector<void*> mAllObjects;
+    class vector<T*> mAllObjects;
 
     int mChunkSize;
     static const int mDefaultChunkSize = 32;
@@ -57,10 +57,12 @@ CXObjectPool<T>::CXObjectPool ( int chunkSize ) /*throw ( std::invalid_argument,
 template <typename T>
 void CXObjectPool<T>::allocateChunk ( int chunkSize )
 {
-    T * block = ( T* ) malloc ( sizeof ( T ) *  chunkSize );
-    mAllObjects.push_back ( block );
     for ( int i = 0; i < chunkSize; ++i )
-        mFreeList.push ( &block[i] );
+	{
+		T * block = new T() ;
+		mAllObjects.push_back ( block );
+		mFreeList.push ( block );
+	}
 }
 
 
@@ -68,7 +70,7 @@ template <typename T>
 CXObjectPool<T>::~CXObjectPool()
 {
 for ( auto p: mAllObjects )
-        free ( p );
+        delete ( p );
 }
 
 template <typename T>

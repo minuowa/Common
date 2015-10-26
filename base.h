@@ -22,8 +22,6 @@ typedef unsigned int u32;
 typedef int s32;
 typedef unsigned char uchar;
 
-#pragma comment(lib,"lua.lib")
-
 #pragma warning(disable:4244)
 #pragma warning(disable:4251)//需要有 dll 接口由 class“GRectNode”的客户端使用
 #pragma warning(disable:4275)
@@ -236,3 +234,13 @@ void dCast ( T1* dst, T2 src )
 
 #define DOUBLE_MAX (1.79E+308)
 #define DOUBLE_MIN (-DOUBLE_MAX)
+
+#include <sys\stat.h>
+
+
+inline bool dIsPath ( const char* str )
+{
+	struct stat info;
+	stat ( str, &info );
+	return ( ( ( info.st_mode ) & S_IFMT ) == S_IFDIR );
+}

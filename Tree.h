@@ -1,21 +1,20 @@
 #pragma once
 template<typename T>
-class CXTreeNode
+class TreeNode
 {
 public:
-    typedef CXTreeNode<T> MyType;
-    typedef CXDynaArray<T*> Array;
+    typedef TreeNode<T> MyType;
 protected:
-    CXDynaArray<MyType*> mChildren;
-    CXTreeNode* mParent;
+    Array<MyType*> mChildren;
+    TreeNode* mParent;
 private:
     T* mData;
 public:
-    ~CXTreeNode()
+    ~TreeNode()
     {
         this->destroy();
     }
-    CXTreeNode ( void )
+    TreeNode ( void )
         : mData ( 0 )
         , mParent ( 0 )
     {
@@ -24,7 +23,7 @@ public:
 	{
 		return mChildren.size();
 	}
-	const CXDynaArray<MyType*>& children()
+	const Array<MyType*>& children()
 	{
 		return mChildren;
 	}
@@ -36,7 +35,7 @@ public:
     {
         return mData;
     }
-    void addToArray ( Array& arr )
+    void addToArray ( Array<T*>& arr )
     {
         arr.push_back ( mData );
 for ( auto i: mChildren )
@@ -161,14 +160,13 @@ for ( auto i: mChildren )
 };
 
 template<typename T>
-class CXTree
+class Tree
 {
 public:
-    typedef CXTreeNode<T> Node;
-    typedef CXDynaArray<T*> Array;
-    typedef CXTree<T> MyType;
+    typedef TreeNode<T> Node;
+    typedef Tree<T> MyType;
 public:
-    ~CXTree()
+    ~Tree()
     {
         mNodes.destroy();
     }
@@ -238,7 +236,7 @@ for ( auto i: mNodes )
     {
         dSafeDeleteVector ( mNodes );
     }
-    void toArray ( Array& arr )
+    void toArray ( Array<T*>& arr )
     {
 for ( auto i: mNodes )
         {
@@ -256,10 +254,10 @@ for ( auto i: mNodes )
         CXCheck ( child != nullptr );
         mNodes.remove ( child );
     }
-	const CXDynaArray<Node*> getNodes()
+	const Array<Node*> getNodes()
 	{
 		return mNodes;
 	}
 private:
-    CXDynaArray<Node*> mNodes;
+    Array<Node*> mNodes;
 };

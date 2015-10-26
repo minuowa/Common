@@ -1,5 +1,5 @@
 #pragma once
-#include "XDynaArray.h"
+#include "Array.h"
 #include "base.h"
 class CXDelegate;
 struct CXEventArgs
@@ -20,10 +20,10 @@ public:
     }
 };
 
-class CXDelegate: public CXDynaArray<CXCallBack*>
+class CXDelegate: public Array<CXCallBack*>
 {
 public:
-    typedef CXDynaArray<CXCallBack*> SuperType;
+    typedef Array<CXCallBack*> SuperType;
     virtual ~CXDelegate ( void )
 	{
 

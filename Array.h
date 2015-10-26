@@ -3,8 +3,12 @@
 #include <vector>
 #include <algorithm>
 //--------------------------------------------------------------------------------------------------
+
+#pragma warning(push)
+#pragma warning(disable:4150)
+
 template<typename T>
-class CXDynaArray : public std::vector<T>
+class Array : public std::vector<T>
 {
 public:
     bool Find ( const T& rhs )
@@ -49,6 +53,7 @@ public:
         this->clear();
     }
 };
+#pragma warning(pop)
 
 #endif // XDynaArray_h__
 

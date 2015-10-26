@@ -8,14 +8,13 @@
 
 #ifndef CPP1999
 #include "XHashMap.h"
-#include "XLuaScript.h"
 #include "XStrongPtr.h"
 #include "XWeakPtr.h"
 #include "XMultiMap.h"
 #endif
 
 #include "XList.h"
-#include "XDynaArray.h"
+#include "Array.h"
 #include "XStaticArray.h"
 #include "XStack.h"
 #include "XBiTree.h"
@@ -41,8 +40,9 @@
 #include "XPoint2.h"
 #include "XLexer.h"
 
-#include "XTreeNode.h"
+#include "Tree.h"
 #include "uString.h"
+#include "uPathFinder.h"
 
 #define DeclareFilmObj(type)
 #define DeclareFilmObjBase(type,parentType)
@@ -96,7 +96,7 @@ for ( auto & e: children )
 template<typename T, typename CondtionObj>
 T* dFindNextElementInTreeCycle ( T*  parent, T* cur, CondtionObj& funObj )
 {
-    CXDynaArray<T*> dstArray;
+    Array<T*> dstArray;
     bool begin = parent == cur;
     bool end = parent == cur;
     takeElementToTopFromTreeToVector ( dstArray, parent, cur, begin );
@@ -104,7 +104,7 @@ T* dFindNextElementInTreeCycle ( T*  parent, T* cur, CondtionObj& funObj )
     return dFindNextElementInArray ( dstArray, cur, funObj );
 }
 template<typename T>
-void takeElementToTopFromTreeToVector ( CXDynaArray<T*>& dstArray, T* parent, T* cur, bool& begin )
+void takeElementToTopFromTreeToVector ( Array<T*>& dstArray, T* parent, T* cur, bool& begin )
 {
     if ( parent == cur )
         begin = true;
@@ -115,7 +115,7 @@ for ( auto & a: children )
         takeElementToTopFromTreeToVector ( dstArray, a, cur, begin );
 }
 template<typename T>
-void takeElementToVectorUntil ( CXDynaArray<T*>& dstArray, T* parent, T* cur, bool& end )
+void takeElementToVectorUntil ( Array<T*>& dstArray, T* parent, T* cur, bool& end )
 {
     if ( parent == cur )
     {
@@ -130,15 +130,7 @@ for ( auto & a: children )
 
 }
 
-#include <sys\stat.h>
 
-
-inline bool dIsPath ( const char* str )
-{
-	struct stat info;
-	stat ( str, &info );
-	return ( ( ( info.st_mode ) & S_IFMT ) == S_IFDIR );
-}
 
 //--------------------------------------------------------------------------------------------------
 #endif // CXBase_h__

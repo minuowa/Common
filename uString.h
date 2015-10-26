@@ -63,6 +63,14 @@ public:
     size_t find_last_of ( const char* str, size_t start = npos ) const;
     size_t find_last_of ( const wchar_t* str, size_t start = npos ) const;
     void clear();
+
+	bool end_with(const char* str);
+	bool end_withw(const wchar_t* str);
+
+	uString& trim_leftw();
+	uString& trim_rightw();
+	uString& trim();
+	uString& trimw();
 public:
     /** @brief with default encoding **/
     uString& operator= ( const char* str );
@@ -85,6 +93,10 @@ public:
 
     uString& append ( size_t cnt, wchar_t c );
     uString& append ( const wchar_t* str );
+
+	bool operator== ( const char* str );
+	bool operator!= ( const char* str );
+
 
     char at ( size_t i ) const
     {
@@ -132,45 +144,40 @@ public:
             arr.push_back ( ele );
     }
 private:
-    //non thread safe
-    static uBuffer& getBuffer()
-    {
-        static uBuffer Buffer ( uEncodingHelper::BufferSize );
-        static _LocatSetter setter;
-        return Buffer;
-    }
-    bool convertTo ( Encoding src, Encoding dst, const char* str, size_t len )
+
+    bool convertTo ( uBuffer& buffer,Encoding src, Encoding dst, const char* str, size_t len )
     {
         uEncodingHelper::EncodingConverter convert = uEncodingHelper::getConverter ( src, dst );
         if ( convert )
         {
-            return convert ( getBuffer(), ( const char* ) str, len );
+            return convert ( buffer, ( const char* ) str,len);
         }
         return false;
     }
-    bool convertTo ( Encoding src, Encoding dst, const wchar_t* str, size_t len )
+    bool convertTo ( uBuffer& buffer,Encoding src, Encoding dst, const wchar_t* str, size_t len )
     {
         uEncodingHelper::EncodingConverter convert = uEncodingHelper::getConverter ( src, dst );
         if ( convert )
         {
-            return convert ( getBuffer(), ( const char* ) str, len * 2 );
+			return convert ( buffer, ( const char* ) str, len * 2 );
         }
         return false;
     }
     void constructByType ( const char* str, size_t len, Encoding src, Encoding dst  )
     {
         assert ( str );
-        if ( convertTo ( src, dst, str, len ) )
-        {
-            uBuffer& buffer = getBuffer();
-            mLengthOfByte = buffer.size();
+		uStringBuffer stringbuffer;
+		if ( convertTo ( stringbuffer.buffer(),src, dst, str, len ) )
+		{
+			mLengthOfByte = stringbuffer.buffer().size();
             mRef.reallocate ( mLengthOfByte );
-            buffer.copyTo ( mRef.pointer() );
+            stringbuffer.buffer().copyTo ( mRef.pointer() );
         }
         else
         {
             mLengthOfByte = len ;
-            mRef.reallocate ( mLengthOfByte );
+			dMemoryCopy(stringbuffer.buffer().getPointer(),(void*)str,mLengthOfByte);
+			mRef.reallocate ( mLengthOfByte );
             dMemoryCopy ( mRef.pointer(), ( void* ) str, mLengthOfByte );
         }
     }
@@ -178,30 +185,38 @@ private:
     {
         assert ( str );
         size_t len = wcslen ( str );
-        if ( convertTo ( Encoding_Unicode, dst, str, len ) )
-        {
-            uBuffer& buffer = getBuffer();
-            mLengthOfByte = buffer.size();
+		uStringBuffer stringbuffer;
+		if ( convertTo ( stringbuffer.buffer(),Encoding_Unicode, dst, str, len ) )
+		{
+            mLengthOfByte = stringbuffer.buffer().size();
             mRef.reallocate ( mLengthOfByte );
-            buffer.copyTo ( mRef.pointer() );
+            stringbuffer.buffer().copyTo ( mRef.pointer() );
         }
         else
         {
-            mLengthOfByte = ( len/* + 1 */ ) * 2;
-            mRef.reallocate ( mLengthOfByte );
-            dMemoryCopy ( mRef.pointer(), ( void* ) str, mLengthOfByte );
+            mLengthOfByte = len * 2;
+			dMemoryCopy(stringbuffer.buffer().getPointer(),(void*)str,mLengthOfByte);
+			mRef.reallocate ( mLengthOfByte );
+			dMemoryCopy ( mRef.pointer(), stringbuffer.buffer().getPointer(), mLengthOfByte );
         }
     }
 private:
-    size_t mLengthOfByte;
+	uRefCounter mRef;
     Encoding mEncoding;
-    uRefCounter mRef;
+	size_t mLengthOfByte;
 };
 inline size_t uString::capacity() const
 {
     return mRef.capcity();
 }
-
+inline bool uString::operator== ( const char* str )
+{
+	return dStrEqual(c_str(),str);
+}
+inline bool uString::operator!= ( const char* str )
+{
+	return !dStrEqual(c_str(),str);
+}
 inline size_t hash_value ( const uString& str )
 {
     return ( std::_Hash_seq ( ( const unsigned char * ) str.data(), str.sizeOfByte() ) );
@@ -215,19 +230,7 @@ inline bool operator < ( const uString& lhs, const uString& rhs )
     else
         return len0 < len1;
 }
-//inline uString::uString ( const uString& str, bool sharedata )
-//    : mEncoding ( str.mEncoding )
-//{
-//    if ( sharedata )
-//    {
-//        mRef = str.mRef;
-//    }
-//    else
-//    {
-//        mRef.copyData ( str.mRef );
-//    }
-//    mLengthOfByte = str.sizeOfByte();
-//}
+
 inline uString::uString ( const uString& str )
     : mEncoding ( str.mEncoding )
 {
@@ -240,7 +243,19 @@ inline uString::uString ( void )
     , mLengthOfByte ( 0 )
 {
 }
-
+inline uString& uString::trimw()
+{
+	return trim_leftw().trim_rightw();
+}
+inline uString& uString::trim()
+{
+	if(mEncoding== Encoding_Unicode)
+		return trimw();
+	uString str= unicode().trimw();
+	str.setEncoding(mEncoding);
+	*this=str;
+	return *this;
+}
 inline bool uString::empty() const
 {
     return mLengthOfByte == 0;
@@ -394,13 +409,17 @@ inline uString uString::unicode() const
     {
         return uString ( *this );
     }
+	if(!mRef.pointer())
+		return uString(Encoding_Unicode);
     uString ucs2 ( Encoding_Unicode );
     ucs2.constructByType ( mRef.pointer(), mLengthOfByte, mEncoding, Encoding_Unicode );
     return ucs2;
 }
 inline uString uString::substr ( size_t start, size_t cnt /*= npos*/ ) const
 {
-    assert ( cnt > 0 );
+	if(cnt==0)
+		return uString();
+	assert ( cnt > 0 );
     assert ( start <= length() );
     if ( cnt == npos )
         cnt = length() - start;
@@ -442,8 +461,10 @@ inline uString& uString::replace ( const char* src, const char* dst )
 }
 inline uString& uString::insert ( size_t where, const char* str )
 {
-    std::wstring thiscopy = unicode().c_strw();
-    uString sdst = str;
+    std::wstring thiscopy;
+	if(mLengthOfByte>0)
+		thiscopy= unicode().c_strw();
+	uString sdst = str;
     thiscopy.insert ( where, sdst.unicode().c_strw() );
     constructByType ( thiscopy.c_str(), mEncoding );
     return *this;
@@ -480,7 +501,8 @@ inline void uString::format ( const char* fmt, ... )
 {
     va_list ap;
     va_start ( ap, fmt );
-    uBuffer& buffer = getBuffer();
+	uStringBuffer stringbuffer;
+    uBuffer& buffer = stringbuffer.buffer();
     vsnprintf_s ( buffer.getPointer(), buffer.length(), _TRUNCATE, fmt, ap );
     va_end ( ap );
     size_t len = strlen ( buffer.getPointer() ) ;
@@ -631,7 +653,8 @@ inline uString&  uString::append ( size_t cnt, char c )
     {
         return *this;
     }
-    uBuffer& buffer = getBuffer();
+	uStringBuffer stringbuffer;
+	uBuffer& buffer = stringbuffer.buffer();
     buffer.setSize ( cnt + 1 );
     assert ( cnt < buffer.capacity() );
     memset ( buffer.getPointer(), c, cnt );
@@ -673,13 +696,81 @@ inline uString&  uString::append ( size_t cnt, wchar_t c )
     {
         return *this;
     }
-    uBuffer& buffer = getBuffer();
+	uStringBuffer stringbuffer;
+	uBuffer& buffer = stringbuffer.buffer();
     buffer.setSize ( cnt * 2 );
     assert ( cnt < buffer.capacity() );
     memset ( buffer.getPointer(), c, cnt * sizeof ( wchar_t ) );
     buffer.set ( cnt, L'\0' );
     append ( buffer.getWChar() );
     return *this;
+}
+
+inline uString& uString::trim_leftw()
+{
+	assert ( mEncoding == Encoding_Unicode );
+	wchar_t* _start=(wchar_t*)c_strw();
+	for (;*_start!=L'\0';++_start)
+	{
+		wchar_t& c=*_start;
+		if(c!=' '&&c!='\t'&&c!='\n'&&c!='\r')
+			break;
+	}
+	constructByType(_start,mEncoding);
+	return *this;
+}
+
+inline uString& uString::trim_rightw()
+{
+	int _end=0;
+	if(length()>0)
+	{
+		_end=length()-1;
+		for (;_end>=0;--_end)
+		{
+			wchar_t& c=atw(_end);
+			if(c!=' '&&c!='\t'&&c!='\n'&&c!='\r')
+				break;
+		}
+	}
+
+	if(0<=_end)
+	{
+		constructByType(substr(0,_end+1).c_strw(),mEncoding);
+	}
+	return *this;
+}
+
+inline bool uString::end_with( const char* str )
+{
+	if(str==nullptr)
+		return false;
+	if(length()==0)
+		return false;
+	if(mEncoding!=Encoding_Unicode)
+	{
+		return length()-1==find_last_of(str);
+	}
+	else
+	{
+		return ansi().end_with(str);
+	}
+}
+
+inline bool uString::end_withw( const wchar_t* str )
+{
+	if(str==nullptr)
+		return false;
+	if(length()==0)
+		return false;
+	if(mEncoding==Encoding_Unicode)
+	{
+		return length()-1==find_last_of(str);
+	}
+	else
+	{
+		return unicode().end_withw(str);
+	}
 }
 
 #endif // uString_h__

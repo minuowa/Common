@@ -1,7 +1,7 @@
 #ifndef XFileName_h__
 #define XFileName_h__
 #include "uString.h"
-#include "XDynaArray.h"
+#include "Array.h"
 
 class CXFileName
 {
@@ -13,7 +13,8 @@ public:
 
     CXFileName ( const char* fileName );
     const char* GetRelativePath ();
-    const char* GetFileName ();
+	const char* GetFileName ();
+	uString GetFileNameWithOutExt ();
     const char* GetRelativeFileName ();
     const char* GetFullFileName();
     void GetLastPath ( uString& lastPath );
@@ -74,8 +75,8 @@ inline bool CXFileName::MakeRelativeFileName ( const char* fileName, uString& pa
     CXASSERT_RETURN_FALSE ( GetAbsolutePath ( appname, apppath ) );
 
     uString fullname ( fileName );
-    CXDynaArray<uString>  eles0;
-    CXDynaArray<uString>  eles1;
+    Array<uString>  eles0;
+    Array<uString>  eles1;
 
     apppath.split ( PathSpliter, eles0 );
     fullname.split ( PathSpliter, eles1 );
@@ -132,7 +133,7 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, uString& path )
     CXASSERT_RETURN_FALSE ( GetDirectory ( str, dir ) );
     uString fullName = str;
     CXASSERT_RETURN_FALSE ( fullName.length() >= 2  );
-    CXDynaArray<uString> stack;
+    Array<uString> stack;
     uString ele;
     for ( uString::size_type i = 0; i < fullName.length() - 2; ++i )
     {
@@ -155,7 +156,7 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, uString& path )
     ele.append ( 1, fullName[fullName.length() - 2] );
     ele.append ( 1, fullName[fullName.length() - 1] );
     stack.push_back ( ele );
-    for ( CXDynaArray<uString>::iterator walk = stack.begin(); walk != stack.end(); ++walk )
+    for ( Array<uString>::iterator walk = stack.begin(); walk != stack.end(); ++walk )
     {
         path.append ( *walk );
         path.append ( 1, PathSpliter );
@@ -356,6 +357,11 @@ inline bool CXFileName::MakeFullFileName ( const char* fileName, uString& fullFi
 inline const char* CXFileName::GetFullFileName()
 {
     return mFullFileName;
+}
+
+inline uString CXFileName::GetFileNameWithOutExt()
+{
+	return mFileName.substr(0,mFileName.find(Dot));
 }
 
 

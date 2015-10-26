@@ -4,6 +4,7 @@
 #include "uBuffer.h"
 #include <stdlib.h>
 #include "base.h"
+#include "XObjectPool.h"
 enum Encoding
 {
     Encoding_ANSI,
@@ -22,22 +23,46 @@ class _LocatSetter
 public:
     _LocatSetter()
     {
+		///此处有内存泄露？
         std::locale::global ( std::locale ( "" ) ) ;
     }
 };
+class uStringBuffer
+{
+	static CXObjectPool<uBuffer>& getBufferPool()
+	{
+		static _LocatSetter setter;
+		static CXObjectPool<uBuffer> bufferpool(4);
+		return bufferpool;
+	}
+public:
+	static const int BufferSize = 1024 * 128;
+
+	uStringBuffer()
+		:_buffer(0)
+	{
+		_buffer=getBufferPool().acquireObject();
+		if(_buffer->size()==0)
+			_buffer->reAllocate(BufferSize);
+	}
+	~uStringBuffer()
+	{
+		_buffer->clear();
+		getBufferPool().releaseObject(_buffer);
+	}
+	uBuffer& buffer()
+	{
+		return *_buffer;
+	}
+private:
+	uBuffer* _buffer;
+};
+
 class uEncodingHelper
 {
 public:
-    static const int BufferSize = 1024 * 128;
 
-    typedef bool ( *EncodingConverter ) ( uBuffer& ,  const Char* , size_t );
-
-    static uBuffer& getBuffer()
-    {
-        static uBuffer buffer ( BufferSize );
-        static _LocatSetter setter;
-        return buffer;
-    }
+    typedef bool ( *EncodingConverter ) ( uBuffer& ,  const Char* , size_t);
 
     //static bool convertAnsiToUnicode ( uBuffer& buffer, const  Char* data, size_t len );
     //static bool convertUtf8ToUnicode ( uBuffer& buffer, const  Char* data, size_t len );
@@ -68,8 +93,9 @@ public:
         errno_t error = mbstowcs_s ( &sz, ( wchar_t* ) buffer.getPointer(), buffer.capacity() / sizeof ( wchar_t ), data, len );
         /** @brief tail is '\0' **/
         assert ( sz > 0 );
-        buffer.setSize ( ( sz - 1 ) * sizeof ( wchar_t ) );
-        return error == 0;
+		len= ( sz - 1 ) * sizeof ( wchar_t );
+		buffer.setSize ( len);
+		return error == 0;
     }
     static inline size_t countOfUtf8Char ( char& c )
     {
@@ -233,14 +259,14 @@ public:
 
     static  bool convertAnsiToUtf8 ( uBuffer& buffer, const  Char* data, size_t len )
     {
-        uBuffer& ebuffer = getBuffer();
-        bool res = convertAnsiToUnicode ( ebuffer, data, len );
+		uStringBuffer stringbuffer;
+        bool res = convertAnsiToUnicode ( stringbuffer.buffer(), data, len );
         if ( !res )
         {
             assert ( 0 );
             return false;
         }
-        res = convertUnicodeToUtf8 ( buffer, ebuffer.getPointer(), ebuffer.size() );
+        res = convertUnicodeToUtf8 ( buffer, stringbuffer.buffer().getPointer(), stringbuffer.buffer().size() );
 
         return res;
     }
@@ -264,14 +290,14 @@ public:
     }
     static  bool convertUtf8ToAnsi ( uBuffer& buffer, const  Char* data, size_t len )
     {
-        uBuffer& ebuffer = getBuffer();
-        bool res = convertUtf8ToUnicode ( ebuffer, data, len );
+		uStringBuffer stringbuffer;
+		bool res = convertUtf8ToUnicode ( stringbuffer.buffer(), data, len );
         if ( !res )
         {
             assert ( 0 );
             return false;
         }
-        res = convertUnicodeToAnsi ( buffer, ebuffer.getPointer(), ebuffer.size() );
+        res = convertUnicodeToAnsi ( buffer, stringbuffer.buffer().getPointer(), stringbuffer.buffer().size() );
 
         return res;
     }

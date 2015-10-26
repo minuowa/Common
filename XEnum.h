@@ -1,5 +1,5 @@
 #pragma once
-#include "XDynaArray.h"
+#include "Array.h"
 struct CXEnumStruct
 {
 	const char* mName;
@@ -10,7 +10,7 @@ struct CXEnumStruct
 	}
 };
 
-typedef CXDynaArray<CXEnumStruct*> CXEnumStructList;
+typedef Array<CXEnumStruct*> CXEnumStructList;
 template<typename T>
 class CXEnumStructHelper
 {

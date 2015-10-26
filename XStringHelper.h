@@ -32,7 +32,7 @@ inline void CXStringHelper::toString ( std::string& dst, uString* var )
 
 inline void CXStringHelper::toString ( std::string& dst, bool* var )
 {
-    dst = ( *var ) ? "True" : "False";
+    dst = ( *var ) ? "true" : "false";
 }
 
 

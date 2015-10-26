@@ -23,7 +23,28 @@ public:
 	}
 
 };
-
+inline void releaseXMLAttribte(CXRapidxmlNode* node)
+{
+	for(CXRapidxmlAttr* attr=node->first_attribute();attr;)
+	{
+		CXRapidxmlAttr* tmp=attr;
+		attr=attr->next_attribute();
+		delete tmp;
+	}
+}
+inline void releaseXMLNode(CXRapidxmlNode* node)
+{
+	CXRapidxmlNode* child=node->first_node();
+	CXRapidxmlNode* sibling=nullptr;
+	if(node->parent())
+		sibling=node->next_sibling();
+	if(child)
+		releaseXMLNode(child);
+	if(sibling)
+		releaseXMLNode(sibling);
+	releaseXMLAttribte(node);
+	delete node;
+}
 #include <fstream>
 #include "Rapidxml\rapidxml.hpp"
 #include "Rapidxml\rapidxml_print.hpp"
@@ -53,7 +74,8 @@ inline bool CXRapidxmlWriter::Write ( const char* name )
 
 inline CXRapidxmlWriter::~CXRapidxmlWriter ( void )
 {
-
+	if(mRootNode)
+		releaseXMLNode(mRootNode);
 }
 
 inline CXRapidxmlWriter::CXRapidxmlWriter()

@@ -29,7 +29,7 @@ public:
     void addElement ( T v );
     template<typename T>
     void addElement ( T* v, u32 cnt );
-
+	void addString(const char* str);
     //template<typename T>
     //T& operator[] ( u32 idx )
     //{
@@ -171,6 +171,16 @@ inline void uBuffer::setSize ( u32 size )
 inline wchar_t* uBuffer::getWChar()
 {
     return mWData;
+}
+
+inline void uBuffer::addString( const char* str )
+{
+	CXASSERT(str);
+	CXASSERT ( mData );
+	CXASSERT(mElementByteCount==1);
+	size_t cnt=strlen(str)+1;
+	dMemoryCopy ( &mData[mCount * mElementByteCount], (void*)str, cnt * mElementByteCount );
+	mCount += cnt;
 }
 
 #endif // uBuffer_h__

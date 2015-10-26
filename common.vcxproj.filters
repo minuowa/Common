@@ -7,12 +7,10 @@
     <ClInclude Include="XHashMap.h" />
     <ClInclude Include="XIDObjectManager.h" />
     <ClInclude Include="XLexer.h" />
-    <ClInclude Include="XLuaScript.h" />
     <ClInclude Include="XObjectPool.h" />
     <ClInclude Include="XPoint2.h" />
     <ClInclude Include="XRect.h" />
     <ClInclude Include="XStrongPtr.h" />
-    <ClInclude Include="XTreeNode.h" />
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="XEaser.h" />
     <ClInclude Include="XStringHelper.h" />
@@ -25,7 +23,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="XBase.h" />
     <ClInclude Include="XBiTree.h" />
-    <ClInclude Include="XBuffer.h" />
     <ClInclude Include="XFileLoader.h" />
     <ClInclude Include="XList.h" />
     <ClInclude Include="XMap.h" />
@@ -38,30 +35,6 @@
     <ClInclude Include="XStack.h" />
     <ClInclude Include="XTime.h" />
     <ClInclude Include="XWeakPtr.h" />
-    <ClInclude Include="luawrapper-master\PopValue.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\luaClass.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\luacommon.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\luaFunction.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\luaObject.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\luaWrapper.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\ObjPush.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\any.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
     <ClInclude Include="Rapidxml\rapidxml.hpp">
       <Filter>rapidxml</Filter>
     </ClInclude>
@@ -77,29 +50,23 @@
     <ClInclude Include="Rapidxml\rapidxml_utils.hpp">
       <Filter>rapidxml</Filter>
     </ClInclude>
-    <ClInclude Include="luawrapper-master\Trait.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\TypeList.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
-    <ClInclude Include="luawrapper-master\utility.h">
-      <Filter>luaWrapper</Filter>
-    </ClInclude>
     <ClInclude Include="uString.h" />
     <ClInclude Include="uEncodingHelper.h" />
     <ClInclude Include="uRefCounter.h" />
+    <ClInclude Include="Array.h" />
+    <ClInclude Include="Tree.h" />
+    <ClInclude Include="uPathFinder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="luawrapper-master\README.md" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="luaWrapper">
-      <UniqueIdentifier>{55287817-5ee2-45a6-a604-81c6c3078cdd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="rapidxml">
       <UniqueIdentifier>{00e20d9d-591e-40b4-94b0-251e72724c25}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="uPathFinder.cpp" />
   </ItemGroup>
 </Project>

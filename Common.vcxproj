@@ -104,10 +104,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <Lib>
-      <AdditionalDependencies>lua.lib</AdditionalDependencies>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>.\lua51\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
@@ -161,31 +162,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
-    <ClInclude Include="luawrapper-master\any.h" />
-    <ClInclude Include="luawrapper-master\luaClass.h" />
-    <ClInclude Include="luawrapper-master\luacommon.h" />
-    <ClInclude Include="luawrapper-master\luaFunction.h" />
-    <ClInclude Include="luawrapper-master\luaObject.h" />
-    <ClInclude Include="luawrapper-master\luaWrapper.h" />
-    <ClInclude Include="luawrapper-master\ObjPush.h" />
-    <ClInclude Include="luawrapper-master\PopValue.h" />
-    <ClInclude Include="luawrapper-master\Trait.h" />
-    <ClInclude Include="luawrapper-master\TypeList.h" />
-    <ClInclude Include="luawrapper-master\utility.h" />
     <ClInclude Include="uEncodingHelper.h" />
+    <ClInclude Include="uPathFinder.h" />
     <ClInclude Include="uRefCounter.h" />
     <ClInclude Include="uString.h" />
     <ClInclude Include="XBitArray.h" />
     <ClInclude Include="XColor.h" />
+    <ClInclude Include="Array.h" />
     <ClInclude Include="XHashMap.h" />
     <ClInclude Include="XIDObjectManager.h" />
     <ClInclude Include="XLexer.h" />
-    <ClInclude Include="XLuaScript.h" />
     <ClInclude Include="XObjectPool.h" />
     <ClInclude Include="XPoint2.h" />
     <ClInclude Include="XRect.h" />
     <ClInclude Include="XStrongPtr.h" />
-    <ClInclude Include="XTreeNode.h" />
+    <ClInclude Include="Tree.h" />
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="XEaser.h" />
     <ClInclude Include="XStringHelper.h" />
@@ -199,7 +190,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="XBase.h" />
     <ClInclude Include="XBiTree.h" />
-    <ClInclude Include="XBuffer.h" />
     <ClInclude Include="XFileLoader.h" />
     <ClInclude Include="XList.h" />
     <ClInclude Include="XMap.h" />
@@ -220,6 +210,9 @@
   <ItemGroup>
     <None Include="luawrapper-master\README.md" />
     <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="uPathFinder.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

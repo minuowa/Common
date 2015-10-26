@@ -157,12 +157,12 @@ private:
     }
 
 private:
-    int* mRefCount;
-    size_t mSize;
     union
     {
         char* mData;
         wchar_t* mWData;
     };
+	size_t mSize;
+	int* mRefCount;
 };
 

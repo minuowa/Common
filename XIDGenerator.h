@@ -22,14 +22,14 @@
 
 #ifndef _IDGENERATOR_H_
 #define _IDGENERATOR_H_
-#include "XDynaArray.h"
+#include "Array.h"
 
 class CXIDGenerator
 {
 private:
 	u32 mIdBlockBase;
 	u32 mIdRangeSize;
-	CXDynaArray<u32> mPool;
+	Array<u32> mPool;
 	u32 mNextId;
 
 	void reclaim();
