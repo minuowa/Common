@@ -118,7 +118,7 @@ CXPropEntity<T>::CXPropEntity ( T* val, bool managedMemory/*=true*/ )
 class CXPropEnum: public CXPropEntity<int>
 {
 public:
-	CXPropEnum ( int* var, const CXEnumStructList& arr, bool managedMemory = true )
+	CXPropEnum ( int* var, const uEnumStructList& arr, bool managedMemory = true )
 		: CXPropEntity ( var, managedMemory )
 		, mStringList ( arr )
 	{
@@ -133,9 +133,9 @@ public:
 	int getValue ( int idx ) const;
 	int getValue() const;
 	const char* getTheName() const;
-	const CXEnumStructList& getStructList() const;
+	const uEnumStructList& getStructList() const;
 protected:
-	const CXEnumStructList& mStringList;
+	const uEnumStructList& mStringList;
 };
 inline CXProp::~CXProp ( void )
 {
@@ -148,7 +148,7 @@ inline ePropertyType CXPropEnum::getType()
 	return eType_Enum;
 }
 
-inline const CXEnumStructList& CXPropEnum::getStructList() const
+inline const uEnumStructList& CXPropEnum::getStructList() const
 {
 	return mStringList;
 }
@@ -168,7 +168,7 @@ inline u32 CXPropEnum::getIndex ( int var ) const
 {
 	for ( u32 i = 0; i <  mStringList.size(); ++i )
 	{
-		const CXEnumStruct* est = mStringList[i];
+		const uEnumStruct* est = mStringList[i];
 		if ( var == est->mValue )
 		{
 			return i;
@@ -182,7 +182,7 @@ inline u32 CXPropEnum::getIndex ( const char* name ) const
 {
 	for ( u32 i = 0; i <  mStringList.size(); ++i )
 	{
-		const CXEnumStruct* est = mStringList[i];
+		const uEnumStruct* est = mStringList[i];
 		if ( !strcmp ( name, est->mName ) )
 		{
 			return i;

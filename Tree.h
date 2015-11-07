@@ -5,7 +5,7 @@ class TreeNode
 public:
     typedef TreeNode<T> MyType;
 protected:
-    Array<MyType*> mChildren;
+    uArray<MyType*> mChildren;
     TreeNode* mParent;
 private:
     T* mData;
@@ -23,7 +23,7 @@ public:
 	{
 		return mChildren.size();
 	}
-	const Array<MyType*>& children()
+	const uArray<MyType*>& children()
 	{
 		return mChildren;
 	}
@@ -35,7 +35,7 @@ public:
     {
         return mData;
     }
-    void addToArray ( Array<T*>& arr )
+    void addToArray ( uArray<T*>& arr )
     {
         arr.push_back ( mData );
 for ( auto i: mChildren )
@@ -236,7 +236,7 @@ for ( auto i: mNodes )
     {
         dSafeDeleteVector ( mNodes );
     }
-    void toArray ( Array<T*>& arr )
+    void toArray ( uArray<T*>& arr )
     {
 for ( auto i: mNodes )
         {
@@ -254,10 +254,10 @@ for ( auto i: mNodes )
         CXCheck ( child != nullptr );
         mNodes.remove ( child );
     }
-	const Array<Node*> getNodes()
+	const uArray<Node*> getNodes()
 	{
 		return mNodes;
 	}
 private:
-    Array<Node*> mNodes;
+    uArray<Node*> mNodes;
 };

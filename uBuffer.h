@@ -19,7 +19,7 @@ public:
     inline u32 size();
     inline void setSize ( u32 size );
     inline u32 capacity() const;
-    inline char* getPointer();
+    inline char* getPointer() const;
     inline wchar_t* getWChar();
     inline const char* getString() const;
     inline void copyTo ( void* dst );
@@ -63,7 +63,7 @@ inline u32 uBuffer::length()
 {
     return mCapacity * mElementByteCount;
 }
-inline char* uBuffer::getPointer()
+inline char* uBuffer::getPointer() const
 {
     return mData;
 }

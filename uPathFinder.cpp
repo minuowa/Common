@@ -3,6 +3,7 @@
 #include <io.h>
 #include "XFileName.hpp"
 #include <windows.h>
+#include "uPlatform.h"
 
 uPathFinder::uPathFinder(void)
 {
@@ -39,7 +40,7 @@ void uPathFinder::find( const char* path,const char* ext,CallBack call )
             {
                 CXFileName pather ( filename.c_str() );
                 uString parentPath;
-                if ( dIsPath ( filename.c_str() ) )
+                if ( uPlatform::isPath ( filename.c_str() ) )
                 {
                     if ( pather.GetParentPath ( parentPath ) )
                     {

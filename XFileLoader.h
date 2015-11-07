@@ -8,12 +8,12 @@ public:
 	~CXFileLoader( void );
 
 	bool	OpenFile( const char* name );
-	XI32	GetBufferSize();
+	u32	GetBufferSize();
 	void	Close();
 	void	ReadToBuffer( Char* buffer );
 protected:
 	FILE* mFile;
-	XI32 mFileSize;
+	u32 mFileSize;
 };
 inline CXFileLoader::CXFileLoader ( void )
 	: mFile ( 0 )
@@ -38,7 +38,7 @@ inline bool CXFileLoader::OpenFile ( const char* name )
 
 
 
-inline XI32 CXFileLoader::GetBufferSize()
+inline u32 CXFileLoader::GetBufferSize()
 {
 	return mFileSize;
 }

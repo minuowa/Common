@@ -1,32 +1,30 @@
-// stdafx.h : 标准系统包含文件的包含文件，
-// 或是经常使用但不常更改的
-// 特定于项目的包含文件
-//
+#ifndef base_h__
+#define base_h__
 
-#pragma once
 
-#include "targetver.h"
-#include <assert.h>
-
-#define WIN32_LEAN_AND_MEAN             // 从 Windows 头中排除极少使用的资料
-
-#define QUOTE_NONE_STRING ""
-
+#pragma region CommonType
 typedef char Char;
 typedef const char CChar;
 typedef wchar_t WChar;
 typedef const wchar_t CWChar;
-// TODO: 在此处引用程序需要的其他头文件
-typedef unsigned short u16;
-typedef unsigned int u32;
 typedef int s32;
+typedef unsigned int u32;
+typedef unsigned short u16;
 typedef unsigned char uchar;
+typedef unsigned char byte;
+typedef short s16;
+typedef float f32;
+#pragma endregion CommonType
 
+#pragma region WindowsWarning
 #pragma warning(disable:4244)
 #pragma warning(disable:4251)//需要有 dll 接口由 class“GRectNode”的客户端使用
 #pragma warning(disable:4275)
 #pragma warning(disable:4305)
 #pragma warning(disable:4800)
+#pragma endregion WindowsWarning
+
+#pragma region Params
 
 #ifndef IN
 #define IN
@@ -34,6 +32,13 @@ typedef unsigned char uchar;
 #ifndef OUT
 #define OUT
 #endif
+
+#define U_UNUSE(v) (void)v;
+
+#pragma endregion Params
+
+#pragma region Assert
+#include <assert.h>
 #define CXASSERT(exp)				if(!(exp)){assert(0);}
 #define CXASSERT_RETURN(exp)		if(!(exp)){assert(0);return;}
 #define CXASSERT_RETURN_FALSE(exp)	if(!(exp)){assert(0);return false;}
@@ -42,66 +47,93 @@ typedef unsigned char uchar;
 
 #define CXASSERT_RESULT(exp)		if(FAILED(exp)){__debugbreak();return;}
 #define CXASSERT_RESULT_FALSE(exp)	if(FAILED((exp))) {__debugbreak();return false;}
+#pragma endregion Assert
 
-#define BIT(n) (1<<n)
-
-#define IS2SQUARE(n) (0==(n&(n-1)))
-
-#define CXUnuse(v) (void)v;
-
-#include <xstring>
-#include <string>
+#pragma region STL
 #include <vector>
 #include <algorithm>
-
 #include <iostream>
 #include <fstream>
+#pragma endregion STL
 
+#pragma region String
+#include <string>
+#include <xstring>
 typedef std::string					stdString;
 typedef std::vector<stdString>		stdStringArr;
 //--------------------------------------------------------------------------------------------------
 #define STRING_NO_RESULT stdString::npos
 //--------------------------------------------------------------------------------------------------
-#include <string>
-#include <assert.h>
+#define QUOTE_NONE_STRING ""
 
 typedef std::string StdString;
 typedef std::wstring StdWString;
 
-#define CXDefineOnce __declspec(selectany)
-
-#define WIDE_CHAR_FLAG 0X80
-#define IS_WIDE_CHAR(c) (WIDE_CHAR_FLAG & (c))
 #ifdef UNICODE
 typedef std::wstring CXString;
 #else
 typedef std::string CXString;
 #endif
 
-typedef unsigned int XUI32;
-typedef int	XI32;
-typedef short s16;
-typedef float f32;
 
-#define ISIN(x,min,max) ( x>=min && x<=max )
+#define GCat(a,b)		a##b
+#define GCatF(a,b)		GCat(a,b)
+#define GCatCount(a)	GCatF(a,__COUNTER__)
 
+#pragma endregion String
+
+#pragma region Constant
+#define WIDE_CHAR_FLAG 0X80
+#define dIsWideChar(c) (WIDE_CHAR_FLAG & (c))
+
+#define DOUBLE_MAX (1.79E+308)
+#define DOUBLE_MIN (-DOUBLE_MAX)
+
+#pragma endregion Constant
+
+#pragma region Pragma
 #ifdef _LIB
 #define CX_LIB	__declspec(dllexport)
 #else
 #define CX_LIB  __declspec(dllimport)
 #endif
 
+#ifdef _LIB
+#define API	extern "C" __declspec(dllexport)
+#else
+#define API  extern "C" __declspec(dllimport)
+#endif
+
+#define CXDefineOnce __declspec(selectany)
+#pragma endregion Pragma
+
+#pragma region Allocate
 
 #define CXNew new
 #define CXDelete delete
 
 #define dSafeDelete(x) {if(x){ delete x;x=nullptr;}}
+#define dSafeRelease(v) if(v){v->Release();v=nullptr;}
+
+#define dMemberOffset(ClassName,memberName)\
+	((int)&((ClassName*)0)->memberName)
+
+#pragma endregion Allocate
+
+#pragma region Math
+
 #define dSequare(x) (x)*(x)
+#define dIsSquareOf2(n) (0==(n&(n-1)))
 #define dSumOfSequare(x,y) (dSequare(x)+dSequare(y))
+
 #define dMin(x,y) ((x)<(y)?(x):(y))
 #define dMax(x,y) ((x)>(y)?(x):(y))
+#define dIsInRange(x,min,max) ( x>=min && x<=max )
 
-#define dSafeRelease(v) if(v){v->Release();v=nullptr;}
+#define dBIT(n) (1<<n)
+
+#pragma endregion Math
+
 
 inline void dDebugOutWithFile ( const char* file, int line, const char* fmt, ... )
 {
@@ -121,7 +153,7 @@ inline void dDebugOutWithFile ( const char* file, int line, const char* fmt, ...
 #ifdef WIN32
 	//OutputDebugStringA ( str.c_str() );
 #else
-	std::cout << str.c_str();
+	//std::cout << str.c_str();
 #endif
 	//delete[] buffer;
 }
@@ -154,7 +186,7 @@ void dSafeDeleteVector ( T& v )
         v.clear();
     }
 }
-template<typename T, XI32 N>
+template<typename T, u32 N>
 void dSafeDeleteArray ( T * ( &arr ) [N] )
 {
 for ( auto & i: arr )
@@ -171,7 +203,7 @@ void dSafeDeleteMap2 ( T& v )
     }
     v.clear();
 }
-inline void dMemoryZero ( void* p, XI32 len )
+inline void dMemoryZero ( void* p, u32 len )
 {
     CXASSERT ( p );
     memset ( p, 0, len );
@@ -179,12 +211,12 @@ inline void dMemoryZero ( void* p, XI32 len )
 #define dMemoryZeroStruct(p) memset(p,0,sizeof(*p))
 #define dToggle(b) (b=!b)
 
-inline void dMemoryCopy ( void* dst, void* src, XI32 len )
+inline void dMemoryCopy ( void* dst, void* src, u32 len )
 {
     CXASSERT ( dst && src );
     memcpy ( dst, src, len );
 }
-template<typename T, XI32 N>
+template<typename T, u32 N>
 void dMemoryZeroArray ( T ( &arr ) [N] )
 {
     dMemoryZero ( &arr, sizeof ( T ) *N );
@@ -204,8 +236,8 @@ inline u32 dStrLen ( const char* s )
     return strlen ( s );
 }
 
-template<typename T, XI32 N>
-const XI32 dArrayCount ( T ( &arr ) [N] )
+template<typename T, s32 N>
+const s32 dArrayCount ( T ( &arr ) [N] )
 {
     return N;
 }
@@ -221,26 +253,10 @@ void dCast ( T1* dst, T2 src )
     * ( ( T2* ) dst ) = src;
 }
 
-#define dMemberOffset(ClassName,memberName)\
-	((int)&((ClassName*)0)->memberName)
 
 
-#define GCat(a,b)		a##b
-#define GCatF(a,b)		GCat(a,b)
-#define GCatCount(a)	GCatF(a,__COUNTER__)
-
-#define FLOAT_MAX (3.40E+38)
-#define FLOAT_MIN (-FLOAT_MAX)
-
-#define DOUBLE_MAX (1.79E+308)
-#define DOUBLE_MIN (-DOUBLE_MAX)
-
-#include <sys\stat.h>
 
 
-inline bool dIsPath ( const char* str )
-{
-	struct stat info;
-	stat ( str, &info );
-	return ( ( ( info.st_mode ) & S_IFMT ) == S_IFDIR );
-}
+
+
+#endif // base_h__

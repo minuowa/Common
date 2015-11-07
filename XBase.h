@@ -4,7 +4,7 @@
 #include "base.h"
 #include "XSingleton.h"
 #include "uString.h"
-#include "XMap.h"
+#include "uMap.h"
 
 #ifndef CPP1999
 #include "XHashMap.h"
@@ -14,7 +14,7 @@
 #endif
 
 #include "XList.h"
-#include "Array.h"
+#include "uArray.h"
 #include "XStaticArray.h"
 #include "XStack.h"
 #include "XBiTree.h"
@@ -23,7 +23,7 @@
 #include "XIDGenerator.h"
 #include "XFileName.hpp"
 #include "XMath.h"
-#include "XDelegate.h"
+#include "uDelegate.h"
 #include "XProp.h"
 #include "uBuffer.h"
 #include "XIndex.h"
@@ -43,6 +43,8 @@
 #include "Tree.h"
 #include "uString.h"
 #include "uPathFinder.h"
+#include "uPlatform.h"
+#include "uCommandLine.h"
 
 #define DeclareFilmObj(type)
 #define DeclareFilmObjBase(type,parentType)
@@ -50,8 +52,8 @@
 #define DeclareFilmToolGlobal
 
 /** @brief 查找一个数组或vector中cur之后的第一个符合条件的元素 **/
-template<typename Array, typename T, typename CondtionObj>
-T* dFindNextElementInArray ( Array&  arr, T* cur, CondtionObj& funObj )
+template<typename uArray, typename T, typename CondtionObj>
+T* dFindNextElementInArray ( uArray&  arr, T* cur, CondtionObj& funObj )
 {
     bool existCur = false;
 for ( auto & e: arr )
@@ -96,7 +98,7 @@ for ( auto & e: children )
 template<typename T, typename CondtionObj>
 T* dFindNextElementInTreeCycle ( T*  parent, T* cur, CondtionObj& funObj )
 {
-    Array<T*> dstArray;
+    uArray<T*> dstArray;
     bool begin = parent == cur;
     bool end = parent == cur;
     takeElementToTopFromTreeToVector ( dstArray, parent, cur, begin );
@@ -104,7 +106,7 @@ T* dFindNextElementInTreeCycle ( T*  parent, T* cur, CondtionObj& funObj )
     return dFindNextElementInArray ( dstArray, cur, funObj );
 }
 template<typename T>
-void takeElementToTopFromTreeToVector ( Array<T*>& dstArray, T* parent, T* cur, bool& begin )
+void takeElementToTopFromTreeToVector ( uArray<T*>& dstArray, T* parent, T* cur, bool& begin )
 {
     if ( parent == cur )
         begin = true;
@@ -115,7 +117,7 @@ for ( auto & a: children )
         takeElementToTopFromTreeToVector ( dstArray, a, cur, begin );
 }
 template<typename T>
-void takeElementToVectorUntil ( Array<T*>& dstArray, T* parent, T* cur, bool& end )
+void takeElementToVectorUntil ( uArray<T*>& dstArray, T* parent, T* cur, bool& end )
 {
     if ( parent == cur )
     {

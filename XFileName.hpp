@@ -1,7 +1,7 @@
 #ifndef XFileName_h__
 #define XFileName_h__
 #include "uString.h"
-#include "Array.h"
+#include "uArray.h"
 
 class CXFileName
 {
@@ -75,8 +75,8 @@ inline bool CXFileName::MakeRelativeFileName ( const char* fileName, uString& pa
     CXASSERT_RETURN_FALSE ( GetAbsolutePath ( appname, apppath ) );
 
     uString fullname ( fileName );
-    Array<uString>  eles0;
-    Array<uString>  eles1;
+    uArray<uString>  eles0;
+    uArray<uString>  eles1;
 
     apppath.split ( PathSpliter, eles0 );
     fullname.split ( PathSpliter, eles1 );
@@ -133,7 +133,7 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, uString& path )
     CXASSERT_RETURN_FALSE ( GetDirectory ( str, dir ) );
     uString fullName = str;
     CXASSERT_RETURN_FALSE ( fullName.length() >= 2  );
-    Array<uString> stack;
+    uArray<uString> stack;
     uString ele;
     for ( uString::size_type i = 0; i < fullName.length() - 2; ++i )
     {
@@ -156,7 +156,7 @@ inline bool CXFileName::AmendAbsolutePath ( const char* str, uString& path )
     ele.append ( 1, fullName[fullName.length() - 2] );
     ele.append ( 1, fullName[fullName.length() - 1] );
     stack.push_back ( ele );
-    for ( Array<uString>::iterator walk = stack.begin(); walk != stack.end(); ++walk )
+    for ( uArray<uString>::iterator walk = stack.begin(); walk != stack.end(); ++walk )
     {
         path.append ( *walk );
         path.append ( 1, PathSpliter );

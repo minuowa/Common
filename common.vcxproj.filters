@@ -14,7 +14,6 @@
     <ClInclude Include="XVector3.h" />
     <ClInclude Include="XEaser.h" />
     <ClInclude Include="XStringHelper.h" />
-    <ClInclude Include="XDelegate.h" />
     <ClInclude Include="XEnum.h" />
     <ClInclude Include="XIndex.h" />
     <ClInclude Include="XMultimap.h" />
@@ -25,7 +24,6 @@
     <ClInclude Include="XBiTree.h" />
     <ClInclude Include="XFileLoader.h" />
     <ClInclude Include="XList.h" />
-    <ClInclude Include="XMap.h" />
     <ClInclude Include="XMath.h" />
     <ClInclude Include="XProp.h" />
     <ClInclude Include="XRandom.h" />
@@ -53,9 +51,13 @@
     <ClInclude Include="uString.h" />
     <ClInclude Include="uEncodingHelper.h" />
     <ClInclude Include="uRefCounter.h" />
-    <ClInclude Include="Array.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="uPathFinder.h" />
+    <ClInclude Include="uPlatform.h" />
+    <ClInclude Include="uCommandLine.h" />
+    <ClInclude Include="uMap.h" />
+    <ClInclude Include="uArray.h" />
+    <ClInclude Include="uDelegate.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="luawrapper-master\README.md" />
@@ -68,5 +70,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="uPathFinder.cpp" />
+    <ClCompile Include="base.cpp" />
+    <ClCompile Include="uPlatform.cpp" />
+    <ClCompile Include="uCommandLine.cpp" />
   </ItemGroup>
 </Project>

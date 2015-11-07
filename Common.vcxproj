@@ -23,6 +23,7 @@
     <RootNamespace>CXBase</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <ProjectName>Common</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -38,13 +39,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -64,7 +65,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\Debug\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\bin\$(Configuration)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
@@ -162,13 +163,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="base.h" />
+    <ClInclude Include="uCommandLine.h" />
     <ClInclude Include="uEncodingHelper.h" />
     <ClInclude Include="uPathFinder.h" />
+    <ClInclude Include="uPlatform.h" />
     <ClInclude Include="uRefCounter.h" />
     <ClInclude Include="uString.h" />
     <ClInclude Include="XBitArray.h" />
     <ClInclude Include="XColor.h" />
-    <ClInclude Include="Array.h" />
+    <ClInclude Include="uArray.h" />
     <ClInclude Include="XHashMap.h" />
     <ClInclude Include="XIDObjectManager.h" />
     <ClInclude Include="XLexer.h" />
@@ -181,7 +184,7 @@
     <ClInclude Include="XEaser.h" />
     <ClInclude Include="XStringHelper.h" />
     <ClInclude Include="Rapidxml\rapidxml_help.hpp" />
-    <ClInclude Include="XDelegate.h" />
+    <ClInclude Include="uDelegate.h" />
     <ClInclude Include="XEnum.h" />
     <ClInclude Include="XIndex.h" />
     <ClInclude Include="XMultimap.h" />
@@ -192,7 +195,7 @@
     <ClInclude Include="XBiTree.h" />
     <ClInclude Include="XFileLoader.h" />
     <ClInclude Include="XList.h" />
-    <ClInclude Include="XMap.h" />
+    <ClInclude Include="uMap.h" />
     <ClInclude Include="XMath.h" />
     <ClInclude Include="XProp.h" />
     <ClInclude Include="XRandom.h" />
@@ -212,7 +215,12 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="uPathFinder.cpp" />
+    <ClCompile Include="base.cpp" />
+    <ClCompile Include="uCommandLine.cpp" />
+    <ClCompile Include="uPlatform.cpp" />
+    <ClCompile Include="uPathFinder.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

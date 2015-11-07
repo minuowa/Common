@@ -9,11 +9,13 @@ void toString ( std::string& dst, T* var )
 {
     dst = to_string ( *var );
 }
-void toString ( std::string& dst, uString* var );
+void toString(std::string& dst, uString* var);
+void toString(std::string& dst, string* var);
 void toString ( std::string& dst, bool* var );
 
 
-void setValue ( const char* val, uString* var );
+void setValue(const char* val, string* var);
+void setValue(const char* val, uString* var);
 void setValue ( const char* val, int* var );
 void setValue ( const char* val, float* var );
 void setValue ( const char* val, bool* var );
@@ -28,6 +30,12 @@ inline void CXStringHelper::toString ( std::string& dst, uString* var )
     dst = var->c_str();
 }
 
+inline void toString(std::string& dst, string* var)
+{
+	CXASSERT(var);
+	dst = var->c_str();
+}
+
 
 
 inline void CXStringHelper::toString ( std::string& dst, bool* var )
@@ -40,6 +48,11 @@ inline void CXStringHelper::setValue ( const char* val, uString* var )
 {
     CXASSERT ( val );
     *var = val;
+}
+inline void CXStringHelper::setValue(const char* val, string* var)
+{
+	CXASSERT(val);
+	*var = val;
 }
 
 inline void CXStringHelper::setValue ( const char* val, int* var )

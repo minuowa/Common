@@ -1,5 +1,5 @@
 #pragma once
-#include <hash_map>
+#include <unordered_map>
 #ifdef CPP1999
 using namespace stdext;
 #else
@@ -7,10 +7,10 @@ using namespace std;
 #endif
 
 template<typename TK, typename TV>
-class CXHashMap: public hash_map<TK,TV>
+class CXHashMap: public unordered_map<TK,TV>
 {
 public:
-	typedef hash_map<TK, TV> Super;
+	typedef unordered_map<TK, TV> Super;
 	typedef typename Super::iterator iterator;
 	bool findkey ( TK k ) const
 	{
