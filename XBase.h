@@ -20,7 +20,7 @@
 #include "XBiTree.h"
 #include "XRapidxmlLoader.h"
 #include "XRapidxmlWriter.h"
-#include "XIDGenerator.h"
+#include "uIDGenerator.h"
 #include "XFileName.hpp"
 #include "XMath.h"
 #include "uDelegate.h"

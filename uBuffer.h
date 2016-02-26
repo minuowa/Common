@@ -10,25 +10,25 @@ class uBuffer
 public:
     uBuffer();
     ~uBuffer();
-    uBuffer ( u32 byteCnt );
-    void reAllocate ( u32 byteSize );
-    void reallocateByElementCount ( u32 cnt );
+    uBuffer ( size_t byteCnt );
+    void reAllocate ( size_t byteSize );
+    void reallocateByElementCount ( size_t cnt );
     void clear();
-    inline void setElementByteCount ( u32 size );
-    inline u32 length();
-    inline u32 size();
-    inline void setSize ( u32 size );
-    inline u32 capacity() const;
+    inline void setElementByteCount ( size_t size );
+    inline size_t length();
+    inline size_t size();
+    inline void setSize ( size_t size );
+    inline size_t capacity() const;
     inline char* getPointer() const;
     inline wchar_t* getWChar();
     inline const char* getString() const;
     inline void copyTo ( void* dst );
     inline void copyFrom ( void* src );
-    inline void setChar ( u32 idx, char c );
+    inline void setChar ( size_t idx, char c );
     template<typename T>
     void addElement ( T v );
     template<typename T>
-    void addElement ( T* v, u32 cnt );
+    void addElement ( T* v, size_t cnt );
 	void addString(const char* str);
     //template<typename T>
     //T& operator[] ( u32 idx )
@@ -36,9 +36,9 @@ public:
     //    return * ( ( T* ) &mData[idx * sizeof ( T )] );
     //}
     template<typename T>
-    void set ( u32 idx, const T& v );
+    void set ( size_t idx, const T& v );
     template<typename T>
-    inline T& get ( u32 idx )
+    inline T& get ( size_t idx )
     {
         return* ( ( T* ) &mData[idx * sizeof ( T )] ) ;
     }
@@ -50,16 +50,16 @@ public:
 
 
 protected:
-    u32 mElementByteCount;
-    u32 mCapacity;
-    u32 mCount;
+    size_t mElementByteCount;
+    size_t mCapacity;
+    size_t mCount;
     union
     {
         char* mData;
         wchar_t* mWData;
     };
 };
-inline u32 uBuffer::length()
+inline size_t uBuffer::length()
 {
     return mCapacity * mElementByteCount;
 }
@@ -71,7 +71,7 @@ inline const char* uBuffer::getString() const
 {
     return ( const char* ) mData;
 }
-inline void uBuffer::setElementByteCount ( u32 size )
+inline void uBuffer::setElementByteCount ( size_t size )
 {
     mElementByteCount = size;
 }
@@ -86,7 +86,7 @@ inline void uBuffer::copyFrom ( void* src )
     dMemoryCopy ( mData, src, mCapacity * mElementByteCount );
 }
 template<typename T>
-inline void uBuffer::addElement ( T* v, u32 cnt )
+inline void uBuffer::addElement ( T* v, size_t cnt )
 {
     dMemoryCopy ( &mData[mCount * mElementByteCount], v, cnt * mElementByteCount );
     mCount += cnt;
@@ -99,22 +99,22 @@ inline void uBuffer::addElement ( T v )
     mCount++;
 }
 template<typename T>
-inline void uBuffer::set ( u32 idx, const T& v )
+inline void uBuffer::set ( size_t idx, const T& v )
 {
     * ( ( T* ) &mData[idx * sizeof ( T )] ) = v;
 }
 
-inline u32 uBuffer::size()
+inline size_t uBuffer::size()
 {
     return mCount;
 }
 
-inline void uBuffer::setChar ( u32 idx, char c )
+inline void uBuffer::setChar ( size_t idx, char c )
 {
     CXASSERT ( mData );
     mData[idx] = c;
 }
-inline u32 uBuffer::capacity() const
+inline size_t uBuffer::capacity() const
 {
     return mCapacity;
 }
@@ -131,7 +131,7 @@ inline uBuffer::uBuffer ( void )
     mCapacity = 0;
     mElementByteCount = 1;
 }
-inline uBuffer::uBuffer ( u32 byteCnt )
+inline uBuffer::uBuffer ( size_t byteCnt )
 {
     mData = 0;
     mCount = 0;
@@ -146,7 +146,7 @@ inline uBuffer::~uBuffer ( void )
     dSafeDelete ( mData );
 }
 
-inline void uBuffer::reAllocate ( u32 byteSize )
+inline void uBuffer::reAllocate ( size_t byteSize )
 {
     dSafeDelete ( mData );
     mData = new char[byteSize];
@@ -155,7 +155,7 @@ inline void uBuffer::reAllocate ( u32 byteSize )
     dMemoryZero ( mData, byteSize );
 }
 
-inline void uBuffer::reallocateByElementCount ( u32 cnt )
+inline void uBuffer::reallocateByElementCount ( size_t cnt )
 {
     dSafeDelete ( mData );
     mCapacity = cnt;
@@ -163,7 +163,7 @@ inline void uBuffer::reallocateByElementCount ( u32 cnt )
     dMemoryZero ( mData, mCapacity * mElementByteCount );
 }
 
-inline void uBuffer::setSize ( u32 size )
+inline void uBuffer::setSize ( size_t size )
 {
     mCount = size;
 }

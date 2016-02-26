@@ -81,8 +81,8 @@ inline bool CXFileName::MakeRelativeFileName ( const char* fileName, uString& pa
     apppath.split ( PathSpliter, eles0 );
     fullname.split ( PathSpliter, eles1 );
 
-    u32 cnt = dMin ( eles0.size(), eles1.size() );
-    u32 idx = 0;
+    size_t cnt = dMin ( eles0.size(), eles1.size() );
+    size_t idx = 0;
     for ( ; idx < cnt ; ++idx )
     {
         uString str0 = eles0[idx];
@@ -92,22 +92,22 @@ inline bool CXFileName::MakeRelativeFileName ( const char* fileName, uString& pa
         if ( str0 != str1 )
             break;
     }
-    int size0 = eles0.size();
-    int size1 = eles1.size();
+    size_t size0 = eles0.size();
+    size_t size1 = eles1.size();
     CXASSERT ( size0 >= 2 );
     CXASSERT ( size1 >= 2 );
     //-------------------------------------------------------------------------
     // directroy not equal
-    int left0 = size0 - idx ;
-    int left1 = size1 - idx ;
-    for ( int i = 0; i < left0 && left1 > left0; i++ )
+    size_t left0 = size0 - idx ;
+    size_t left1 = size1 - idx ;
+    for ( size_t i = 0; i < left0 && left1 > left0; i++ )
     {
         path.append ( 1, Dot );
         path.append ( 1, Dot );
         path.append ( 1, PathSpliter );
     }
-    int leftcnt = eles1.size();
-    for ( u32 i = idx; ( int ) i < leftcnt; ++i )
+    size_t leftcnt = eles1.size();
+    for ( size_t i = idx; ( int ) i < leftcnt; ++i )
     {
         path.append ( eles1[i] );
         if ( i != leftcnt - 1 )

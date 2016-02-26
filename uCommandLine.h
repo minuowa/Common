@@ -14,7 +14,7 @@ public:
 		if(mArgs.findkey(key))
 			CXStringHelper::setValue(mArgs[key].c_str(), &v);
 	}
-	int arg_count();
+	size_t arg_count();
 private:
 	uMap<uString, uString> mArgs;
 };

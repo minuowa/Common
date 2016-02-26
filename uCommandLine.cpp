@@ -1,6 +1,6 @@
 #include "base.h"
 #include "uCommandLine.h"
-uCommandLine::uCommandLine(int narg, const char** args)
+uCommandLine::uCommandLine(int narg,const char** args)
 {
 	for (int i = 1; i < narg;++i)
 	{
@@ -19,7 +19,7 @@ uCommandLine::~uCommandLine()
 {
 }
 
-int uCommandLine::arg_count()
+size_t uCommandLine::arg_count()
 {
 	return mArgs.size();
 }

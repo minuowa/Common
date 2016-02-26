@@ -203,7 +203,7 @@ void dSafeDeleteMap2 ( T& v )
     }
     v.clear();
 }
-inline void dMemoryZero ( void* p, u32 len )
+inline void dMemoryZero ( void* p, size_t len )
 {
     CXASSERT ( p );
     memset ( p, 0, len );
@@ -211,7 +211,7 @@ inline void dMemoryZero ( void* p, u32 len )
 #define dMemoryZeroStruct(p) memset(p,0,sizeof(*p))
 #define dToggle(b) (b=!b)
 
-inline void dMemoryCopy ( void* dst, void* src, u32 len )
+inline void dMemoryCopy ( void* dst, void* src, size_t len )
 {
     CXASSERT ( dst && src );
     memcpy ( dst, src, len );
@@ -225,12 +225,12 @@ inline bool dStrEqual ( const char* s1, const char* s2 )
 {
     return 0 == strcmp ( s1, s2 );
 }
-inline u32 dStrLen ( const wchar_t* s )
+inline size_t dStrLen ( const wchar_t* s )
 {
     CXASSERT ( s != 0 );
     return wcslen ( s );
 }
-inline u32 dStrLen ( const char* s )
+inline size_t dStrLen ( const char* s )
 {
     CXASSERT ( s != 0 );
     return strlen ( s );
