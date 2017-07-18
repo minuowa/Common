@@ -189,7 +189,6 @@
     <ClInclude Include="XIndex.h" />
     <ClInclude Include="XMultimap.h" />
     <ClInclude Include="XFileName.hpp" />
-    <ClInclude Include="uIDGenerator.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="XBase.h" />
     <ClInclude Include="XBiTree.h" />

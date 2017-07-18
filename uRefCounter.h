@@ -1,147 +1,122 @@
 #pragma once
 #include <stdint.h>
-class uRefCounter
-{
-public:
-    uRefCounter ( void )
-        : mRefCount ( nullptr )
-        , mData ( nullptr )
-        , mSize ( 0 )
-    {
+class uRefCounter {
+  public:
+    uRefCounter(void)
+        : mRefCount(nullptr)
+        , mData(nullptr)
+        , mSize(0) {
         addref();
     }
-    ~uRefCounter ( void )
-    {
+    ~uRefCounter(void) {
         decref();
 
         mSize = 0;
     }
-    size_t addref()
-    {
-        if ( mRefCount == nullptr )
-            mRefCount = new int ( 0 );
-        assert ( *mRefCount < INT32_MAX/*std::numeric_limits<int>::max()*/ );
-        ++ ( *mRefCount );
+    size_t addref() {
+        if (mRefCount == nullptr)
+            mRefCount = new int(0);
+        assert(*mRefCount < INT32_MAX/*std::numeric_limits<int>::max()*/);
+        ++(*mRefCount);
         return *mRefCount;
     }
-    size_t decref()
-    {
-        if ( mRefCount == nullptr )
+    size_t decref() {
+        if (mRefCount == nullptr)
             return 0;
-        assert (  *mRefCount  > 0 );
-        -- ( *mRefCount );
-        if ( *mRefCount == 0 )
-        {
-            if ( mData != nullptr )
-            {
+        assert(*mRefCount > 0);
+        --(*mRefCount);
+        if (*mRefCount == 0) {
+            if (mData != nullptr) {
                 delete mData;
                 mData = nullptr;
             }
-            if ( mRefCount != nullptr )
-            {
+            if (mRefCount != nullptr) {
                 delete mRefCount;
                 mRefCount = nullptr;
             }
         }
-        if ( mRefCount )
+        if (mRefCount)
             return *mRefCount;
         return 0;
     }
-    uRefCounter ( const uRefCounter& src )
-        : mRefCount ( nullptr )
-        , mData ( nullptr )
-        , mSize ( 0 )
-    {
-        copy ( src );
+    uRefCounter(const uRefCounter& src)
+        : mRefCount(nullptr)
+        , mData(nullptr)
+        , mSize(0) {
+        copy(src);
     }
-    uRefCounter& operator= ( const uRefCounter& src )
-    {
-        copy ( src );
+    uRefCounter& operator= (const uRefCounter& src) {
+        copy(src);
         return *this;
     }
-    inline char* pointer() const
-    {
+    inline char* pointer() const {
         return mData;
     }
-    inline wchar_t* pointerw() const
-    {
+    inline wchar_t* pointerw() const {
         return mWData;
     }
-    inline void clear()
-    {
-        delete []mData;
+    inline void clear() {
+        delete[]mData;
         mData = nullptr;
     }
-    inline size_t capcity() const
-    {
+    inline size_t capcity() const {
         return mSize;
     }
-    void copyData ( const uRefCounter& counter )
-    {
-        if ( counter.capcity() > 0 )
-        {
-            reallocInner ( counter.capcity() );
-            assert ( mSize == counter.capcity() );
-            dMemoryCopy ( mData, counter.pointer(), mSize );
+    void copyData(const uRefCounter& counter) {
+        if (counter.capcity() > 0) {
+            reallocInner(counter.capcity());
+            assert(mSize == counter.capcity());
+            dMemoryCopy(mData, counter.pointer(), mSize);
         }
     }
-    void reallocate ( size_t size )
-    {
+    void reallocate(size_t size) {
         size += 1;
         reallocInner(size);
     }
-	inline void setzero()
-	{
-		if ( mData )
-			dMemoryZero ( mData, mSize );
-	}
-private:
-	void reallocInner(size_t size)
-	{
-		setzero();
-		if ( size == mSize )
-			return;
-		if ( size > mSize )
-		{
-			/** @brief extend capacity **/
-			expand ( size );
-			return;
-		}
-		/** @brief shrink capacity **/
-		size_t tarcnt = mSize;
-		while ( size < tarcnt && tarcnt > 1 )
-		{
-			tarcnt = tarcnt >> 1;
-		}
-		if ( tarcnt != 0X10000000 )
-			tarcnt = tarcnt << 1;
-		else
-			tarcnt = size;
-		if ( tarcnt == mSize )
-			return;
-		mSize = tarcnt;
-		realloc();
-	}
-    void copy ( const  uRefCounter& src )
-    {
+    inline void setzero() {
+        if (mData)
+            dMemoryZero(mData, mSize);
+    }
+  private:
+    void reallocInner(size_t size) {
+        setzero();
+        if (size == mSize)
+            return;
+        if (size > mSize) {
+            /** @brief extend capacity **/
+            expand(size);
+            return;
+        }
+        /** @brief shrink capacity **/
+        size_t tarcnt = mSize;
+        while (size < tarcnt && tarcnt > 1) {
+            tarcnt = tarcnt >> 1;
+        }
+        if (tarcnt != 0X10000000)
+            tarcnt = tarcnt << 1;
+        else
+            tarcnt = size;
+        if (tarcnt == mSize)
+            return;
+        mSize = tarcnt;
+        realloc();
+    }
+    void copy(const  uRefCounter& src) {
         decref();
-        assert ( src.mRefCount != nullptr );
+        assert(src.mRefCount != nullptr);
         mRefCount = src.mRefCount;
         mData = src.pointer();
         mSize = src.capcity();
         addref();
     }
-    inline void  expand ( size_t size )
-    {
-        assert ( size );
+    inline void  expand(size_t size) {
+        assert(size);
         size_t tarcnt = 0X10000000;
-        while ( 0 == ( tarcnt & size ) )
-        {
+        while (0 == (tarcnt & size)) {
             tarcnt = tarcnt >> 1;
         }
-        if ( tarcnt != size )
-        {
-            if ( tarcnt != 0X10000000 )
+        if (tarcnt != size) {
+            if (tarcnt != 0X10000000)
                 tarcnt = tarcnt << 1;
             else
                 tarcnt = size;
@@ -149,20 +124,18 @@ private:
         mSize = tarcnt;
         realloc();
     }
-    void realloc()
-    {
-        delete []mData;
+    void realloc() {
+        delete[]mData;
         mData = new char[mSize];
         setzero();
     }
 
-private:
-    union
-    {
-        char* mData;
-        wchar_t* mWData;
-    };
-	size_t mSize;
-	int* mRefCount;
+  private:
+    union {
+            char* mData;
+            wchar_t* mWData;
+        };
+    size_t mSize;
+    int* mRefCount;
 };
 

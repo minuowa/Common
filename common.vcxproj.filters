@@ -57,7 +57,6 @@
     <ClInclude Include="uMap.h" />
     <ClInclude Include="uArray.h" />
     <ClInclude Include="uDelegate.h" />
-    <ClInclude Include="uIDGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="luawrapper-master\README.md" />

@@ -1,69 +1,58 @@
 #pragma once
 template<typename T>
-class BiTreeNode
-{
-public:
+class BiTreeNode {
+  public:
     typedef BiTreeNode<T> ThisNode;
 
     BiTreeNode()
-        : mData ( 0 ), mLeft ( 0 ), mRight ( 0 )
-    {
+        : mData(0), mLeft(0), mRight(0) {
 
     }
-    void destory()
-    {
-        if ( mLeft != nullptr )
+    void destory() {
+        if (mLeft != nullptr)
             mLeft->destory();
 
-        if ( mRight != nullptr )
+        if (mRight != nullptr)
             mRight->destory();
 
-        dSafeDelete ( mData );
+        dSafeDelete(mData);
     }
-    ~BiTreeNode()
-    {
+    ~BiTreeNode() {
         destory();
     }
-protected:
+  protected:
     T* mData;
     ThisNode* mLeft;
     ThisNode* mRight;
 };
 template<typename T>
-class CXBiTree
-{
-public:
+class CXBiTree {
+  public:
     typedef BiTreeNode<T> ThisBiTreeNode;
-    ~CXBiTree()
-    {
-        dSafeDelete ( mRoot );
+    ~CXBiTree() {
+        dSafeDelete(mRoot);
     }
-    CXBiTree ( void )
-        : mRoot ( 0 )
-    {
+    CXBiTree(void)
+        : mRoot(0) {
         mRoot = new ThisBiTreeNode;
     }
 
-    ThisBiTreeNode* GetLeftest() const
-    {
+    ThisBiTreeNode* GetLeftest() const {
         ThisBiTreeNode* next = mRoot->mLeft;
         ThisBiTreeNode* last = 0;
 
-        while ( next )
-        {
+        while (next) {
             last = next;
             next = next->mLeft;
         }
 
         return last;
     }
-    ThisBiTreeNode* GetRightest() const
-    {
+    ThisBiTreeNode* GetRightest() const {
         ThisBiTreeNode* next = mRoot->mRight;
         ThisBiTreeNode* last = 0;
 
-        while ( next )
-        {
+        while (next) {
             last = next;
             next = next->mRight;
         }
